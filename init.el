@@ -123,6 +123,18 @@
 (use-package evil-magit
   :after magit)
 
+;; (setq lsp-keymap-prefix "C-c l")
+(use-package lsp-mode
+    :hook ((rustic-mode . lsp)
+            (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package rustic)
 
 (use-package general
   :config
@@ -132,13 +144,20 @@
     :global-prefix "C-SPC")
 
   (liomacs/leader-keys
+    "b"  '(:ignore t :which-key "buffer")
+    "bb" '(counsel-ibuffer :which-key "counsel-ibuffer")
+    "bk" '(kill-current-buffer :which-key "kill-current-buffer")
+
+    "e"  '(eval-last-sexp :which-key "eval-last-sexp")
+
     "g"  '(:ignore t :which-key "magit")
     "gs" '(magit-status :which-key "magit-status")
+
     "t"  '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")
 
     "w"  '(:ignore t :which-key "window")
-    "wc" '(delete-window :which-key "delete-window")
+    "wk" '(delete-window :which-key "delete-window")
     "ws" '(split-window-below :which-key "split-window-below")
     "wv" '(split-window-right :which-key "split-window-right")
 
