@@ -298,6 +298,10 @@ and Emacs states, and for non-evil users.")
     :hook (rustic-mode . lsp-deferred))
 #+end_src
 
+** Haskell
+#+begin_src emacs-lisp
+  (use-package haskell-mode)  ;; Adds support for the Haskell language
+#+end_src
 * Org mode
 ** Basic setup
 #+begin_src emacs-lisp
@@ -306,12 +310,13 @@ and Emacs states, and for non-evil users.")
     (org-indent-mode)                  ;; Indent text according to the outline
     (variable-pitch-mode 1)            ;; Set the font to variable size
     (visual-line-mode 1))              ;; Do visual line breaks if needed
-    
-(setq org-directory "~/Nextcloud/org/")
-(setq org-agenda-files
-      '("~/Nextcloud/org/Agenda/GTD.org"
-        "~/Nextcloud/org/Agenda/Events.org"
-        "~/Nextcloud/org/contacts.org"))
+
+  ;; Setup the org files and directories
+  (setq org-directory "~/Nextcloud/org/")
+  (setq org-agenda-files
+        '("~/Nextcloud/org/Agenda/GTD.org"
+          "~/Nextcloud/org/Agenda/Events.org"
+          "~/Nextcloud/org/contacts.org"))
 #+end_src
 
 ** Org font setup
@@ -340,12 +345,13 @@ and Emacs states, and for non-evil users.")
 
 ** Load org mode
 #+begin_src emacs-lisp
-(use-package org
-  :hook (org-mode . liomacs/org-mode-setup)  ;; Configure org mode according to my wishes
-  :config
-  (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
-  (liomacs/org-font-setup))                  ;; Setup my font config
-  
+  (use-package org
+    :hook (org-mode . liomacs/org-mode-setup)  ;; Configure org mode according to my wishes
+    :config
+    (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
+    (liomacs/org-font-setup)                   ;; Setup my font config
+    :custom
+    (org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "KILL"))))  ;; Set org mode keywords
 #+end_src
 
 ** Org babel
@@ -372,10 +378,14 @@ and Emacs states, and for non-evil users.")
 #+end_src
 ** Org capture
 #+begin_src emacs-lisp
-  (use-package doct)
-  (setq +org-capture-todo-file "Agenda/GTD.org")
-  (setq +org-capture-contacts-file (concat org-directory "contacts.org"))
+  (use-package doct)          ;; Package to simplify writing org capture templates
+  (use-package org-cliplink)  ;; Package to copy link from clipboard in to the template
 
+  (setq liomacs/org-capture-todo-file (concat org-directory "Agenda/GTD.org"))    ;; File location for my todos
+  (setq liomacs/org-capture-contacts-file (concat org-directory "contacts.org"))  ;; File location for my contacts
+  (global-set-key (kbd "C-c X") 'org-capture)  ;; Bind org-capture
+
+  ;; Setup all my org captures templates
   (setq org-capture-templates
         (doct `((,(format "%s\tOrg Roam" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "d"
@@ -388,7 +398,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tNew Contact" (all-the-icons-material "contacts" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "c"
-                 :file +org-capture-contacts-file
+                 :file liomacs/org-capture-contacts-file
                  :type entry
                  :jump-to-captured t
                  :children ((,(format "%s\tArmy" (all-the-icons-material "add" :face 'all-the-icons-green :v-adjust 0.01))
@@ -436,7 +446,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "t"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Inbox"
                  :type entry
@@ -445,7 +455,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tBookmark" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "b"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Bookmark"
                  :type entry
@@ -454,7 +464,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tPersonal note" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "n"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Inbox"
                  :type entry
@@ -463,7 +473,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
                  :keys "u"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :headline "University"
                  :prepend t
                  :type entry
@@ -485,7 +495,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tEmail" (all-the-icons-faicon "envelope" :face 'all-the-icons-blue :v-adjust 0.01))
                  :keys "e"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Inbox"
                  :type entry
@@ -494,7 +504,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tInteresting" (all-the-icons-faicon "eye" :face 'all-the-icons-lcyan :v-adjust 0.01))
                  :keys "i"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Interesting"
                  :type entry
@@ -523,7 +533,7 @@ and Emacs states, and for non-evil users.")
                  )
                 (,(format "%s\tTasks" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
                  :keys "k"
-                 :file +org-capture-todo-file
+                 :file liomacs/org-capture-todo-file
                  :prepend t
                  :headline "Tasks"
                  :type entry
