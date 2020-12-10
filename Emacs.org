@@ -1,0 +1,690 @@
+#+TITLE: Emacs Configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el
+
+* User configuration
+#+begin_src emacs-lisp
+(setq user-full-name "Olivier Lischer"
+      user-mail-address "olivier.lischer@liolin.ch")
+#+end_src
+* Package management
+#+begin_src emacs-lisp
+;; Add melpa and elpa as repository
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/")
+	     '("org" . "https://orgmode.org/elpa/"))
+(package-initialize)
+(package-refresh-contents)
+
+;; If use-package is not installed, install it.
+(unless (package-installed-p 'use-package)
+   (package-install 'use-package))
+
+;; Enable use-package and set default behaviour to ensure t
+(require 'use-package)
+(setq use-package-always-ensure t)
+#+end_src
+
+* UI Configuration
+** Basic UI configuration
+#+begin_src  emacs-lisp
+(tool-bar-mode -1)    ;; Disable the tool bar
+(menu-bar-mode -1)    ;; Disable the menu bar
+(column-number-mode)  ;; Enables the column number in the mode line
+(set-fringe-mode 10)  ;; Set the size of the fringe
+
+(setq display-line-numbers-type 'relative)
+
+(global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
+;; Disable line numbering in the following modes
+(dolist (mode '(org-mode-hook
+		term-mode-hook
+		shell-mode-hook
+		eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+** Font configuration
+#+begin_src emacs-lisp
+(use-package all-the-icons)  ;; Install all-the-icons, used by many other modes
+#+end_src
+
+** Theme
+#+begin_src emacs-lisp
+;; Install and load theme
+(use-package doom-themes
+  :init (load-theme 'doom-one t))
+
+;; Install doom-modeline for pretty modeline
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+#+end_src
+
+** Text
+#+begin_src emacs-lisp
+;; All brackets pair have diffrent colors
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+* Global Key bindings
+** Global keys
+#+begin_src emacs-lisp
+(defvar liomacs/leader-key "SPC"
+  "The leader prefix key for Evil users.")
+
+(defvar liomacs/leader-alt-key "M-SPC"
+  "An alternative leader prefix key, used for Insert and Emacs states, and for
+non-evil users.")
+
+(defvar liomacs/localleader-key "SPC m"
+  "The localleader prefix key, for major-mode specific commands.")
+
+(defvar liomacs/localleader-alt-key "M-SPC m"
+  "The localleader prefix key, for major-mode specific commands. Used for Insert
+and Emacs states, and for non-evil users.")
+#+end_src
+
+** Evil keybindng
+#+begin_src emacs-lisp
+;; Install evil-mode and enable it
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil) 
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'messages-buffer-mode 'normal)  ;; Set default state in message-buffer
+  (evil-set-initial-state 'dashboard-mode 'normal))       ;; Set default state in dashboard-buffer
+
+;; Install evil keybindings for many modes
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)  ;; Bind ESC to switch to normal mode
+#+end_src
+
+** which-key
+#+begin_src emacs-lisp
+;; Shows which key you could press next, to complete a key stroke
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+#+end_src
+
+** General
+#+begin_src emacs-lisp
+(use-package general
+  :config
+  (general-create-definer liomacs/leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (general-create-definer liomacs/local-leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix liomacs/localleader-key) 
+
+  (liomacs/leader-keys
+    "b"  '(:ignore t :which-key "buffer")
+    "bb" '(counsel-ibuffer :which-key "counsel-ibuffer")
+    "bk" '(kill-current-buffer :which-key "kill-current-buffer")
+
+    "g"  '(:ignore t :which-key "git")
+    "gs" '(magit-status :which-key "git-status")
+
+    "m"  '(:ignore t :which-key "<local>")
+
+    "t"  '(:ignore t :which-key "toggles")
+    "tt" '(counsel-load-theme :which-key "choose theme")
+
+    "w"  '(:ignore t :which-key "window")
+    "wk" '(delete-window :which-key "delete-window")
+    "ws" '(split-window-below :which-key "split-window-below")
+    "wv" '(split-window-right :which-key "split-window-right")
+
+    "." '(counsel-find-file :which-key "open file"))
+
+  ;; (liomacs/local-leader-keys
+  ;;   :states 'normal
+  ;;   :keymaps 'magit-mode-map
+  ;;   "s"  '(magit-status :which-key "git-status")
+
+  ;;   :keymaps 'emacs-lisp-mode-map 
+  ;;   "e"  '(eval-last-sexp :which-key "eval-last-sexp")
+  ;;   )
+
+  (general-define-key
+   :states '(normal visual motion emacs insert)
+   :major-modes t
+   :prefix "SPC m" 
+   :non-normal-prefix "M SPC m" 
+
+   :keymaps 'magit-mode-map
+   "s"  '(magit-status :which-key "git-status")
+
+   :keymaps 'emacs-lisp-mode-map 
+   "e"  '(eval-last-sexp :which-key "eval-last-sexp")))
+#+end_src
+* Completion framework
+** ivy
+#+begin_src emacs-lisp
+;; Install the completion framework ivy and replace the default emacs functions with it.
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)	
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+  
+;; ivy enhanced version of common emacs functions
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)
+         ("C-x b" . counsel-ibuffer)
+         ("C-x C-f" . counsel-find-file)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+#+end_src
+
+** company
+#+begin_src emacs-lisp
+  (use-package company
+    :after lsp-mode                  ;; load it after lsp mode
+    :hook (lsp-mode . company-mode)  ;; enable only in lsp-mode buffers
+    :bind (:map company-active-map
+                ("<tab>" . company-complete-selection))
+    (:map lsp-mode-map
+          ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+  ;; Use icons with company
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+#+end_src
+* Helpful
+#+begin_src emacs-lisp
+;; Replace the default helpsystem with a better one with code examples etc.
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+#+end_src
+
+* Programming
+** Project management
+#+begin_src emacs-lisp
+;; Install projectile and bind it.
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/code")
+    (setq projectile-project-search-path '("~/code")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+;; Enables ivy-completion for projectile mode
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+#+end_src
+
+** Version controll
+#+begin_src emacs-lisp
+;; Install the emacs interface for git
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;; Enable evil keybindings inside magit mode
+(use-package evil-magit
+  :after magit)
+#+end_src
+
+** Language server protocol
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init
+    (setq lsp-keymap-prefix "C-c l")
+    :config
+    (lsp-enable-which-key-integration t))
+
+  ;; Enables some lsp optional improvments
+  (use-package lsp-ui 
+    :commands lsp-ui-mode
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom (lsp-ui-doc-position 'bottom))
+
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+#+end_src
+
+** Rust
+#+begin_src emacs-lisp
+  ;; Enables the rust language in the buffer
+  (use-package rustic
+    :hook (rustic-mode . lsp-deferred))
+#+end_src
+
+* Org mode
+** Basic setup
+#+begin_src emacs-lisp
+  (defun liomacs/org-mode-setup() 
+    "Configure org mode according to my wishes"
+    (org-indent-mode)                  ;; Indent text according to the outline
+    (variable-pitch-mode 1)            ;; Set the font to variable size
+    (visual-line-mode 1))              ;; Do visual line breaks if needed
+    
+(setq org-directory "~/Nextcloud/org/")
+(setq org-agenda-files
+      '("~/Nextcloud/org/Agenda/GTD.org"
+        "~/Nextcloud/org/Agenda/Events.org"
+        "~/Nextcloud/org/contacts.org"))
+#+end_src
+
+** Org font setup
+#+begin_src emacs-lisp
+(defun liomacs/org-font-setup ()
+  ;; Set org mode faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+		  (org-level-2 . 1.1)
+		  (org-level-3 . 1.05)
+		  (org-level-4 . 1.0)
+		  (org-level-5 . 1.1)
+		  (org-level-6 . 1.1)
+		  (org-level-7 . 1.1)
+		  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+#+end_src
+
+** Load org mode
+#+begin_src emacs-lisp
+(use-package org
+  :hook (org-mode . liomacs/org-mode-setup)  ;; Configure org mode according to my wishes
+  :config
+  (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
+  (liomacs/org-font-setup))                  ;; Setup my font config
+  
+#+end_src
+
+** Org babel
+#+begin_src emacs-lisp
+  ;; Enable org babel for the following languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)))
+   
+(setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+begin_src emacs-lisp
+  (defvar liomacs/config-file "~/code/liomacs/Emacs.org")
+  (defun liomacs/org-babel-tangle-config()
+    "Tangle config file to the file when it is saved"
+    (when (string-equal (buffer-file-name)
+                        (expand-file-name liomacs/config-file))
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-babel-tangle-config)))
+
+#+end_src
+** Org capture
+#+begin_src emacs-lisp
+  (use-package doct)
+  (setq +org-capture-todo-file "Agenda/GTD.org")
+  (setq +org-capture-contacts-file (concat org-directory "contacts.org"))
+
+  (setq org-capture-templates
+        (doct `((,(format "%s\tOrg Roam" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "d"
+                 :type plain
+                 :template ("- tags :: %?"
+                            "- source :: ")
+                 :function (lambda () (org-roam--capture-get-point))
+                 :head "#+TITLE: ${title}\n#+SETUPFILE: ~/Nextcloud/org/config/setup.conf\n"
+                 :unnarrowed t
+                 )
+                (,(format "%s\tNew Contact" (all-the-icons-material "contacts" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "c"
+                 :file +org-capture-contacts-file
+                 :type entry
+                 :jump-to-captured t
+                 :children ((,(format "%s\tArmy" (all-the-icons-material "add" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "a"
+                             :headline "Army"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tFriends" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "r"
+                             :headline "Friends"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tothers" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "o"
+                             :headline "Others"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tSchool" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "s"
+                             :headline "School"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tcompany" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "c"
+                             :headline "Company"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tWork" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "w"
+                             :headline "Work"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END"))
+                            (,(format "%s\tFamily" (all-the-icons-material "group" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "f"
+                             :headline "Family"
+                             :template ("* %?"
+                                        ":PROPERTIES:"
+                                        ":END")))
+                 )
+                (,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "t"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Inbox"
+                 :type entry
+                 :template ("* TODO %?"
+                            "%i %a")
+                 )
+                (,(format "%s\tBookmark" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "b"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Bookmark"
+                 :type entry
+                 :template ("* %? :%{i-type}:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n")
+                 :i-type "web"
+                 )
+                (,(format "%s\tPersonal note" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "n"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Inbox"
+                 :type entry
+                 :template ("* %?"
+                            "%i %a")
+                 )
+                (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
+                 :keys "u"
+                 :file +org-capture-todo-file
+                 :headline "University"
+                 :prepend t
+                 :type entry
+                 :children ((,(format "%s\tTest" (all-the-icons-material "timer" :face 'all-the-icons-red :v-adjust 0.01))
+                             :keys "t"
+                             :template ("* TODO [#C] %? :uni:tests:"
+                                        "SCHEDULED: %^{Test date:}T"
+                                        "%i %a"))
+                            (,(format "%s\tAssignment" (all-the-icons-material "library_books" :face 'all-the-icons-orange :v-adjust 0.01))
+                             :keys "a"
+                             :template ("* TODO [#B] %? :uni:assignments:"
+                                        "DEADLINE: %^{Due date:}T"
+                                        "%i %a"))
+                            (,(format "%s\tMiscellaneous task" (all-the-icons-faicon "list" :face 'all-the-icons-yellow :v-adjust 0.01))
+                             :keys "u"
+                             :template ("* TODO [#C] %? :uni:"
+                                        "%i %a"))
+                            )
+                 )
+                (,(format "%s\tEmail" (all-the-icons-faicon "envelope" :face 'all-the-icons-blue :v-adjust 0.01))
+                 :keys "e"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Inbox"
+                 :type entry
+                 :template ("* TODO %? :email:"
+                            "%i %a")
+                 )
+                (,(format "%s\tInteresting" (all-the-icons-faicon "eye" :face 'all-the-icons-lcyan :v-adjust 0.01))
+                 :keys "i"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Interesting"
+                 :type entry
+                 :template ("* [ ] %{desc}%? :%{i-type}:"
+                            "%i %a")
+                 :children ((,(format "%s\tWebpage" (all-the-icons-faicon "globe" :face 'all-the-icons-green :v-adjust 0.01))
+                             :keys "w"
+                             :desc "%(org-cliplink-capture) "
+                             :i-type "read:web"
+                             )
+                            (,(format "%s\tArticle" (all-the-icons-octicon "file-text" :face 'all-the-icons-yellow :v-adjust 0.01))
+                             :keys "a"
+                             :desc ""
+                             :i-type "read:reaserch"
+                             )
+                            (,(format "%s\tInformation" (all-the-icons-faicon "info-circle" :face 'all-the-icons-blue :v-adjust 0.01))
+                             :keys "i"
+                             :desc ""
+                             :i-type "read:info"
+                             )
+                            (,(format "%s\tIdea" (all-the-icons-material "bubble_chart" :face 'all-the-icons-silver :v-adjust 0.01))
+                             :keys "I"
+                             :desc ""
+                             :i-type "idea"
+                             ))
+                 )
+                (,(format "%s\tTasks" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
+                 :keys "k"
+                 :file +org-capture-todo-file
+                 :prepend t
+                 :headline "Tasks"
+                 :type entry
+                 :template ("* TODO %? %^G%{extra}"
+                            "%i")
+                 :children ((,(format "%s\tGeneral Task" (all-the-icons-octicon "inbox" :face 'all-the-icons-yellow :v-adjust 0.01))
+                             :keys "k"
+                             :extra ""
+                             )
+                            (,(format "%s\tTask with deadline" (all-the-icons-material "timer" :face 'all-the-icons-orange :v-adjust -0.1))
+                             :keys "d"
+                             :extra "\nDEADLINE: %^{Deadline:}t"
+                             )
+                            (,(format "%s\tScheduled Task" (all-the-icons-octicon "calendar" :face 'all-the-icons-orange :v-adjust 0.01))
+                             :keys "s"
+                             :extra "\nSCHEDULED: %^{Start time:}t"
+                             )
+                            )
+                 ))))
+                ;; (,(format "%s\tProject" (all-the-icons-octicon "repo" :face 'all-the-icons-silver :v-adjust 0.01))
+                ;;  :keys "p"
+                ;;  :prepend t
+                ;;  :type entry
+                ;;  :headline "Inbox"
+                ;;  :template ("* %{time-or-todo} %?"
+                ;;             "%i"
+                ;;             "%a")
+                ;;  :file ""
+                ;;  :custom (:time-or-todo "")
+                ;;  :children ((,(format "%s\tProject-local todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+                ;;              :keys "t"
+                ;;              :time-or-todo "TODO"
+                ;;              :file +org-capture-project-todo-file)
+                ;;             (,(format "%s\tProject-local note" (all-the-icons-faicon "sticky-note" :face 'all-the-icons-yellow :v-adjust 0.01))
+                ;;              :keys "n"
+                ;;              :time-or-todo "%U"
+                ;;              :file +org-capture-project-notes-file)
+                ;;             (,(format "%s\tProject-local changelog" (all-the-icons-faicon "list" :face 'all-the-icons-blue :v-adjust 0.01))
+                ;;              :keys "c"
+                ;;              :time-or-todo "%U"
+                ;;              :heading "Unreleased"
+                ;;              :file +org-capture-project-changelog-file))
+                ;;  )
+                ;; ("\tCenteralised project templates"
+                ;;  :keys "o"
+                ;;  :type entry
+                ;;  :prepend t
+                ;;  :template ("* %{time-or-todo} %?"
+                ;;             "%i"
+                ;;             "%a")
+                ;;  :children (("Project todo"
+                ;;              :keys "t"
+                ;;              :prepend nil
+                ;;              :time-or-todo "TODO"
+                ;;              :heading "Tasks"
+                ;;              :file +org-capture-central-project-todo-file)
+                ;;             ("Project note"
+                ;;              :keys "n"
+                ;;              :time-or-todo "%U"
+                ;;              :heading "Notes"
+                ;;              :file +org-capture-central-project-notes-file)
+                ;;             ("Project changelog"
+                ;;              :keys "c"
+                ;;              :time-or-todo "%U"
+                ;;              :heading "Unreleased"
+                ;;              :file +org-capture-central-project-changelog-file))
+                ;;  ))))
+
+#+end_src
+
+** Org roam
+#+begin_src emacs-lisp
+  (use-package org-roam
+        :ensure t
+        :hook
+        (after-init . org-roam-mode)
+        :custom
+        (org-roam-directory "~/Nextcloud/org/roam/")
+        :bind (:map org-roam-mode-map
+                (("C-c n l" . org-roam)
+                 ("C-c n f" . org-roam-find-file)
+                 ("C-c n g" . org-roam-graph))
+                :map org-mode-map
+                (("C-c n i" . org-roam-insert))
+                (("C-c n f" . org-roam-find-file))
+                (("C-c n I" . org-roam-insert-immediate))))
+
+  (use-package org-roam-server
+    :hook
+    (org-roam-mode . org-roam-server-mode)
+    :custom
+    (org-roam-server-host "127.0.0.1")
+    (org-roam-server-port 8085)
+    (org-roam-server-authenticate nil)
+    (org-roam-server-export-inline-images t)
+    (org-roam-server-serve-files nil)
+    (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
+    (org-roam-server-network-poll t)
+    (org-roam-server-network-arrows nil)
+    (org-roam-server-network-label-truncate t)
+    (org-roam-server-network-label-truncate-length 60)
+    (org-roam-server-network-label-wrap-length 20))
+#+end_src
+** Org journal
+#+begin_src emacs-lisp
+  (use-package org-journal
+    :custom
+    (org-journal-dir "~/Nextcloud/org/journal/"))
+#+end_src
+** Presentation in org mode
+#+begin_src emacs-lisp
+  (use-package org-tree-slide
+    :hook ((org-tree-slide-play . liomacs/presentation-setup)
+           (org-tree-slide-stop . liomacs/presentation-end))
+    :bind ("C-c t" . org-tree-slide-mode)
+    :custom
+    (org-image-actual-with nil))
+
+  (defun liomacs/presentation-setup ()
+    "Setup the org mode buffer for presentation"
+    (setq text-scale-mode-amount 3)  ;; The scale factor for the fonts
+    (org-display-inline-images)      ;; Display images in the org buffer
+    (blink-cursor-mode 0)            ;; Disable the blinking cursor
+    (text-scale-mode 1))             ;; Make fonts bigger
+
+  (defun liomacs/presentation-end ()
+    "Revert changes made by limacs/presentation-setup"
+    (text-scale-mode 0)              ;; Disable font scaling
+    (blink-cursor-mode 1))           ;; Enable the blinking cursor
+#+end_src
+** Additional org mode packages
+#+begin_src emacs-lisp
+;; Enables expandsion
+(require 'org-tempo)
+
+;; Adds src block expansion with emacs-lisp as language
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+
+#+end_src
+
+
+#+begin_src emacs-lisp
+;; Pretty header symbols
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun liomacs/org-mode-visual-fill ()
+    "Set up visual fill mode in org mode"
+    (setq visual-fill-column-width 150       ;; Set with of the text area
+          visual-fill-column-center-text t)  ;; Center the text area
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :hook (org-mode . liomacs/org-mode-visual-fill))
+#+end_src
+
+* Notmuch
+#+begin_src emacs-lisp
+#+end_src
