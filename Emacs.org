@@ -87,26 +87,25 @@ and Emacs states, and for non-evil users.")
 
 ** Evil keybindng
 #+begin_src emacs-lisp
-;; Install evil-mode and enable it
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil) 
-  :config
-  (evil-mode 1)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)  ;; Set default state in message-buffer
-  (evil-set-initial-state 'dashboard-mode 'normal))       ;; Set default state in dashboard-buffer
+  ;; Install evil-mode and enable it
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil) 
+    :config
+    (evil-mode 1)
+    (evil-set-initial-state 'messages-buffer-mode 'normal)  ;; Set default state in message-buffer
+    (evil-set-initial-state 'dashboard-mode 'normal))       ;; Set default state in dashboard-buffer
 
-;; Install evil keybindings for many modes
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)  ;; Bind ESC to switch to normal mode
+  ;; Install evil keybindings for many modes
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)  ;; Bind ESC to switch to normal mode
 #+end_src
 
 ** which-key
@@ -695,6 +694,11 @@ and Emacs states, and for non-evil users.")
     :hook (org-mode . liomacs/org-mode-visual-fill))
 #+end_src
 
-* Notmuch
+* TODO Notmuch
 #+begin_src emacs-lisp
+;;(use-package notmuch)
+#+end_src
+* TODO Tab bar mode
+#+begin_src emacs-lisp
+  (tab-bar-mode)
 #+end_src
