@@ -8,21 +8,22 @@
 #+end_src
 * Package management
 #+begin_src emacs-lisp
-;; Add melpa and elpa as repository
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/")
-	     '("org" . "https://orgmode.org/elpa/"))
-(package-initialize)
-(package-refresh-contents)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 
-;; If use-package is not installed, install it.
-(unless (package-installed-p 'use-package)
-   (package-install 'use-package))
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
 
-;; Enable use-package and set default behaviour to ensure t
-(require 'use-package)
-(setq use-package-always-ensure t)
 #+end_src
 
 * UI Configuration
@@ -238,6 +239,10 @@ and Emacs states, and for non-evil users.")
   ([remap describe-key] . helpful-key))
 #+end_src
 
+* File Management
+#+begin_src emacs-lisp
+(setq make-backup-files nil)  ;; Disable backup files
+#+end_src
 * Programming
 ** Project management
 #+begin_src emacs-lisp
@@ -350,7 +355,8 @@ and Emacs states, and for non-evil users.")
     (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
     (liomacs/org-font-setup)                   ;; Setup my font config
     :custom
-    (org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "KILL"))))  ;; Set org mode keywords
+    (org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
+    (org-startup-folded t))                    ;; All Headers folded by default
 #+end_src
 
 ** Org babel
@@ -642,7 +648,11 @@ and Emacs states, and for non-evil users.")
     :custom
     (org-journal-dir "~/Nextcloud/org/journal/"))
 #+end_src
-** Presentation in org mode
+** Org drill
+#+begin_src emacs-lisp
+  (use-package org-drill)
+#+end_src
+** Org tree slide 
 #+begin_src emacs-lisp
   (use-package org-tree-slide
     :hook ((org-tree-slide-play . liomacs/presentation-setup)
@@ -663,7 +673,7 @@ and Emacs states, and for non-evil users.")
     (text-scale-mode 0)              ;; Disable font scaling
     (blink-cursor-mode 1))           ;; Enable the blinking cursor
 #+end_src
-** Additional org mode packages
+** Org temp 
 #+begin_src emacs-lisp
 ;; Enables expandsion
 (require 'org-tempo)
@@ -694,6 +704,11 @@ and Emacs states, and for non-evil users.")
     :hook (org-mode . liomacs/org-mode-visual-fill))
 #+end_src
 
+** Org mode keybings
+#+begin_src emacs-lisp
+  ;;(define-key org-mode-map (kbd "C-RET") 'org-insert-item)
+  (define-key org-mode-map [remap org-insert-heading-respect-content] 'org-insert-item)
+#+end_src
 * TODO Notmuch
 #+begin_src emacs-lisp
 ;;(use-package notmuch)
@@ -701,4 +716,8 @@ and Emacs states, and for non-evil users.")
 * TODO Tab bar mode
 #+begin_src emacs-lisp
   (tab-bar-mode)
+#+end_src
+* Clipboard
+#+begin_src emacs-lisp
+(setq x-select-enable-clipboard t)
 #+end_src
