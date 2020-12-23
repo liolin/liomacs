@@ -29,20 +29,23 @@
 * UI Configuration
 ** Basic UI configuration
 #+begin_src  emacs-lisp
-(tool-bar-mode -1)    ;; Disable the tool bar
-(menu-bar-mode -1)    ;; Disable the menu bar
-(column-number-mode)  ;; Enables the column number in the mode line
-(set-fringe-mode 10)  ;; Set the size of the fringe
+  (tool-bar-mode -1)    ;; Disable the tool bar
+  (menu-bar-mode -1)    ;; Disable the menu bar
+  (column-number-mode)  ;; Enables the column number in the mode line
+  (set-fringe-mode 10)  ;; Set the size of the fringe
 
-(setq display-line-numbers-type 'relative)
+  (setq display-line-numbers-type 'relative)  ;; The line numbering should be realtive to current position
+  (global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
+  ;; Disable line numbering in the following modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
-;; Disable line numbering in the following modes
-(dolist (mode '(org-mode-hook
-		term-mode-hook
-		shell-mode-hook
-		eshell-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  ;; Add some transperency
+  (set-frame-parameter (selected-frame) 'alpha '(95 .60))
+  (add-to-list 'default-frame-alist '(alpha '(95 .60))
 #+end_src
 
 ** Font configuration
