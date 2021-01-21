@@ -364,12 +364,15 @@ and Emacs states, and for non-evil users.")
 
 ** Org babel
 #+begin_src emacs-lisp
-  ;; Enable org babel for the following languages
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)))
-   
-(setq org-confirm-babel-evaluate nil)
+  (use-package org
+    :init
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (ditaa . t)))
+    :custom
+    (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
+    (org-confirm-babel-evaluate nil))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -383,6 +386,9 @@ and Emacs states, and for non-evil users.")
 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-babel-tangle-config)))
 
+#+end_src
+
+#+begin_src emacs-lisp
 #+end_src
 ** Org capture
 #+begin_src emacs-lisp
