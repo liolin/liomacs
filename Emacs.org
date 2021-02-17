@@ -109,7 +109,9 @@ and Emacs states, and for non-evil users.")
     :ensure t
     :config
     (evil-collection-init))
+
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)  ;; Bind ESC to switch to normal mode
+  (define-key evil-motion-state-map "go" 'xref-find-definitions-other-window)
 #+end_src
 
 ** which-key
@@ -401,7 +403,7 @@ and Emacs states, and for non-evil users.")
     (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
     (liomacs/org-font-setup)                   ;; Setup my font config
     :custom
-    (org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
+    (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
     (org-startup-folded t))                    ;; All Headers folded by default
 #+end_src
 
