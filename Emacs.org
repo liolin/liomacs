@@ -276,10 +276,6 @@ and Emacs states, and for non-evil users.")
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-;; Enable evil keybindings inside magit mode
-(use-package evil-magit
-  :after magit)
 #+end_src
 
 ** Language server protocol
