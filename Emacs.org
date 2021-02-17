@@ -214,11 +214,14 @@ and Emacs states, and for non-evil users.")
 ** company
 #+begin_src emacs-lisp
   (use-package company
-    :after lsp-mode                  ;; load it after lsp mode
-    :hook (lsp-mode . company-mode)  ;; enable only in lsp-mode buffers
+    ;:after lsp-mode                  ;; load it after lsp mode
+    :hook
+    (prog-mode . company-mode)       ;; enable in all prog-mode buffers
     :bind (:map company-active-map
                 ("<tab>" . company-complete-selection))
-    (:map lsp-mode-map
+    ;; (:map lsp-mode-map
+    ;;       ("<tab>" . company-indent-or-complete-common))
+    (:map prog-mode-map
           ("<tab>" . company-indent-or-complete-common))
     :custom
     (company-minimum-prefix-length 1)
@@ -329,6 +332,29 @@ and Emacs states, and for non-evil users.")
 ** Haskell
 #+begin_src emacs-lisp
   (use-package haskell-mode)  ;; Adds support for the Haskell language
+#+end_src
+** Web (Used at HSR - WED1-01)
+#+begin_src emacs-lisp
+  (use-package html5-schema) ;; Use the current html5 standard schema in nxml-mode
+  (use-package skewer-mode)
+  (use-package impatient-mode)
+
+  (use-package nxml
+    :bind
+    (:map nxml-mode-map
+          ("<tab>" . company-indent-or-complete-common))
+    :hook
+    (nxml-mode . company-mode)       ;; enable in nxml-mode buffers
+    (nxml-mode . lsp-deferred))
+
+  (use-package css-mode
+    :hook
+    (css-mode . lsp-deferred))
+
+  (use-package js2-mode
+    :mode "\\.js\\'"
+    :hook
+    (js2-mode . lsp-deferred))
 #+end_src
 * Org mode
 ** Basic setup
