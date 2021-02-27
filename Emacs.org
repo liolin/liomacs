@@ -367,11 +367,11 @@ and Emacs states, and for non-evil users.")
     (start-process-shell-command "git-org-update" "git-org-update-buffer" "/home/liolin/bin/git-org-update"))
 
   ;; Setup the org files and directories
-  (setq org-directory "~/Nextcloud/org/")
+  (setq org-directory "~/org/")
   (setq org-agenda-files
-        '("~/Nextcloud/org/Agenda/GTD.org"
-          "~/Nextcloud/org/Agenda/Events.org"
-          "~/Nextcloud/org/contacts.org"))
+        '("~/org/Agenda/GTD.org"
+          "~/org/Agenda/Events.org"
+          "~/org/contacts.org"))
 #+end_src
 
 ** Org font setup
