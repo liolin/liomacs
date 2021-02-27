@@ -457,7 +457,7 @@ and Emacs states, and for non-evil users.")
                  :template ("- tags :: %?"
                             "- source :: ")
                  :function (lambda () (org-roam--capture-get-point))
-                 :head "#+TITLE: ${title}\n#+SETUPFILE: ~/Nextcloud/org/config/setup.conf\n"
+                 :head "#+TITLE: ${title}\n#+SETUPFILE: ~/org/config/setup.conf\n"
                  :unnarrowed t
                  )
                 (,(format "%s\tNew Contact" (all-the-icons-material "contacts" :face 'all-the-icons-green :v-adjust 0.01))
@@ -675,7 +675,7 @@ and Emacs states, and for non-evil users.")
         :hook
         (after-init . org-roam-mode)
         :custom
-        (org-roam-directory "~/Nextcloud/org/roam/")
+        (org-roam-directory "~/org/roam/")
         :bind (:map org-roam-mode-map
                 (("C-c n l" . org-roam)
                  ("C-c n f" . org-roam-find-file)
@@ -714,7 +714,7 @@ and Emacs states, and for non-evil users.")
 #+begin_src emacs-lisp
   (use-package org-journal
     :custom
-    (org-journal-dir "~/Nextcloud/org/journal/"))
+    (org-journal-dir "~/org/journal/"))
 #+end_src
 ** Org drill
 #+begin_src emacs-lisp
