@@ -407,7 +407,6 @@ and Emacs states, and for non-evil users.")
   (use-package org
     :hook
     (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
-    (after-save . liomacs/git-org-update)      ;; Update git repo after every save
     :config
     (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
     (liomacs/org-font-setup)                   ;; Setup my font config
