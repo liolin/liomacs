@@ -363,6 +363,9 @@ and Emacs states, and for non-evil users.")
     (variable-pitch-mode 1)            ;; Set the font to variable size
     (visual-line-mode 1))              ;; Do visual line breaks if needed
 
+  (defun liomacs/git-org-update()
+    (shell-command "/home/liolin/bin/git-org-update &"))
+
   ;; Setup the org files and directories
   (setq org-directory "~/Nextcloud/org/")
   (setq org-agenda-files
@@ -398,7 +401,9 @@ and Emacs states, and for non-evil users.")
 ** Load org mode
 #+begin_src emacs-lisp
   (use-package org
-    :hook (org-mode . liomacs/org-mode-setup)  ;; Configure org mode according to my wishes
+    :hook
+    (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
+    (after-save . liomacs/git-org-update)      ;; Update git repo after every save
     :config
     (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
     (liomacs/org-font-setup)                   ;; Setup my font config
