@@ -368,7 +368,7 @@ and Emacs states, and for non-evil users.")
 
   (defun liomacs/org-save-after-hook()
     (liomacs/org-babel-tangle-config)
-    (liomacs/git-org-update))
+    (liomacs/org-git-update))
 
   ;; Setup the org files and directories
   (setq org-directory "~/org/")
