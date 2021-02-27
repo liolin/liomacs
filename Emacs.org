@@ -364,7 +364,8 @@ and Emacs states, and for non-evil users.")
     (visual-line-mode 1))              ;; Do visual line breaks if needed
 
   (defun liomacs/org-git-update()
-    (start-process-shell-command "git-org-update" "git-org-update-buffer" "/home/liolin/bin/git-org-update"))
+
+    (start-process-shell-command "git-org-update" "git-org-update-buffer" (concat "/home/liolin/bin/git-org-update " (buffer-file-name))))
 
   (defun liomacs/org-save-after-hook()
     (liomacs/org-babel-tangle-config)
