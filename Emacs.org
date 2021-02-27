@@ -363,8 +363,12 @@ and Emacs states, and for non-evil users.")
     (variable-pitch-mode 1)            ;; Set the font to variable size
     (visual-line-mode 1))              ;; Do visual line breaks if needed
 
-  (defun liomacs/git-org-update()
+  (defun liomacs/org-git-update()
     (start-process-shell-command "git-org-update" "git-org-update-buffer" "/home/liolin/bin/git-org-update"))
+
+  (defun liomacs/org-save-after-hook()
+    (liomacs/org-babel-tangle-config)
+    (liomacs/git-org-update))
 
   ;; Setup the org files and directories
   (setq org-directory "~/org/")
@@ -434,7 +438,7 @@ and Emacs states, and for non-evil users.")
       (let ((org-confirm-babel-evaluate nil))
         (org-babel-tangle))))
 
-  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-babel-tangle-config)))
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-save-after-hook)))
 
 #+end_src
 
