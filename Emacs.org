@@ -806,3 +806,9 @@ and Emacs states, and for non-evil users.")
 #+begin_src emacs-lisp
 (setq x-select-enable-clipboard t)
 #+end_src
+
+
+* Emacs Server
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
