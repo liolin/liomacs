@@ -620,55 +620,31 @@ and Emacs states, and for non-evil users.")
                              :extra "\nSCHEDULED: %^{Start time:}t"
                              )
                             )
+                 )
+                (,(format "%s\tProject" (all-the-icons-octicon "repo" :face 'all-the-icons-silver :v-adjust 0.01))
+                 :keys "p"
+                 :type entry
+                 :prepend t
+                 :template ("* %{time-or-todo} %? %^G"
+                            "%i"
+                            "%a")
+                 :children (("Project todo"
+                             :keys "t"
+                             :prepend nil
+                             :time-or-todo "TODO"
+                             :heading "Tasks"
+                             :file liomacs/org-capture-todo-file)
+                            ("Project note"
+                             :keys "n"
+                             :time-or-todo "%U"
+                             :heading "Notes"
+                             :file liomacs/org-capture-todo-file)
+                            ("Project changelog"
+                             :keys "c"
+                             :time-or-todo "%U"
+                             :heading "Unreleased"
+                             :file liomacs/org-capture-todo-file))
                  ))))
-                ;; (,(format "%s\tProject" (all-the-icons-octicon "repo" :face 'all-the-icons-silver :v-adjust 0.01))
-                ;;  :keys "p"
-                ;;  :prepend t
-                ;;  :type entry
-                ;;  :headline "Inbox"
-                ;;  :template ("* %{time-or-todo} %?"
-                ;;             "%i"
-                ;;             "%a")
-                ;;  :file ""
-                ;;  :custom (:time-or-todo "")
-                ;;  :children ((,(format "%s\tProject-local todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
-                ;;              :keys "t"
-                ;;              :time-or-todo "TODO"
-                ;;              :file +org-capture-project-todo-file)
-                ;;             (,(format "%s\tProject-local note" (all-the-icons-faicon "sticky-note" :face 'all-the-icons-yellow :v-adjust 0.01))
-                ;;              :keys "n"
-                ;;              :time-or-todo "%U"
-                ;;              :file +org-capture-project-notes-file)
-                ;;             (,(format "%s\tProject-local changelog" (all-the-icons-faicon "list" :face 'all-the-icons-blue :v-adjust 0.01))
-                ;;              :keys "c"
-                ;;              :time-or-todo "%U"
-                ;;              :heading "Unreleased"
-                ;;              :file +org-capture-project-changelog-file))
-                ;;  )
-                ;; ("\tCenteralised project templates"
-                ;;  :keys "o"
-                ;;  :type entry
-                ;;  :prepend t
-                ;;  :template ("* %{time-or-todo} %?"
-                ;;             "%i"
-                ;;             "%a")
-                ;;  :children (("Project todo"
-                ;;              :keys "t"
-                ;;              :prepend nil
-                ;;              :time-or-todo "TODO"
-                ;;              :heading "Tasks"
-                ;;              :file +org-capture-central-project-todo-file)
-                ;;             ("Project note"
-                ;;              :keys "n"
-                ;;              :time-or-todo "%U"
-                ;;              :heading "Notes"
-                ;;              :file +org-capture-central-project-notes-file)
-                ;;             ("Project changelog"
-                ;;              :keys "c"
-                ;;              :time-or-todo "%U"
-                ;;              :heading "Unreleased"
-                ;;              :file +org-capture-central-project-changelog-file))
-                ;;  ))))
 
 #+end_src
 
