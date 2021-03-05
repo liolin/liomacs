@@ -819,3 +819,8 @@ and Emacs states, and for non-evil users.")
     (smtpmail-stream-type 'starttls)
     (message-send-mail-function 'smtpmail-send-it))
 #+end_src
+
+* Emacs Server
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
