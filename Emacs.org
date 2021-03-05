@@ -303,6 +303,10 @@ and Emacs states, and for non-evil users.")
 #+begin_src emacs-lisp
   (use-package flycheck)
 #+end_src
+** Debugging
+#+begin_src emacs-lisp
+  (use-package dap-mode)
+#+end_src
 ** Rust
 #+begin_src emacs-lisp
   ;; Enables the rust language in the buffer
@@ -794,10 +798,6 @@ and Emacs states, and for non-evil users.")
     (org-caldav-files '())
     (org-caldav-timezone "Europe/Zurich"))
 #+end_src
-* TODO Notmuch
-#+begin_src emacs-lisp
-;;(use-package notmuch)
-#+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
   (tab-bar-mode)
@@ -805,4 +805,17 @@ and Emacs states, and for non-evil users.")
 * Clipboard
 #+begin_src emacs-lisp
 (setq x-select-enable-clipboard t)
+#+end_src
+
+* E-Mail
+#+begin_src emacs-lisp
+  (use-package notmuch
+    :custom
+    (notmuch-fcc-dirs "olivier.lischer@liolin.ch/Sent"))
+  (use-package smtpmail
+    :custom
+    (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
+    (smtpmail-smtp-service 587)
+    (smtpmail-stream-type 'starttls)
+    (message-send-mail-function 'smtpmail-send-it))
 #+end_src
