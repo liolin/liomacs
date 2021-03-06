@@ -410,6 +410,7 @@ and Emacs states, and for non-evil users.")
 ** Load org mode
 #+begin_src emacs-lisp
   (use-package org
+    :ensure org-plus-contrib
     :hook
     (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
     :config
@@ -774,6 +775,16 @@ and Emacs states, and for non-evil users.")
     (org-caldav-files '())
     (org-caldav-timezone "Europe/Zurich"))
 #+end_src
+** TODO Org notify
+Change require with use-package
+#+begin_src emacs-lisp
+  (require 'org-notify)
+  (org-notify-start)
+#+end_src
+** Org mime
+#+begin_src emacs-lisp
+  (use-package org-mime)
+#+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
   (tab-bar-mode)
@@ -784,9 +795,20 @@ and Emacs states, and for non-evil users.")
 #+end_src
 * E-Mail
 #+begin_src emacs-lisp
+  (defun notmuch-download ()
+    "execute notmuch new and sysncs with server"
+    (interactive)
+    (set-process-sentinel
+     (start-process-shell-command "notmuch-new"
+                                  "*notmuch-new*"
+                                  "notmuch new")
+     '(lambda (process event)
+        (notmuch-refresh-all-buffers))))
   (use-package notmuch
     :custom
-    (notmuch-fcc-dirs "olivier.lischer@liolin.ch/Sent"))
+    (notmuch-fcc-dirs "olivier.lischer@liolin.ch/Sent")
+    (notmuch-search-oldest-first nil))
+
   (use-package smtpmail
     :custom
     (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
