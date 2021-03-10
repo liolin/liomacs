@@ -27,6 +27,19 @@
 #+end_src
 
 * UI Configuration
+** Dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :custom
+    (dashboard-items '((recents . 5)
+                       (bookmarks . 5)
+                       (projects . 5)
+                       (agenda . 5)))
+    (dashboard-set-heading-icons t)
+    (dashboard-set-file-icons t)
+    :config
+    (dashboard-setup-startup-hook)) 
+#+end_src
 ** Basic UI configuration
 #+begin_src  emacs-lisp
   (tool-bar-mode -1)    ;; Disable the tool bar
@@ -368,7 +381,6 @@ and Emacs states, and for non-evil users.")
     (visual-line-mode 1))              ;; Do visual line breaks if needed
 
   (defun liomacs/org-git-update()
-
     (start-process-shell-command "git-org-update" "git-org-update-buffer" (concat "/home/liolin/bin/git-org-update " (buffer-file-name))))
 
   (defun liomacs/org-save-after-hook()
@@ -778,12 +790,23 @@ and Emacs states, and for non-evil users.")
 ** TODO Org notify
 Change require with use-package
 #+begin_src emacs-lisp
-  (require 'org-notify)
-  (org-notify-start)
+  ;; (require 'org-notify)
+  ;; (org-notify-start)
 #+end_src
 ** Org mime
 #+begin_src emacs-lisp
-  (use-package org-mime)
+  (defun liomacs/org-mime-setup-css ()
+    (org-mime-change-element-style
+     "body" (format "font-family: %s"
+                    "Arial")))
+   ;; (add-hook 'org-mime-html-hook
+   ;;          (lambda ()
+   ;;            (org-mime-change-element-style
+   ;;             "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+   ;;                           "#E6E1DC" "#232323"))))
+  (use-package org-mime
+    :hook
+    (org-mime-html . liomacs/org-mime-setup-css))
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
