@@ -839,6 +839,14 @@ Change require with use-package
     (smtpmail-stream-type 'starttls)
     (message-send-mail-function 'smtpmail-send-it))
 #+end_src
+* RSS / Atom Feed
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :custom
+    (elfeed-feeds '("https://hnrss.org/newest"
+                    "http://www.reddit.com/r/emacs/.rss"
+                    "http://www.reddit.com/r/rust/.rss"))) 
+#+end_src
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
