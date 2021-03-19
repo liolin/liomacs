@@ -422,6 +422,9 @@ and Emacs states, and for non-evil users.")
 ** Load org mode
 #+begin_src emacs-lisp
   (use-package org
+    :straight
+    (org
+     :files (:defaults "contrib/lisp/*.el"))
     :ensure org-plus-contrib
     :hook
     (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
@@ -790,8 +793,8 @@ and Emacs states, and for non-evil users.")
 ** TODO Org notify
 Change require with use-package
 #+begin_src emacs-lisp
-  ;; (require 'org-notify)
-  ;; (org-notify-start)
+  (require 'org-notify)
+  (org-notify-start)
 #+end_src
 ** Org mime
 #+begin_src emacs-lisp
