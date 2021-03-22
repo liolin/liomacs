@@ -2,11 +2,13 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el
 
 * User configuration
+Setting some basic user variables.
 #+begin_src emacs-lisp
 (setq user-full-name "Olivier Lischer"
       user-mail-address "olivier.lischer@liolin.ch")
 #+end_src
 * Package management
+I use straight.el for my package management with use-package integration. Install it and configure it!
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -28,6 +30,7 @@
 
 * UI Configuration
 ** Dashboard
+I like to have a pretty start screen.
 #+begin_src emacs-lisp
   (use-package dashboard
     :custom
@@ -40,7 +43,8 @@
     :config
     (dashboard-setup-startup-hook)) 
 #+end_src
-** Basic UI configuration
+** UI configuration
+I like a minimal GUI. Disable tool and menu bar.
 #+begin_src  emacs-lisp
   (tool-bar-mode -1)    ;; Disable the tool bar
   (menu-bar-mode -1)    ;; Disable the menu bar
@@ -55,18 +59,16 @@
                   shell-mode-hook
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-  ;; Add some transperency / buggy with ui-lsp
-  ;;(set-frame-parameter (selected-frame) 'alpha '(95 .60))
-  ;;(add-to-list 'default-frame-alist '(alpha '(95 .60)))
 #+end_src
 
 ** Font configuration
+Some packages looks a lot better with some fancy icons.
 #+begin_src emacs-lisp
 (use-package all-the-icons)  ;; Install all-the-icons, used by many other modes
 #+end_src
 
 ** Theme
+I like the default doom theme
 #+begin_src emacs-lisp
 ;; Install and load theme
 (use-package doom-themes
@@ -78,6 +80,7 @@
 #+end_src
 
 ** Text
+With colored brackets is it easier to find the counter parts.
 #+begin_src emacs-lisp
 ;; All brackets pair have diffrent colors
 (use-package rainbow-delimiters
@@ -85,24 +88,8 @@
 #+end_src
 
 * Global Key bindings
-** Global keys
-#+begin_src emacs-lisp
-(defvar liomacs/leader-key "SPC"
-  "The leader prefix key for Evil users.")
-
-(defvar liomacs/leader-alt-key "M-SPC"
-  "An alternative leader prefix key, used for Insert and Emacs states, and for
-non-evil users.")
-
-(defvar liomacs/localleader-key "SPC m"
-  "The localleader prefix key, for major-mode specific commands.")
-
-(defvar liomacs/localleader-alt-key "M-SPC m"
-  "The localleader prefix key, for major-mode specific commands. Used for Insert
-and Emacs states, and for non-evil users.")
-#+end_src
-
 ** Evil keybindng
+For editing text I like the vim key bindings more than the Emacs one. Install evil and evil-collection for a whole vim feeling insiede Emacs.
 #+begin_src emacs-lisp
   ;; Install evil-mode and enable it
   (use-package evil
@@ -128,6 +115,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** which-key
+Sometimes you onle know the prefix for a command. Maybe a list could help.
 #+begin_src emacs-lisp
 ;; Shows which key you could press next, to complete a key stroke
 (use-package which-key
@@ -137,62 +125,9 @@ and Emacs states, and for non-evil users.")
   (setq which-key-idle-delay 1))
 #+end_src
 
-** General
-#+begin_src emacs-lisp
-(use-package general
-  :config
-  (general-create-definer liomacs/leader-keys
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  (general-create-definer liomacs/local-leader-keys
-    :keymaps '(normal insert visual emacs)
-    :prefix liomacs/localleader-key) 
-
-  (liomacs/leader-keys
-    "b"  '(:ignore t :which-key "buffer")
-    "bb" '(counsel-ibuffer :which-key "counsel-ibuffer")
-    "bk" '(kill-current-buffer :which-key "kill-current-buffer")
-
-    "g"  '(:ignore t :which-key "git")
-    "gs" '(magit-status :which-key "git-status")
-
-    "m"  '(:ignore t :which-key "<local>")
-
-    "t"  '(:ignore t :which-key "toggles")
-    "tt" '(counsel-load-theme :which-key "choose theme")
-
-    "w"  '(:ignore t :which-key "window")
-    "wk" '(delete-window :which-key "delete-window")
-    "ws" '(split-window-below :which-key "split-window-below")
-    "wv" '(split-window-right :which-key "split-window-right")
-
-    "." '(counsel-find-file :which-key "open file"))
-
-  ;; (liomacs/local-leader-keys
-  ;;   :states 'normal
-  ;;   :keymaps 'magit-mode-map
-  ;;   "s"  '(magit-status :which-key "git-status")
-
-  ;;   :keymaps 'emacs-lisp-mode-map 
-  ;;   "e"  '(eval-last-sexp :which-key "eval-last-sexp")
-  ;;   )
-
-  (general-define-key
-   :states '(normal visual motion emacs insert)
-   :major-modes t
-   :prefix "SPC m" 
-   :non-normal-prefix "M SPC m" 
-
-   :keymaps 'magit-mode-map
-   "s"  '(magit-status :which-key "git-status")
-
-   :keymaps 'emacs-lisp-mode-map 
-   "e"  '(eval-last-sexp :which-key "eval-last-sexp")))
-#+end_src
 * Completion framework
 ** ivy
+I don't like the default completion framework from emacs. Replace it with ivy and counsel.
 #+begin_src emacs-lisp
 ;; Install the completion framework ivy and replace the default emacs functions with it.
 (use-package ivy
@@ -227,6 +162,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** company
+Company is a gread package for completing text. Especially with lsp.
 #+begin_src emacs-lisp
   (use-package company
     ;:after lsp-mode                  ;; load it after lsp mode
@@ -234,8 +170,6 @@ and Emacs states, and for non-evil users.")
     (prog-mode . company-mode)       ;; enable in all prog-mode buffers
     :bind (:map company-active-map
                 ("<tab>" . company-complete-selection))
-    ;; (:map lsp-mode-map
-    ;;       ("<tab>" . company-indent-or-complete-common))
     (:map prog-mode-map
           ("<tab>" . company-indent-or-complete-common))
     :custom
@@ -247,6 +181,7 @@ and Emacs states, and for non-evil users.")
     :hook (company-mode . company-box-mode))
 #+end_src
 * Helpful
+Helpful is a great helpsystem and a replacement for the default one. It has code examples and a lot more.
 #+begin_src emacs-lisp
 ;; Replace the default helpsystem with a better one with code examples etc.
 (use-package helpful
@@ -261,11 +196,13 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 * File Management
+Don't litter my filesystem with backup files.
 #+begin_src emacs-lisp
 (setq make-backup-files nil)  ;; Disable backup files
 #+end_src
 * Programming
 ** Project management
+Projectile is a great package for navigating between project related buffers and files.
 #+begin_src emacs-lisp
 ;; Install projectile and bind it.
 (use-package projectile
@@ -275,7 +212,6 @@ and Emacs states, and for non-evil users.")
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/code")
     (setq projectile-project-search-path '("~/code")))
   (setq projectile-switch-project-action #'projectile-dired))
@@ -286,6 +222,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Version controll
+When working with git from inside emacs magit is a must have.
 #+begin_src emacs-lisp
 ;; Install the emacs interface for git
 (use-package magit
@@ -294,6 +231,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Language server protocol
+Today a lot of languages has gread lsp support. With lsp-mode and company you have nearly an full IDE.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
@@ -313,14 +251,17 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Diagnostics
+Show me the syntax errors and other problems in a buffer.
 #+begin_src emacs-lisp
   (use-package flycheck)
 #+end_src
 ** Debugging
+Sometimes you have to debug your code. 
 #+begin_src emacs-lisp
   (use-package dap-mode)
 #+end_src
 ** Rust
+My favourite language. I use rust-analyzer as lsp in the background.
 #+begin_src emacs-lisp
   ;; Enables the rust language in the buffer
   (use-package rustic
@@ -345,10 +286,12 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Haskell
+My Windows manager is XMonad. So Haskell is a must have for editing.
 #+begin_src emacs-lisp
   (use-package haskell-mode)  ;; Adds support for the Haskell language
 #+end_src
-** Web (Used at HSR - WED1-01)
+** Web (Used at HSR - WED1)
+During a course at my bachelor studies we need to write some Web based applications. Add a minimal setup for writing html, css and JavaScript.
 #+begin_src emacs-lisp
   (use-package html5-schema) ;; Use the current html5 standard schema in nxml-mode
   (use-package skewer-mode)
@@ -373,6 +316,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 * Org mode
 ** Basic setup
+Setup custom functions and set the location of my org files.
 #+begin_src emacs-lisp
   (defun liomacs/org-mode-setup() 
     "Configure org mode according to my wishes"
@@ -396,6 +340,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Org font setup
+Normal text blocks should have an non mono spaced font. But code, tables and co should be mono spaced.
 #+begin_src emacs-lisp
 (defun liomacs/org-font-setup ()
   ;; Set org mode faces for heading levels
@@ -420,6 +365,7 @@ and Emacs states, and for non-evil users.")
 #+end_src
 
 ** Load org mode
+Load org mode and setup the hooks.
 #+begin_src emacs-lisp
   (use-package org
     :ensure org-plus-contrib
@@ -799,11 +745,6 @@ Change require with use-package
     (org-mime-change-element-style
      "body" (format "font-family: %s"
                     "Arial")))
-   ;; (add-hook 'org-mime-html-hook
-   ;;          (lambda ()
-   ;;            (org-mime-change-element-style
-   ;;             "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
-   ;;                           "#E6E1DC" "#232323"))))
   (use-package org-mime
     :hook
     (org-mime-html . liomacs/org-mime-setup-css))
@@ -842,10 +783,12 @@ Change require with use-package
 * RSS / Atom Feed
 #+begin_src emacs-lisp
   (use-package elfeed
+    :bind (("C-x w" . elfeed))
     :custom
     (elfeed-feeds '("https://hnrss.org/newest"
                     "http://www.reddit.com/r/emacs/.rss"
-                    "http://www.reddit.com/r/rust/.rss"))) 
+                    "http://www.reddit.com/r/rust/.rss"
+                    "https://events.ccc.de/feed/"))) 
 #+end_src
 * Emacs Server
 #+begin_src emacs-lisp
