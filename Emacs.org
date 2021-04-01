@@ -389,6 +389,21 @@ Load org mode and setup the hooks.
     (org-startup-folded t))                    ;; All Headers folded by default
 #+end_src
 
+** Org agenda
+#+begin_src emacs-lisp
+  (use-package org
+    :config
+    (evil-set-initial-state 'org-agenda-mode 'normal)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map
+      "l" 'org-agenda-later
+      "e" 'org-agenda-earlier
+      "d" 'org-agenda-day-view
+      "w" 'org-agenda-week-view
+
+      "t" 'org-agenda-todo
+
+      "gr" 'org-agenda-redo))
+#+end_src
 ** Org babel
 #+begin_src emacs-lisp
   (use-package org
