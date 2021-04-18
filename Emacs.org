@@ -820,7 +820,8 @@ Change require with use-package
     (elfeed-feeds '("https://hnrss.org/newest"
                     "http://www.reddit.com/r/emacs/.rss"
                     "http://www.reddit.com/r/rust/.rss"
-                    "https://events.ccc.de/feed/"))) 
+                    "https://events.ccc.de/feed/"
+                    "https://xenodium.com/rss.xml"))) 
 #+end_src
 * Emacs Server
 #+begin_src emacs-lisp
