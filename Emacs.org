@@ -87,7 +87,8 @@ With colored brackets is it easier to find the counter parts.
   :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-* Global Key bindings
+* Editing
+** Global Key bindings
 ** Evil keybindng
 For editing text I like the vim key bindings more than the Emacs one. Install evil and evil-collection for a whole vim feeling insiede Emacs.
 #+begin_src emacs-lisp
@@ -125,6 +126,12 @@ Sometimes you onle know the prefix for a command. Maybe a list could help.
   (setq which-key-idle-delay 1))
 #+end_src
 
+** undo-tree
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode))
+#+end_src
 * Completion framework
 ** ivy
 I don't like the default completion framework from emacs. Replace it with ivy and counsel.
@@ -819,3 +826,4 @@ Change require with use-package
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+
