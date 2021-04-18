@@ -400,6 +400,7 @@ Load org mode and setup the hooks.
 #+begin_src emacs-lisp
   (use-package org
     :config
+    (set-face-attribute 'org-headline-done nil :strike-through t)
     (evil-set-initial-state 'org-agenda-mode 'normal)
     (evil-collection-define-key 'normal 'org-agenda-mode-map
       "l" 'org-agenda-later
