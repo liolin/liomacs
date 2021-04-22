@@ -399,6 +399,11 @@ Load org mode and setup the hooks.
 ** Org agenda
 #+begin_src emacs-lisp
   (use-package org
+    :custom
+    (org-agenda-custom-commands
+     '(("u" "Agenda and clocking"
+        ((tags "+clocking")
+         (agenda "")))))
     :config
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (evil-set-initial-state 'org-agenda-mode 'normal)
