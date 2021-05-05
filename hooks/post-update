@@ -1,0 +1,4 @@
+#!/bin/sh
+#
+
+emacsclient --eval '(org-babel-tangle-file "~/code/liomacs/Emacs.org" "~/code/liomacs/init.el")'
