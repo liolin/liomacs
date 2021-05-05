@@ -321,6 +321,10 @@ During a course at my bachelor studies we need to write some Web based applicati
     :hook
     (js2-mode . lsp-deferred))
 #+end_src
+** Yaml
+#+begin_src emacs-lisp
+(use-package yaml-mode)
+#+end_src
 * Org mode
 ** Basic setup
 Setup custom functions and set the location of my org files.
@@ -796,20 +800,24 @@ Change require with use-package
 (setq x-select-enable-clipboard t)
 #+end_src
 * E-Mail
+I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
-  (defun notmuch-download ()
-    "execute notmuch new and sysncs with server"
-    (interactive)
-    (set-process-sentinel
-     (start-process-shell-command "notmuch-new"
-                                  "*notmuch-new*"
-                                  "notmuch new")
-     '(lambda (process event)
-        (notmuch-refresh-all-buffers))))
-  (use-package notmuch
+  (use-package mu4e
     :custom
-    (notmuch-fcc-dirs "olivier.lischer@liolin.ch/Sent")
-    (notmuch-search-oldest-first nil))
+    (mu4e-change-filenames-when-moving t)
+    (mu4e-update-interval (* 10 60))
+    (mu4e-get-mail-command "mbsync -a")
+    (mu4e-maildir "~/.mail/olivier.lischer@liolin.ch")
+    (mu4e-drafts-folder "/Drafts")
+    (mu4e-sent-folder "/Sent")
+    (mu4e-trash-folder "/Trash")
+
+    (mu4e-maildir-shortcuts
+     '(("/Inbox"  . ?i)
+       ("/Sent"    . ?s)
+       ("/Trash"   . ?t)))
+    :config
+    (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
 
   (use-package smtpmail
     :custom
