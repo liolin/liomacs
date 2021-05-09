@@ -805,26 +805,70 @@ I use mu4e for my mail mangement.
   (use-package mu4e
     :custom
     (mu4e-change-filenames-when-moving t)
-    (mu4e-update-interval (* 10 60))
+    (mu4e-update-interval (* 5 60))
     (mu4e-get-mail-command "mbsync -a")
     (mu4e-maildir "~/.mail/olivier.lischer@liolin.ch")
     (mu4e-drafts-folder "/Drafts")
     (mu4e-sent-folder "/Sent")
     (mu4e-trash-folder "/Trash")
+    (mu4e-refile-folder
+     (lambda (msg)
+       (cond
+        ((mu4e-message-contact-field-matches msg :from
+                                             "apple")
+         "/Archive/bill/apple")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "bitpanda")
+         "/Archive/bill/bitpanda")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "brack")
+         "/Archive/bill/brack")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "exlibris")
+         "/Archive/bill/exlibris")
 
-    (mu4e-maildir-shortcuts
-     '(("/Inbox"  . ?i)
-       ("/Sent"    . ?s)
-       ("/Trash"   . ?t)))
-    :config
-    (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
+        ((or (mu4e-message-contact-field-matches msg :from
+                                                 "galaxus")
+             (mu4e-message-contact-field-matches msg :from
+                                                 "digitec"))
+         "/Archive/bill/galaxus")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "mootes")
+         "/Archive/bill/mootes")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "musicnotes")
+         "/Archive/bill/musicnotes")
+        ((or (mu4e-message-contact-field-matches msg :from
+                                                 "sbb")
+             (mu4e-message-contact-field-matches msg :from
+                                                 "swisspass"))
+             "/Archive/bill/sbb")
+        ((mu4e-message-contact-field-matches msg :from
+                                             "swiss paracord")
+         "/Archive/bill/swissparacord")
 
-  (use-package smtpmail
-    :custom
-    (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
-    (smtpmail-smtp-service 587)
-    (smtpmail-stream-type 'starttls)
-    (message-send-mail-function 'smtpmail-send-it))
+         ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
+          "/Archive/private")
+
+         ((mu4e-message-contact-field-matches msg :from
+                                              "olivier.lischer")
+          "/Archive/Sent")
+         ;; everything else goes to /archive
+         (t  "/archive"))))
+
+     (mu4e-maildir-shortcuts
+      '(("/Inbox"  . ?i)
+        ("/Sent"    . ?s)
+        ("/Trash"   . ?t)))
+     :config
+     (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
+
+    (use-package smtpmail
+      :custom
+      (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
+      (smtpmail-smtp-service 587)
+      (smtpmail-stream-type 'starttls)
+      (message-send-mail-function 'smtpmail-send-it))
 #+end_src
 * RSS / Atom Feed
 #+begin_src emacs-lisp
