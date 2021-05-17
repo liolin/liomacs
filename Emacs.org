@@ -803,72 +803,107 @@ Change require with use-package
 I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
   (use-package mu4e
+    :hook
+    (message-send . mml-secure-message-sign-pgpmime)
+    :config
+    (setq mu4e-contexts
+          (list
+           ;; liolin account
+           (make-mu4e-context
+            :name "liolin"
+            :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "olivier.lischer@liolin.ch")
+                    (user-full-name    . "Olivier Lischer")
+                    (mu4e-drafts-folder . "/liolin/Drafts")
+                    (mu4e-sent-folder . "/liolin/Sent")
+                    (mu4e-trash-folder . "/liolin/Trash")
+                    (mu4e-refile-folder .
+                     (lambda (msg)
+                       (cond
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "apple")
+                         "/liolin/Archive/bill/apple")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "bitpanda")
+                         "/liolin/Archive/bill/bitpanda")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "brack")
+                         "/liolin/Archive/bill/brack")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "exlibris")
+                         "/liolin/Archive/bill/exlibris")
+
+                        ((or (mu4e-message-contact-field-matches msg :from
+                                                                 "galaxus")
+                             (mu4e-message-contact-field-matches msg :from
+                                                                 "digitec"))
+                         "/liolin/Archive/bill/galaxus")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "mootes")
+                         "/liolin/Archive/bill/mootes")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "musicnotes")
+                         "/liolin/Archive/bill/musicnotes")
+                        ((or (mu4e-message-contact-field-matches msg :from
+                                                                 "sbb")
+                             (mu4e-message-contact-field-matches msg :from
+                                                                 "swisspass"))
+                         "/liolin/Archive/bill/sbb")
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "swiss paracord")
+                         "/liolinArchive/bill/swissparacord")
+
+                        ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
+                         "/liolin/Archive/private")
+
+                        ((mu4e-message-contact-field-matches msg :from
+                                                             "olivier.lischer")
+                         "/liolin/Archive/Sent")
+                        ;; everything else goes to /archive
+                        (t  "/liolin/Archive"))))))
+
+           (make-mu4e-context
+            :name "gmail"
+            :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "olivier.lischer.blon@gmail.com")
+                    (user-full-name    . "Olivier Lischer")
+                    (mu4e-drafts-folder . "/gmail/[Gmail]/Entw&APw-rfe")
+                    (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
+                    (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
+                    (mu4e-refile-folder . "/gmail/[Gmail]/Archive")))))
+
     :custom
     (mu4e-change-filenames-when-moving t)
     (mu4e-update-interval (* 5 60))
     (mu4e-get-mail-command "mbsync -a")
-    (mu4e-maildir "~/.mail/olivier.lischer@liolin.ch")
-    (mu4e-drafts-folder "/Drafts")
-    (mu4e-sent-folder "/Sent")
-    (mu4e-trash-folder "/Trash")
-    (mu4e-refile-folder
-     (lambda (msg)
-       (cond
-        ((mu4e-message-contact-field-matches msg :from
-                                             "apple")
-         "/Archive/bill/apple")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "bitpanda")
-         "/Archive/bill/bitpanda")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "brack")
-         "/Archive/bill/brack")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "exlibris")
-         "/Archive/bill/exlibris")
+    (mu4e-maildir "~/.mail")
+  
 
-        ((or (mu4e-message-contact-field-matches msg :from
-                                                 "galaxus")
-             (mu4e-message-contact-field-matches msg :from
-                                                 "digitec"))
-         "/Archive/bill/galaxus")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "mootes")
-         "/Archive/bill/mootes")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "musicnotes")
-         "/Archive/bill/musicnotes")
-        ((or (mu4e-message-contact-field-matches msg :from
-                                                 "sbb")
-             (mu4e-message-contact-field-matches msg :from
-                                                 "swisspass"))
-             "/Archive/bill/sbb")
-        ((mu4e-message-contact-field-matches msg :from
-                                             "swiss paracord")
-         "/Archive/bill/swissparacord")
+    (mu4e-maildir-shortcuts
+     '(("/liolin/Inbox"  . ?i)
+       ("/liolin/Sent"    . ?s)
+       ("/liolin/Trash"   . ?t)))
+    :config
+    (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
 
-         ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
-          "/Archive/private")
+  (use-package mu4e-alert
+    :hook
+    (after-init . mu4e-alert-enable-notifications)
+    :config
+    (mu4e-alert-set-default-style 'libnotify))
 
-         ((mu4e-message-contact-field-matches msg :from
-                                              "olivier.lischer")
-          "/Archive/Sent")
-         ;; everything else goes to /archive
-         (t  "/archive"))))
-
-     (mu4e-maildir-shortcuts
-      '(("/Inbox"  . ?i)
-        ("/Sent"    . ?s)
-        ("/Trash"   . ?t)))
-     :config
-     (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
-
-    (use-package smtpmail
-      :custom
-      (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
-      (smtpmail-smtp-service 587)
-      (smtpmail-stream-type 'starttls)
-      (message-send-mail-function 'smtpmail-send-it))
+  (use-package smtpmail
+    :custom
+    (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
+    (smtpmail-smtp-service 587)
+    (smtpmail-stream-type 'starttls)
+    (message-send-mail-function 'smtpmail-send-it))
 #+end_src
 * RSS / Atom Feed
 #+begin_src emacs-lisp
