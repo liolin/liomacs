@@ -385,7 +385,6 @@ Load org mode and setup the hooks.
     :straight
     (org
      :files (:defaults "contrib/lisp/*.el"))
-    :ensure org-plus-contrib
     :hook
     (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
     (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
@@ -398,6 +397,8 @@ Load org mode and setup the hooks.
     (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
     (org-modules '(org-toc ol-notmuch org-habit))
     (org-startup-folded t))                    ;; All Headers folded by default
+
+  (use-package org-plus-contrib)
 #+end_src
 
 ** Org agenda
@@ -656,12 +657,12 @@ Load org mode and setup the hooks.
 ** Org roam
 #+begin_src emacs-lisp
   (use-package org-roam
-        :ensure t
-        :hook
-        (after-init . org-roam-mode)
-        :custom
-        (org-roam-directory "~/org/roam/")
-        :bind (:map org-roam-mode-map
+    :ensure t
+    :hook
+    (after-init . org-roam-mode)
+    :custom
+    (org-roam-directory "~/roam/")
+    :bind (:map org-roam-mode-map
                 (("C-c n l" . org-roam)
                  ("C-c n f" . org-roam-find-file)
                  ("C-c n g" . org-roam-graph))
@@ -669,8 +670,40 @@ Load org mode and setup the hooks.
                 (("C-c n i" . org-roam-insert))
                 (("C-c n f" . org-roam-find-file))
                 (("C-c n I" . org-roam-insert-immediate)))
-        :config
-        (require 'org-roam-protocol))
+    :config
+    (require 'org-roam-protocol)
+    :init
+    (defvar hugo-base-dir "~/code/dg")
+    (defun file-path-to-md-file-name (path)
+      (let ((file-name (car (last (split-string path "/")))))
+        (concat (car (split-string file-name "\\.")) ".md")))
+
+    (defun org-roam-to-hugo-md ()
+      (interactive)
+      (setq user-full-name "Olivier Lischer")
+
+      (let ((files (mapcan
+                    (lambda (file) file)
+                    (org-roam-db-query
+                     [:select [files:file]
+                              :from files
+                              :left :outer :join tags :on (= files:file tags:file)
+                              :where (or (is tags:tags nil)
+                                         (and
+                                          (not-like tags:tags '%private%)
+                                          (not-like tags:tags '%draft%)))]))))
+        (mapc
+         (lambda (f)
+           (with-temp-buffer
+             (message "working on %s" f)
+             (insert-file-contents f)
+             (goto-char (point-min))
+             (insert
+              (format "#+HUGO_BASE_DIR: %s\n#+EXPORT_FILE_NAME: %s\n"
+                      hugo-base-dir
+                      (file-path-to-md-file-name f)))
+             (org-hugo-export-to-md)))
+         files))))
 
   (use-package org-roam-server
     :hook
@@ -780,8 +813,8 @@ Load org mode and setup the hooks.
 ** TODO Org notify
 Change require with use-package
 #+begin_src emacs-lisp
-  (require 'org-notify)
-  (org-notify-start)
+  ;(require 'org-notify)
+  ;(org-notify-start)
 #+end_src
 ** Org mime
 #+begin_src emacs-lisp
@@ -792,6 +825,10 @@ Change require with use-package
   (use-package org-mime
     :hook
     (org-mime-html . liomacs/org-mime-setup-css))
+#+end_src
+** Org plot
+#+begin_src emacs-lisp
+  (use-package gnuplot)
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
