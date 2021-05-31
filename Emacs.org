@@ -391,6 +391,7 @@ Load org mode and setup the hooks.
     (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
     :bind
     ("C-c a" . org-agenda-list)
+    ("C-c l" . org-store-link)
     :config
     (setq org-ellipsis " ▾")                   ;; Set charachter to show if a header is collapsed
     (liomacs/org-font-setup)                   ;; Setup my font config
@@ -400,6 +401,37 @@ Load org mode and setup the hooks.
     (org-startup-folded t))                    ;; All Headers folded by default
 #+end_src
 
+** Org export
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :after ox)
+#+end_src
+** Org publish
+#+begin_src emacs-lisp
+  (use-package org
+    :custom 
+    (org-publish-project-alist
+     '(("roam"
+        :base-directory "~/org/roam/"
+        :base-extension "org"
+        :publishing-directory "~/code/dg/"
+        :publishing-function org-hugo-export-to-md
+        :section-numbers nil
+        :html-preamble t)
+
+       ("static"
+        :base-directory "~/org/roam/static/"
+        :base-extension "jpg\\|gif\\|png\\|css\\|js"
+        :recursive t
+        :publishing-directory "~/code/dg/static/"
+        :publishing-function org-publish-attachment)
+       ("website" :components ("roam" "static")))))
+
+  (defun liomacs/publish (file)
+    (with-current-buffer (find-file-noselect file)
+      (setq org-hugo-base-dir "~/code/dg/")
+      (org-hugo-export-wim-to-md)))
+#+end_src
 ** Org agenda
 #+begin_src emacs-lisp
   (use-package org
@@ -428,7 +460,8 @@ Load org mode and setup the hooks.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
-       (ditaa . t)))
+       (ditaa . t)
+       (dot . t)))
     :custom
     (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
     (org-confirm-babel-evaluate nil))
