@@ -462,9 +462,11 @@ Load org mode and setup the hooks.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (ditaa . t)
+       (plantuml . t)
        (dot . t)
-       (python .t )))
+       (python . t)))
     :custom
+    (org-plantuml-jar-path (expand-file-name "/usr/share/java/plantuml/plantuml.jar"))
     (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
     (org-confirm-babel-evaluate nil))
 #+end_src
@@ -696,6 +698,14 @@ Load org mode and setup the hooks.
     (after-init . org-roam-mode)
     :custom
     (org-roam-directory "~/roam/")
+    (org-roam-dailies-directory "daily/")
+    (org-roam-dailies-capture-templates
+     '(("j" "default" entry
+        #'org-roam-capture--get-point
+        "* %?"
+        :file-name "daily/%<%Y-%m-%d>"
+        :head "#+title: %<%Y-%m-%d>\n#+SETUPFILE: ~/roam/setup.conf\n#+roam_tags: private\n\n")))
+
     :bind (:map org-roam-mode-map
                 (("C-c n l" . org-roam)
                  ("C-c n f" . org-roam-find-file)
@@ -703,7 +713,9 @@ Load org mode and setup the hooks.
                 :map org-mode-map
                 (("C-c n i" . org-roam-insert))
                 (("C-c n f" . org-roam-find-file))
-                (("C-c n I" . org-roam-insert-immediate)))
+                (("C-c n I" . org-roam-insert-immediate))
+                (("C-c n d" . org-roam-dailies-capture-today))
+                (("C-c n D" . org-roam-dailies-find-today)))
     :config
     (require 'org-roam-protocol)
     :init
