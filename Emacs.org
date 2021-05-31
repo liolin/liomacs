@@ -429,7 +429,8 @@ Load org mode and setup the hooks.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
-       (ditaa . t)))
+       (ditaa . t)
+       (python .t )))
     :custom
     (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
     (org-confirm-babel-evaluate nil))
