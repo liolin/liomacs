@@ -795,25 +795,6 @@ Load org mode and setup the hooks.
   ;;(define-key org-mode-map (kbd "C-RET") 'org-insert-item)
   (define-key org-mode-map [remap org-insert-heading-respect-content] 'org-insert-item)
 #+end_src
-** Org caldav
-#+begin_src emacs-lisp
-  (use-package org-caldav
-    :config
-    (setq org-caldav-calendars
-          '((:calendar-id "Y2FsOi8vMC8zMQ" :files () :inbox "~/Nextcloud/inbox.org")))
-          ;(:calendar-id "MzM" :files () :inbox "~/Nextcloud/inbox_task.org")))
-    :custom
-    (org-caldav-url "https://caldav.hostpoint.ch/caldav")
-    (org-caldav-inbox "~/Nextcloud/inbox.org")
-    (org-caldav-files '())
-    (org-caldav-timezone "Europe/Zurich"))
-#+end_src
-** TODO Org notify
-Change require with use-package
-#+begin_src emacs-lisp
-  ;(require 'org-notify)
-  ;(org-notify-start)
-#+end_src
 ** Org mime
 #+begin_src emacs-lisp
   (defun liomacs/org-mime-setup-css ()
