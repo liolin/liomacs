@@ -472,64 +472,7 @@ Load org mode and setup the hooks.
 
   ;; Setup all my org captures templates
   (setq org-capture-templates
-        (doct `((,(format "%s\tOrg Roam" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
-                 :keys "d"
-                 :type plain
-                 :template ("- tags :: %?"
-                            "- source :: ")
-                 :function (lambda () (org-roam--capture-get-point))
-                 :head "#+TITLE: ${title}\n#+SETUPFILE: ~/org/config/setup.conf\n"
-                 :unnarrowed t
-                 )
-                (,(format "%s\tNew Contact" (all-the-icons-material "contacts" :face 'all-the-icons-green :v-adjust 0.01))
-                 :keys "c"
-                 :file liomacs/org-capture-contacts-file
-                 :type entry
-                 :jump-to-captured t
-                 :children ((,(format "%s\tArmy" (all-the-icons-material "add" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "a"
-                             :headline "Army"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tFriends" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "r"
-                             :headline "Friends"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tothers" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "o"
-                             :headline "Others"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tSchool" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "s"
-                             :headline "School"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tcompany" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "c"
-                             :headline "Company"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tWork" (all-the-icons-material "work" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "w"
-                             :headline "Work"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END"))
-                            (,(format "%s\tFamily" (all-the-icons-material "group" :face 'all-the-icons-green :v-adjust 0.01))
-                             :keys "f"
-                             :headline "Family"
-                             :template ("* %?"
-                                        ":PROPERTIES:"
-                                        ":END")))
-                 )
-                (,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
+        (doct `((,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
                  :keys "t"
                  :file liomacs/org-capture-todo-file
                  :prepend t
@@ -546,15 +489,6 @@ Load org mode and setup the hooks.
                  :type entry
                  :template ("* %? :%{i-type}:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n")
                  :i-type "web"
-                 )
-                (,(format "%s\tPersonal note" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-green :v-adjust 0.01))
-                 :keys "n"
-                 :file liomacs/org-capture-todo-file
-                 :prepend t
-                 :headline "Inbox"
-                 :type entry
-                 :template ("* %?"
-                            "%i %a")
                  )
                 (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
                  :keys "u"
@@ -674,6 +608,11 @@ Load org mode and setup the hooks.
     :custom
     (org-roam-directory "~/roam/")
     (org-roam-dailies-directory "daily/")
+    (org-roam-capture-templates '(("d" "default" plain (function org-roam--capture-get-point)
+       "%?"
+       :file-name "%<%Y%m%d%H%M%S>-${slug}"
+       :head "#+title: ${title}\n#+SETUPFILE: ~/roam/setup.conf\n\n- tags :: %?\n- source :: \n"
+       :unnarrowed t)))
     (org-roam-dailies-capture-templates
      '(("j" "default" entry
         #'org-roam-capture--get-point
