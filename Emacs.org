@@ -347,10 +347,6 @@ Setup custom functions and set the location of my org files.
 
   ;; Setup the org files and directories
   (setq org-directory "~/org/")
-  (setq org-agenda-files
-        '("~/org/Agenda/GTD.org"
-          "~/org/Agenda/Events.org"
-          "~/org/contacts.org"))
 #+end_src
 
 ** Org font setup
@@ -432,27 +428,6 @@ Load org mode and setup the hooks.
     (with-current-buffer (find-file-noselect file)
       (setq org-hugo-base-dir "~/code/dg/")
       (org-hugo-export-wim-to-md)))
-#+end_src
-** Org agenda
-#+begin_src emacs-lisp
-  (use-package org
-    :custom
-    (org-agenda-custom-commands
-     '(("u" "Agenda and clocking"
-        ((tags "+clocking")
-         (agenda "")))))
-    :config
-    (set-face-attribute 'org-headline-done nil :strike-through t)
-    (evil-set-initial-state 'org-agenda-mode 'normal)
-    (evil-collection-define-key 'normal 'org-agenda-mode-map
-      "l" 'org-agenda-later
-      "e" 'org-agenda-earlier
-      "d" 'org-agenda-day-view
-      "w" 'org-agenda-week-view
-
-      "t" 'org-agenda-todo
-
-      "gr" 'org-agenda-redo))
 #+end_src
 ** Org babel
 #+begin_src emacs-lisp
@@ -749,7 +724,20 @@ Load org mode and setup the hooks.
                       hugo-base-dir
                       (file-path-to-md-file-name f)))
              (org-hugo-export-to-md)))
-         files))))
+         files)))
+
+    (defun liomacs/org-roam-not-finished-projects ()
+      (mapcan
+       (lambda (file) file)
+       (org-roam-db-query
+        [:select [links:source]
+                 :from files
+                 :left :outer :join titles :on (= files:file titles:file)
+                 :left :outer :join links :on (= files:file links:dest)
+                 :left :outer :join tags :on (= links:source tags:file)
+                 :where (and (= titles:title "Project")
+                             (or (not-like tags:tags '%finished%)
+                                 (is tags:tags nil)))]))))
 
   (use-package org-roam-server
     :hook
@@ -766,6 +754,31 @@ Load org mode and setup the hooks.
     (org-roam-server-network-label-truncate t)
     (org-roam-server-network-label-truncate-length 60)
     (org-roam-server-network-label-wrap-length 20))
+#+end_src
+** Org agenda
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-agenda-files (append 
+     '("~/org/Agenda/GTD.org"
+       "~/org/Agenda/Events.org"
+       "~/org/contacts.org") (liomacs/org-roam-not-finished-projects)))
+    (org-agenda-custom-commands
+     '(("u" "Agenda and clocking"
+        ((tags "+clocking")
+         (agenda "")))))
+    :config
+    (set-face-attribute 'org-headline-done nil :strike-through t)
+    (evil-set-initial-state 'org-agenda-mode 'normal)
+    (evil-collection-define-key 'normal 'org-agenda-mode-map
+      "l" 'org-agenda-later
+      "e" 'org-agenda-earlier
+      "d" 'org-agenda-day-view
+      "w" 'org-agenda-week-view
+
+      "t" 'org-agenda-todo
+
+      "gr" 'org-agenda-redo))
 #+end_src
 ** Org transclusion
 #+begin_src emacs-lisp
