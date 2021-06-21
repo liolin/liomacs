@@ -40,6 +40,8 @@ I like to have a pretty start screen.
                        (agenda . 5)))
     (dashboard-set-heading-icons t)
     (dashboard-set-file-icons t)
+    (dashboard-startup-banner "~/Pictures/Logo/liolin_black_exempted.png")
+    (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
     :config
     (dashboard-setup-startup-hook)) 
 #+end_src
@@ -265,7 +267,7 @@ Show me the syntax errors and other problems in a buffer.
 ** Debugging
 Sometimes you have to debug your code. 
 #+begin_src emacs-lisp
-  (use-package dap-mode)
+  ;;(use-package dap-mode)
 #+end_src
 ** Rust
 My favourite language. I use rust-analyzer as lsp in the background.
@@ -296,6 +298,14 @@ My favourite language. I use rust-analyzer as lsp in the background.
 My Windows manager is XMonad. So Haskell is a must have for editing.
 #+begin_src emacs-lisp
   (use-package haskell-mode)  ;; Adds support for the Haskell language
+  (use-package lsp-haskell
+    :custom
+    (lsp-haskell-server-path "/home/liolin/.ghcup/bin/haskell-language-server-wrapper")
+    :hook
+    (haskell-mode . lsp)
+    (haskell-literate-mode . lsp)
+    :init
+    (setenv "/usr/local/bin:/usr/bin:/home/liolin/.ghcup/bin"))
 #+end_src
 ** Web (Used at HSR - WED1)
 During a course at my bachelor studies we need to write some Web based applications. Add a minimal setup for writing html, css and JavaScript.
@@ -394,8 +404,8 @@ Load org mode and setup the hooks.
     (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
     (org-modules '(org-toc ol-notmuch org-habit))
     (org-startup-folded t))                    ;; All Headers folded by default
-
-  (use-package org-plus-contrib)
+  
+  ;;(use-package org-plus-contrib)
 #+end_src
 
 ** Org export
@@ -436,6 +446,7 @@ Load org mode and setup the hooks.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
+       (haskell . t)
        (ditaa . t)
        (plantuml . t)
        (dot . t)
@@ -632,7 +643,6 @@ Load org mode and setup the hooks.
                 (("C-c n D" . org-roam-dailies-find-today)))
     :config
     (require 'org-roam-protocol)
-    :init
     (defvar hugo-base-dir "~/code/dg")
     (defun file-path-to-md-file-name (path)
       (let ((file-name (car (last (split-string path "/")))))
@@ -697,6 +707,7 @@ Load org mode and setup the hooks.
 ** Org agenda
 #+begin_src emacs-lisp
   (use-package org
+    :after org-roam
     :custom
     (org-agenda-files (append 
      '("~/org/Agenda/GTD.org"
@@ -719,6 +730,7 @@ Load org mode and setup the hooks.
 
       "gr" 'org-agenda-redo))
 #+end_src
+
 ** Org transclusion
 #+begin_src emacs-lisp
   (use-package org-transclusion
@@ -937,5 +949,7 @@ I use mu4e for my mail mangement.
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
+
 #+end_src
+
 
