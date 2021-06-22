@@ -946,6 +946,14 @@ I use mu4e for my mail mangement.
                     "https://events.ccc.de/feed/"
                     "https://xenodium.com/rss.xml"))) 
 #+end_src
+* hledger
+#+begin_src emacs-lisp
+  (use-package hledger-mode
+    :custom
+    (hledger-jfile "/home/liolin/finance/2021.journal")
+    :config
+    (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
+#+end_src
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
