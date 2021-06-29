@@ -712,11 +712,8 @@ Load org mode and setup the hooks.
     (org-agenda-files (append 
      '("~/org/Agenda/GTD.org"
        "~/org/Agenda/Events.org"
+       "~/org/Agenda/Habits.org"
        "~/org/contacts.org") (liomacs/org-roam-not-finished-projects)))
-    (org-agenda-custom-commands
-     '(("u" "Agenda and clocking"
-        ((tags "+clocking")
-         (agenda "")))))
     :config
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (evil-set-initial-state 'org-agenda-mode 'normal)
@@ -725,9 +722,7 @@ Load org mode and setup the hooks.
       "e" 'org-agenda-earlier
       "d" 'org-agenda-day-view
       "w" 'org-agenda-week-view
-
       "t" 'org-agenda-todo
-
       "gr" 'org-agenda-redo))
 #+end_src
 
@@ -820,6 +815,10 @@ Load org mode and setup the hooks.
 ** Org plot
 #+begin_src emacs-lisp
   (use-package gnuplot)
+#+end_src
+** Org ql
+#+begin_src emacs-lisp
+  (use-package org-ql)
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
