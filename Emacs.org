@@ -269,6 +269,14 @@ Sometimes you have to debug your code.
 #+begin_src emacs-lisp
   ;;(use-package dap-mode)
 #+end_src
+** Snippets
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :hook (prog-mode . yas-minor-mode))
+  
+  (use-package yasnippet-snippets
+    :after yasnippet)
+#+end_src
 ** Rust
 My favourite language. I use rust-analyzer as lsp in the background.
 #+begin_src emacs-lisp
