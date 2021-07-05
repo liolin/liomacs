@@ -656,7 +656,7 @@ Load org mode and setup the hooks.
       (let ((file-name (car (last (split-string path "/")))))
         (concat (car (split-string file-name "\\.")) ".md")))
 
-    (defun org-roam-to-hugo-md ()
+    (defun liomacs/org-roam-to-hugo-md ()
       (interactive)
       (setq user-full-name "Olivier Lischer")
 
