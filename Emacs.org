@@ -722,6 +722,7 @@ Load org mode and setup the hooks.
        "~/org/Agenda/Events.org"
        "~/org/Agenda/Habits.org"
        "~/org/contacts.org") (liomacs/org-roam-not-finished-projects)))
+    (org-agenda-skip-deadline-prewarning-if-scheduled t)
     :config
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (evil-set-initial-state 'org-agenda-mode 'normal)
