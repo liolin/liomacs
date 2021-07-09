@@ -105,14 +105,19 @@ For editing text I like the vim key bindings more than the Emacs one. Install ev
     (evil-mode 1)
     (evil-set-initial-state 'messages-buffer-mode 'normal)  ;; Set default state in message-buffer
     (evil-set-initial-state 'dashboard-mode 'normal))       ;; Set default state in dashboard-buffer
-
+  
   ;; Install evil keybindings for many modes
   (use-package evil-collection
     :after evil
     :ensure t
     :config
     (evil-collection-init))
-
+  
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+  
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)  ;; Bind ESC to switch to normal mode
   (define-key evil-motion-state-map "go" 'xref-find-definitions-other-window)
 #+end_src
