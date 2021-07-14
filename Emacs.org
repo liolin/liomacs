@@ -489,11 +489,11 @@ Load org mode and setup the hooks.
 #+begin_src emacs-lisp
   (use-package doct)          ;; Package to simplify writing org capture templates
   (use-package org-cliplink)  ;; Package to copy link from clipboard in to the template
-
+  
   (setq liomacs/org-capture-todo-file (concat org-directory "Agenda/GTD.org"))    ;; File location for my todos
   (setq liomacs/org-capture-contacts-file (concat org-directory "contacts.org"))  ;; File location for my contacts
   (global-set-key (kbd "C-c X") 'org-capture)  ;; Bind org-capture
-
+  
   ;; Setup all my org captures templates
   (setq org-capture-templates
         (doct `((,(format "%s\tPersonal todo" (all-the-icons-octicon "checklist" :face 'all-the-icons-green :v-adjust 0.01))
@@ -553,10 +553,11 @@ Load org mode and setup the hooks.
                  :type entry
                  :template ("* [ ] %{desc}%? :%{i-type}:"
                             "%i %a")
-                 :children ((,(format "%s\tWebpage" (all-the-icons-faicon "globe" :face 'all-the-icons-green :v-adjust 0.01))
+                 :children ((,(format "%s\tBookmark" (all-the-icons-faicon "globe" :face 'all-the-icons-green :v-adjust 0.01))
                              :keys "w"
+                             :headline "Bookmark"
                              :desc "%(org-cliplink-capture) "
-                             :i-type "read:web"
+                             :i-type "web"
                              )
                             (,(format "%s\tArticle" (all-the-icons-octicon "file-text" :face 'all-the-icons-yellow :v-adjust 0.01))
                              :keys "a"
@@ -620,7 +621,7 @@ Load org mode and setup the hooks.
                              :heading "Unreleased"
                              :file liomacs/org-capture-todo-file))
                  ))))
-
+  
 #+end_src
 
 ** Org roam
@@ -878,7 +879,7 @@ I use mu4e for my mail mangement.
                         ((mu4e-message-contact-field-matches msg :from
                                                              "exlibris")
                          "/liolin/Archive/bill/exlibris")
-
+  
                         ((or (mu4e-message-contact-field-matches msg :from
                                                                  "galaxus")
                              (mu4e-message-contact-field-matches msg :from
@@ -898,16 +899,16 @@ I use mu4e for my mail mangement.
                         ((mu4e-message-contact-field-matches msg :from
                                                              "swiss paracord")
                          "/liolinArchive/bill/swissparacord")
-
+  
                         ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
                          "/liolin/Archive/private")
-
+  
                         ((mu4e-message-contact-field-matches msg :from
                                                              "olivier.lischer")
                          "/liolin/Archive/Sent")
                         ;; everything else goes to /archive
                         (t  "/liolin/Archive"))))))
-
+  
            (make-mu4e-context
             :name "gmail"
             :match-func
@@ -920,33 +921,38 @@ I use mu4e for my mail mangement.
                     (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
                     (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
                     (mu4e-refile-folder . "/gmail/[Gmail]/Archive")))))
-
+  
     :custom
+    (mu4e-org-link-query-in-headers-mode t)
     (mu4e-change-filenames-when-moving t)
     (mu4e-update-interval (* 5 60))
     (mu4e-get-mail-command "mbsync -a")
     (mu4e-maildir "~/.mail")
   
-
+  
     (mu4e-maildir-shortcuts
      '(("/liolin/Inbox"  . ?i)
        ("/liolin/Sent"    . ?s)
        ("/liolin/Trash"   . ?t)))
     :config
     (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
-
+  
   (use-package mu4e-alert
     :hook
     (after-init . mu4e-alert-enable-notifications)
     :config
     (mu4e-alert-set-default-style 'libnotify))
-
+  
   (use-package smtpmail
     :custom
     (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
     (smtpmail-smtp-service 587)
     (smtpmail-stream-type 'starttls)
     (message-send-mail-function 'smtpmail-send-it))
+#+end_src
+* pass
+#+begin_src emacs-lisp
+  (use-package pass)
 #+end_src
 * RSS / Atom Feed
 #+begin_src emacs-lisp
