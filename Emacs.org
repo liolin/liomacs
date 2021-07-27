@@ -950,6 +950,13 @@ I use mu4e for my mail mangement.
     (smtpmail-stream-type 'starttls)
     (message-send-mail-function 'smtpmail-send-it))
 #+end_src
+* Document view
+** PDF
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :config
+    (pdf-tools-install))
+#+end_src
 * pass
 #+begin_src emacs-lisp
   (use-package pass)
