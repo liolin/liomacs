@@ -421,6 +421,23 @@ Load org mode and setup the hooks.
   ;;(use-package org-plus-contrib)
 #+end_src
 
+** Org latex
+#+begin_src emacs-lisp
+  (add-to-list 'org-latex-classes
+               '("summary"
+                 "\\documentclass[11pt,twoside,landscape]{article}
+  \\usepackage[top=2cm,bottom=2cm,right=2cm,left=2cm,landscape]{geometry}
+  \\usepackage{multicol}
+  \\usepackage{enumitem}
+  \\setlist{noitemsep}
+  \\setlength{\\parindent}{0pt}
+  \\setlength{\\columnseprule}{0.2pt}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+end_src
 ** Org export
 #+begin_src emacs-lisp
   (use-package ox-hugo
