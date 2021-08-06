@@ -972,7 +972,6 @@ I use mu4e for my mail mangement.
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
-
 #+end_src
 
 
