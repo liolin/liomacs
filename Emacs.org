@@ -628,6 +628,7 @@ Load org mode and setup the hooks.
            ("C-c n c" . org-roam-capture)
            ("C-c n j" . org-roam-dailies-capture-today))
     :config
+    (org-roam-setup)
     (require 'org-roam-protocol)
     (defvar hugo-base-dir "~/code/dg")
     (defun file-path-to-md-file-name (path)
