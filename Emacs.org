@@ -604,6 +604,8 @@ Load org mode and setup the hooks.
     :ensure t
     :hook
     (after-init . org-roam-mode)
+    :init
+    (setq org-roam-v2-ack t)
     :custom
     (org-roam-directory "~/roam/")
     (org-roam-dailies-directory "daily/")
@@ -626,7 +628,6 @@ Load org mode and setup the hooks.
            ("C-c n c" . org-roam-capture)
            ("C-c n j" . org-roam-dailies-capture-today))
     :config
-    (setq org-roam-v2-ack t)
     (require 'org-roam-protocol)
     (defvar hugo-base-dir "~/code/dg")
     (defun file-path-to-md-file-name (path)
