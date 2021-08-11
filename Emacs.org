@@ -827,6 +827,22 @@ Load org mode and setup the hooks.
   ;;                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
   ;;                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
+** Org tables
+#+begin_src emacs-lisp
+  (defun org-table-goto-beginning ()
+    (interactive)
+    (goto-char (org-table-begin)))
+  
+  (defun org-table-goto-end ()
+    (interactive)
+    (goto-char (org-table-end)))
+  
+  
+  (use-package org
+    :bind (:map org-mode-map
+                ("C-c t b" . org-table-goto-beginning)
+                ("C-c t e" . org-table-goto-end)))
+#+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
   (tab-bar-mode)
