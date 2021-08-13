@@ -675,22 +675,20 @@ Load org mode and setup the hooks.
     ;;                          (or (not-like tags:tags '%finished%)
     ;;                              (is tags:tags nil)))]))))
     )
-  
-  ;; (use-package org-roam-server
-  ;;   :hook
-  ;;   (org-roam-mode . org-roam-server-mode)
-  ;;   :custom
-  ;;   (org-roam-server-host "127.0.0.1")
-  ;;   (org-roam-server-port 8085)
-  ;;   (org-roam-server-authenticate nil)
-  ;;   (org-roam-server-export-inline-images t)
-  ;;   (org-roam-server-serve-files nil)
-  ;;   (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
-  ;;   (org-roam-server-network-poll t)
-  ;;   (org-roam-server-network-arrows nil)
-  ;;   (org-roam-server-network-label-truncate t)
-  ;;   (org-roam-server-network-label-truncate-length 60)
-  ;;   (org-roam-server-network-label-wrap-length 20))
+#+end_src
+
+Install org-roam-ui for a interactive web fronted to org-roam.
+#+begin_src emacs-lisp
+  (use-package org-roam-ui
+    :straight
+    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 #+end_src
 ** Org agenda
 #+begin_src emacs-lisp
