@@ -416,6 +416,7 @@ Load org mode and setup the hooks.
     (liomacs/org-font-setup)                   ;; Setup my font config
     :custom
     (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL"))) ;; Set org mode keywords
+    (org-log-done 'time)
     (org-modules '(org-habit))
     (org-startup-folded t))                    ;; All Headers folded by default
   
@@ -835,6 +836,7 @@ Install org-roam-ui for a interactive web fronted to org-roam.
 I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
   (use-package mu4e
+    :load-path "/usr/share/emacs/site-lisp/mu4e/"
     :hook
     (message-send . mml-secure-message-sign-pgpmime)
     :config
