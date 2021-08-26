@@ -943,10 +943,8 @@ I use mu4e for my mail mangement.
 ** PDF
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :hook
-    (pdf-tools-enabled . pdf-view-midnight-minor-mode)
     :config
-    (pdf-tools-install t))
+    (pdf-tools-install))
   
   
 #+end_src
