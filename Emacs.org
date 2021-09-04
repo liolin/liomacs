@@ -835,9 +835,6 @@ Install org-roam-ui for a interactive web fronted to org-roam.
 I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
   (use-package mu4e
-    :load-path "/usr/share/emacs/site-lisp/mu4e/"
-    :hook
-    (message-send . mml-secure-message-sign-pgpmime)
     :config
     (setq mu4e-contexts
           (list
@@ -854,49 +851,49 @@ I use mu4e for my mail mangement.
                     (mu4e-sent-folder . "/liolin/Sent")
                     (mu4e-trash-folder . "/liolin/Trash")
                     (mu4e-refile-folder .
-                     (lambda (msg)
-                       (cond
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "apple")
-                         "/liolin/Archive/bill/apple")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "bitpanda")
-                         "/liolin/Archive/bill/bitpanda")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "brack")
-                         "/liolin/Archive/bill/brack")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "exlibris")
-                         "/liolin/Archive/bill/exlibris")
+                                        (lambda (msg)
+                                          (cond
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "apple")
+                                            "/liolin/Archive/bill/apple")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "bitpanda")
+                                            "/liolin/Archive/bill/bitpanda")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "brack")
+                                            "/liolin/Archive/bill/brack")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "exlibris")
+                                            "/liolin/Archive/bill/exlibris")
   
-                        ((or (mu4e-message-contact-field-matches msg :from
-                                                                 "galaxus")
-                             (mu4e-message-contact-field-matches msg :from
-                                                                 "digitec"))
-                         "/liolin/Archive/bill/galaxus")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "mootes")
-                         "/liolin/Archive/bill/mootes")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "musicnotes")
-                         "/liolin/Archive/bill/musicnotes")
-                        ((or (mu4e-message-contact-field-matches msg :from
-                                                                 "sbb")
-                             (mu4e-message-contact-field-matches msg :from
-                                                                 "swisspass"))
-                         "/liolin/Archive/bill/sbb")
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "swiss paracord")
-                         "/liolinArchive/bill/swissparacord")
+                                           ((or (mu4e-message-contact-field-matches msg :from
+                                                                                    "galaxus")
+                                                (mu4e-message-contact-field-matches msg :from
+                                                                                    "digitec"))
+                                            "/liolin/Archive/bill/galaxus")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "mootes")
+                                            "/liolin/Archive/bill/mootes")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "musicnotes")
+                                            "/liolin/Archive/bill/musicnotes")
+                                           ((or (mu4e-message-contact-field-matches msg :from
+                                                                                    "sbb")
+                                                (mu4e-message-contact-field-matches msg :from
+                                                                                    "swisspass"))
+                                            "/liolin/Archive/bill/sbb")
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "swiss paracord")
+                                            "/liolinArchive/bill/swissparacord")
   
-                        ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
-                         "/liolin/Archive/private")
+                                           ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
+                                            "/liolin/Archive/private")
   
-                        ((mu4e-message-contact-field-matches msg :from
-                                                             "olivier.lischer")
-                         "/liolin/Archive/Sent")
-                        ;; everything else goes to /archive
-                        (t  "/liolin/Archive"))))))
+                                           ((mu4e-message-contact-field-matches msg :from
+                                                                                "olivier.lischer")
+                                            "/liolin/Archive/Sent")
+                                           ;; everything else goes to /archive
+                                           (t  "/liolin/Archive"))))))
   
            (make-mu4e-context
             :name "gmail"
@@ -925,13 +922,17 @@ I use mu4e for my mail mangement.
        ("/liolin/Trash"   . ?t)))
     :config
     (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
+#+end_src
   
+#+begin_src emacs-lisp
   (use-package mu4e-alert
     :hook
     (after-init . mu4e-alert-enable-notifications)
     :config
     (mu4e-alert-set-default-style 'libnotify))
+#+end_src
   
+#+begin_src emacs-lisp
   (use-package smtpmail
     :custom
     (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
