@@ -439,6 +439,7 @@ Load org mode and setup the hooks.
        (ditaa . t)
        (plantuml . t)
        (dot . t)
+       (latex . t)
        (python . t)))
     :custom
     (org-plantuml-jar-path (expand-file-name "/usr/share/java/plantuml/plantuml.jar"))
@@ -489,6 +490,12 @@ Load org mode and setup the hooks.
                  :type entry
                  :template ("* %? :%{i-type}:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n")
                  :i-type "web"
+                 )
+                (,(format "%s\tContact" (all-the-icons-octicon "book" :face 'all-the-icons-green :v-adjust 0.01))
+                 :keys "c"
+                 :file liomacs/org-capture-contacts-file
+                 :type entry
+                 :template ("* %?\n:PROPERTIES:\n:GROUP:\n:BDAY:\n:TITLE:\n:EMAIL-P:\n:EMAIL-W:\n:PHONE-M:\n:PHONE-W:\n:PHONE-H:\n:LOCAT:\n:ANNIVERSARY:\n:NOTE:\n:END:\n\n")
                  )
                 (,(format "%s\tUniversity" (all-the-icons-faicon "graduation-cap" :face 'all-the-icons-purple :v-adjust 0.01))
                  :keys "u"
@@ -822,6 +829,60 @@ Install org-roam-ui for a interactive web fronted to org-roam.
     :bind (:map org-mode-map
                 ("C-c t b" . org-table-goto-beginning)
                 ("C-c t e" . org-table-goto-end)))
+#+end_src
+** Org contacts
+Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode-and-syncing-them-to-your-phone-android-ios-whatever-.html][Managing your contacts in org-mode and syncing them to your phone (Android, i...]]
+
+#+begin_src emacs-lisp
+(defun liomacs/build-property (template-string contact-property)
+  (if-let ((value (org-entry-get nil contact-property)))
+      (concat (format template-string value) "\n")
+    ""))
+
+(defun liomacs/build-date-property (template-string contact-property)
+  (if-let ((value (org-entry-get nil contact-property)))
+      (concat (format template-string (substring value 1 11)) "\n")
+    ""))
+
+(defun liomacs/build-name-property (template-string contact-property)
+  (if-let ((value (split-string (org-entry-get nil contact-property))))
+      (if (> (length value) 2)
+	  (concat (format template-string (format "%s;%s" (pop value ) (string-join value " "))) "\n")
+	(if (= (length value) 1)
+	    (concat (format template-string (format "%s" (nth 0 value))) "\n")
+	(concat (format template-string (format "%s;%s" (nth 1 value) (nth 0 value))) "\n")))
+    ""))
+
+(defun liomacs/export-to-vcard ()
+  "Exports a org file to a vcf file"
+  (interactive)
+  (write-region
+   (string-join
+    (org-map-entries
+     (lambda ()
+       (string-join
+	`("BEGIN:VCARD\nVERSION:3.0\n"
+	  ,(build-property "FN:%s" "ITEM")
+	  ,(if (not (string= (org-entry-get nil "GROUP") "Company"))
+	       (build-name-property "N:%s" "ITEM") "")
+	  ,(build-date-property "BDAY:%s" "BIRTHDAY")
+	  ,(build-property "TITLE:%s" "TITLE")
+	  ,(build-property "EMAIL;TYPE=INTERNET,HOME:%s" "EMAIL-P")
+	  ,(build-property "EMAIL;TYPE=INTERNET,WORK:%s" "EMAIL-W")
+	  ,(build-property "TEL;TYPE=CELL,VOICE:%s" "PHONE-M")
+	  ,(build-property "TEL;TYPE=WORK,VOICE:%s" "PHONE-W")
+	  ,(build-property "TEL;TYPE=HOME,VOICE:%s" "PHONE-H")
+	  ,(build-property "ADR:%s" "LOCAT")
+	  ,(build-date-property "ANNIVERSARY:%s" "ANNIVERSARY")
+	  ,(build-property "NOTE:%s" "NOTE")
+	  ,(format "REV:%s\n" (format-time-string "%Y-%m-%dT%T"))
+	  "END:VCARD"))))
+    "\n")
+   nil
+   (read-file-name
+    "Where to save the .vcf?"
+    "~/Downloads/"
+   "contacts.vcf")))
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
