@@ -607,6 +607,12 @@ Load org mode and setup the hooks.
   
 #+end_src
 
+** Org refile
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-refile-targets '(("~/org/Agenda/GTD.org" :maxlevel . 1))))
+#+end_src
 ** Org roam
 #+begin_src emacs-lisp
   (use-package org-roam
