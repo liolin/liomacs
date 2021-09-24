@@ -308,6 +308,12 @@ My favourite language. I use rust-analyzer as lsp in the background.
 
 #+end_src
 
+** C#
+#+begin_src emacs-lisp
+  (use-package csharp-mode
+    :hook
+      (csharp-mode . lsp-deferred))
+#+end_src
 ** Haskell
 My Windows manager is XMonad. So Haskell is a must have for editing.
 #+begin_src emacs-lisp
@@ -595,6 +601,7 @@ Load org mode and setup the hooks.
     :ensure t
     :hook
     (after-init . org-roam-mode)
+    (org-roam-mode . flyspell-mode)
     :init
     (setq org-roam-v2-ack t)
     :custom
@@ -898,45 +905,45 @@ I use mu4e for my mail mangement.
                                           (cond
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "apple")
-                                            "/liolin/Archive/bill/apple")
+                                            "/archiv/bill/apple")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "bitpanda")
-                                            "/liolin/Archive/bill/bitpanda")
+                                            "/archiv/bill/bitpanda")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "brack")
-                                            "/liolin/Archive/bill/brack")
+                                            "/archiv/bill/brack")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "exlibris")
-                                            "/liolin/Archive/bill/exlibris")
+                                            "/archiv/bill/exlibris")
   
                                            ((or (mu4e-message-contact-field-matches msg :from
                                                                                     "galaxus")
                                                 (mu4e-message-contact-field-matches msg :from
                                                                                     "digitec"))
-                                            "/liolin/Archive/bill/galaxus")
+                                            "/archiv/bill/galaxus")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "mootes")
-                                            "/liolin/Archive/bill/mootes")
+                                            "/archiv/bill/mootes")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "musicnotes")
-                                            "/liolin/Archive/bill/musicnotes")
+                                            "/archiv/bill/musicnotes")
                                            ((or (mu4e-message-contact-field-matches msg :from
                                                                                     "sbb")
                                                 (mu4e-message-contact-field-matches msg :from
                                                                                     "swisspass"))
-                                            "/liolin/Archive/bill/sbb")
+                                            "/archiv/bill/sbb")
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "swiss paracord")
-                                            "/liolinArchive/bill/swissparacord")
+                                            "/ail/swissparacord")
   
                                            ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
-                                            "/liolin/Archive/private")
+                                            "/archiv/private")
   
                                            ((mu4e-message-contact-field-matches msg :from
                                                                                 "olivier.lischer")
-                                            "/liolin/Archive/Sent")
+                                            "/archiv/Sent")
                                            ;; everything else goes to /archive
-                                           (t  "/liolin/Archive"))))))
+                                           (t  "/archiv"))))))
   
            (make-mu4e-context
             :name "gmail"
@@ -949,7 +956,7 @@ I use mu4e for my mail mangement.
                     (mu4e-drafts-folder . "/gmail/[Gmail]/Entw&APw-rfe")
                     (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
                     (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
-                    (mu4e-refile-folder . "/gmail/[Gmail]/Archive")))))
+                    (mu4e-refile-folder . "/archiv")))))
   
     :custom
     (mu4e-org-link-query-in-headers-mode t)
