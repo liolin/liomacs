@@ -900,50 +900,7 @@ I use mu4e for my mail mangement.
                     (mu4e-drafts-folder . "/liolin/Drafts")
                     (mu4e-sent-folder . "/liolin/Sent")
                     (mu4e-trash-folder . "/liolin/Trash")
-                    (mu4e-refile-folder .
-                                        (lambda (msg)
-                                          (cond
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "apple")
-                                            "/archiv/bill/apple")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "bitpanda")
-                                            "/archiv/bill/bitpanda")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "brack")
-                                            "/archiv/bill/brack")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "exlibris")
-                                            "/archiv/bill/exlibris")
-  
-                                           ((or (mu4e-message-contact-field-matches msg :from
-                                                                                    "galaxus")
-                                                (mu4e-message-contact-field-matches msg :from
-                                                                                    "digitec"))
-                                            "/archiv/bill/galaxus")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "mootes")
-                                            "/archiv/bill/mootes")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "musicnotes")
-                                            "/archiv/bill/musicnotes")
-                                           ((or (mu4e-message-contact-field-matches msg :from
-                                                                                    "sbb")
-                                                (mu4e-message-contact-field-matches msg :from
-                                                                                    "swisspass"))
-                                            "/archiv/bill/sbb")
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "swiss paracord")
-                                            "/ail/swissparacord")
-  
-                                           ((mu4e-message-contact-field-matches msg :to "olivier.lischer@liolin.ch")
-                                            "/archiv/private")
-  
-                                           ((mu4e-message-contact-field-matches msg :from
-                                                                                "olivier.lischer")
-                                            "/archiv/Sent")
-                                           ;; everything else goes to /archive
-                                           (t  "/archiv"))))))
+                    (mu4e-refile-folder . "/archiv")))
   
            (make-mu4e-context
             :name "gmail"
