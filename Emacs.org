@@ -327,6 +327,10 @@ My Windows manager is XMonad. So Haskell is a must have for editing.
     :init
     (setenv "/usr/local/bin:/usr/bin:/home/liolin/.ghcup/bin"))
 #+end_src
+** Kotlin
+#+begin_src emacs-lisp
+  (use-package kotlin-mode)
+#+end_src
 ** Yaml
 #+begin_src emacs-lisp
 (use-package yaml-mode)
