@@ -701,6 +701,10 @@ Install org-roam-ui for a interactive web fronted to org-roam.
        "~/org/Agenda/Habits.org"
        "~/org/contacts.org")))
     (org-agenda-skip-deadline-prewarning-if-scheduled t)
+    (org-agenda-custom-commands
+     '(("u" "Agenda / ToDo list for uni"
+        ((tags-todo "+uni")
+        (agenda "")))))
     :config
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (evil-set-initial-state 'org-agenda-mode 'normal)
