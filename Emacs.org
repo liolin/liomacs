@@ -1,5 +1,4 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle ./Emacs.el
 
 * User configuration
 Setting some basic user variables.
@@ -12,7 +11,7 @@ Setting some basic user variables.
 #+begin_src emacs-lisp
   (setq-default
      gc-cons-threshold (* 8 1024 1024))
-#     #+end_src
+#+end_src
 
 * Package management
 I use straight.el for my package management with use-package integration. Install it and configure it!
@@ -92,9 +91,9 @@ I like the default doom theme
 ** Text
 With colored brackets is it easier to find the counter parts.
 #+begin_src emacs-lisp
-;; All brackets pair have diffrent colors
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+    :hook
+    (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 * Editing
@@ -187,8 +186,7 @@ I don't like the default completion framework from emacs. Replace it with ivy an
 Company is a gread package for completing text. Especially with lsp.
 #+begin_src emacs-lisp
   (use-package company
-    ;:after lsp-mode                  ;; load it after lsp mode
-    :hook
+    :hook 
     (prog-mode . company-mode)       ;; enable in all prog-mode buffers
     :bind (:map company-active-map
                 ("<tab>" . company-complete-selection))
@@ -280,7 +278,7 @@ Show me the syntax errors and other problems in a buffer.
 ** Debugging
 Sometimes you have to debug your code. 
 #+begin_src emacs-lisp
-  ;;(use-package dap-mode)
+  (use-package dap-mode)
 #+end_src
 ** Snippets
 #+begin_src emacs-lisp
@@ -327,6 +325,14 @@ My favourite language. I use rust-analyzer as lsp in the background.
       :hook
       (csharp-mode . dotnet-mode))
 #+end_src
+** C++
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :hook
+    (c++-mode . lsp)
+    :config
+    (require 'dap-cpptools))
+#+end_src
 ** Haskell
 My Windows manager is XMonad. So Haskell is a must have for editing.
 #+begin_src emacs-lisp
@@ -347,6 +353,10 @@ My Windows manager is XMonad. So Haskell is a must have for editing.
 ** Yaml
 #+begin_src emacs-lisp
 (use-package yaml-mode)
+#+end_src
+* reftex
+#+begin_src emacs-lisp
+ (setq reftex-default-bibliography '("~/biblio/main.bib"))
 #+end_src
 * Org mode
 ** Basic setup
@@ -456,12 +466,10 @@ Load org mode and setup the hooks.
       (let ((org-confirm-babel-evaluate nil))
         (org-babel-tangle))))
 
-  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-save-after-hook)))
+  ;;(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'liomacs/org-save-after-hook)))
 
 #+end_src
 
-#+begin_src emacs-lisp
-#+end_src
 ** Org capture
 #+begin_src emacs-lisp
   (use-package doct)          ;; Package to simplify writing org capture templates
@@ -625,72 +633,14 @@ Load org mode and setup the hooks.
     :custom
     (org-roam-directory "~/roam/")
     (org-roam-dailies-directory "daily/")
-    ;; (org-roam-capture-templates '(("d" "default" plain (function org-roam--capture-get-point)
-    ;;                                "%?"
-    ;;                                :file-name "%<%Y%m%d%H%M%S>-${slug}"
-    ;;                                :head "#+title: ${title}\n#+SETUPFILE: ~/roam/setup.conf\n\n- tags :: %?\n- source :: \n"
-    ;;                                :unnarrowed t)))
-    ;; (org-roam-dailies-capture-templates
-    ;;  '(("j" "default" entry
-    ;;     #'org-roam-capture--get-point
-    ;;     "* %?"
-    ;;     :file-name "daily/%<%Y-%m-%d>"
-    ;;     :head "#+title: %<%Y-%m-%d>\n#+SETUPFILE: ~/roam/setup.conf\n#+roam_tags: private\n\n")))
-  
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
-           ("C-c n j" . org-roam-dailies-capture-today))
-    :config
-    (org-roam-setup)
-    ;; (require 'org-roam-protocol)
-    ;; (defvar hugo-base-dir "~/code/dg")
-    ;; (defun file-path-to-md-file-name (path)
-    ;;   (let ((file-name (car (last (split-string path "/")))))
-    ;;     (concat (car (split-string file-name "\\.")) ".md")))
-  
-    ;; (defun liomacs/org-roam-to-hugo-md ()
-    ;;   (interactive)
-    ;;   (setq user-full-name "Olivier Lischer")
-  
-    ;;   (let ((files (mapcan
-    ;;                 (lambda (file) file)
-    ;;                 (org-roam-db-query
-    ;;                  [:select [files:file]
-    ;;                           :from files
-    ;;                           :left :outer :join tags :on (= files:file tags:file)
-    ;;                           :where (or (is tags:tags nil)
-    ;;                                      (and
-    ;;                                       (not-like tags:tags '%private%)
-    ;;                                       (not-like tags:tags '%draft%)))]))))
-    ;;     (mapc
-    ;;      (lambda (f)
-    ;;        (with-temp-buffer
-    ;;          (message "working on %s" f)
-    ;;          (insert-file-contents f)
-    ;;          (goto-char (point-min))
-    ;;          (insert
-    ;;           (format "#+HUGO_BASE_DIR: %s\n#+EXPORT_FILE_NAME: %s\n"
-    ;;                   hugo-base-dir
-    ;;                   (file-path-to-md-file-name f)))
-    ;;          (org-hugo-export-to-md)))
-    ;;      files)))
-  
-    ;; (defun liomacs/org-roam-not-finished-projects ()
-    ;;   (mapcan
-    ;;    (lambda (file) file)
-    ;;    (org-roam-db-query
-    ;;     [:select [links:source]
-    ;;              :from files
-    ;;              :left :outer :join titles :on (= files:file titles:file)
-    ;;              :left :outer :join links :on (= files:file links:dest)
-    ;;              :left :outer :join tags :on (= links:source tags:file)
-    ;;              :where (and (= titles:title "Project")
-    ;;                          (or (not-like tags:tags '%finished%)
-    ;;                              (is tags:tags nil)))]))))
-    )
+           ("C-c n j" . org-roam-dailies-capture-today)))
+    ;; :config
+    ;; (org-roam-setup))
 #+end_src
 
 Install org-roam-ui for a interactive web fronted to org-roam.
@@ -899,6 +849,10 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 ** Org present
 #+begin_src emacs-lisp
   (use-package org-present)
+#+end_src
+** Org cite
+#+begin_src emacs-lisp
+  (use-package citeproc)
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
