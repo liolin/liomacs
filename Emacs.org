@@ -852,7 +852,7 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 #+end_src
 ** Org cite
 #+begin_src emacs-lisp
-  (use-package citeproc)
+  ;(use-package citeproc)
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
