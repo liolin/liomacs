@@ -1,4 +1,5 @@
 #+TITLE: Emacs Configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ./Emacs.el
 
 * User configuration
 Setting some basic user variables.
@@ -358,6 +359,14 @@ My Windows manager is XMonad. So Haskell is a must have for editing.
 #+begin_src emacs-lisp
  (setq reftex-default-bibliography '("~/biblio/main.bib"))
 #+end_src
+* Org cite
+#+begin_src emacs-lisp
+  (use-package citeproc)
+  (require 'oc-csl)
+  (setq org-cite-csl-styles-dir "~/Zotero/styles")
+  (setq org-cite-csl-locales-dir "~/.emacs.d/straight/repos/org/etc/csl")
+  (setq org-cite-global-bibliography '("~/biblio/main.bib"))
+#+end_src
 * Org mode
 ** Basic setup
 Setup custom functions and set the location of my org files.
@@ -385,26 +394,29 @@ Setup custom functions and set the location of my org files.
 ** Org font setup
 Normal text blocks should have an non mono spaced font. But code, tables and co should be mono spaced.
 #+begin_src emacs-lisp
-(defun liomacs/org-font-setup ()
-  ;; Set org mode faces for heading levels
-  (dolist (face '((org-level-1 . 1.2)
-		  (org-level-2 . 1.1)
-		  (org-level-3 . 1.05)
-		  (org-level-4 . 1.0)
-		  (org-level-5 . 1.1)
-		  (org-level-6 . 1.1)
-		  (org-level-7 . 1.1)
-		  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+  (defun liomacs/org-font-setup ()
+    ;; Set org mode faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
 
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-column nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-column-title nil :inherit 'fixed-pitch))
+
 #+end_src
 
 ** Load org mode
@@ -638,9 +650,9 @@ Load org mode and setup the hooks.
            ("C-c n g" . org-roam-graph)
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
-           ("C-c n j" . org-roam-dailies-capture-today)))
-    ;; :config
-    ;; (org-roam-setup))
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    (org-roam-setup))
 #+end_src
 
 Install org-roam-ui for a interactive web fronted to org-roam.
@@ -850,10 +862,6 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 #+begin_src emacs-lisp
   (use-package org-present)
 #+end_src
-** Org cite
-#+begin_src emacs-lisp
-  ;(use-package citeproc)
-#+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
   (tab-bar-mode)
@@ -977,5 +985,3 @@ I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
-
-
