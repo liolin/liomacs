@@ -423,9 +423,9 @@ Normal text blocks should have an non mono spaced font. But code, tables and co 
 Load org mode and setup the hooks.
 #+begin_src emacs-lisp
   (use-package org
-    :straight
-    (org
-     :files (:defaults "contrib/lisp/*.el"))
+    ;; :straight
+    ;; (org
+    ;;  :files (:defaults "contrib/lisp/*.el"))
     :hook
     (org-mode . liomacs/org-mode-setup)        ;; Configure org mode according to my wishes
     (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
@@ -440,7 +440,7 @@ Load org mode and setup the hooks.
     (org-log-done 'time)
     (org-modules '(org-habit))
     (org-startup-folded t))                    ;; All Headers folded by default
-  
+
   ;;(use-package org-plus-contrib)
 #+end_src
 
@@ -635,6 +635,16 @@ Load org mode and setup the hooks.
 #+end_src
 ** Org roam
 #+begin_src emacs-lisp
+  ;; Thanks to Sidharth Arya
+  ;; https://sidhartharya.me/exporting-org-roam-notes-to-hugo/
+  (defun liomacs/org-roam-export-all()
+    (interactive)
+    (dolist (fil (org-roam--list-files org-roam-directory))
+      (with-current-buffer (find-file-noselect fil)
+        (org-hugo-export-to-md)
+        (kill-buffer))))
+
+
   (use-package org-roam
     :ensure t
     :hook
@@ -976,10 +986,14 @@ I use mu4e for my mail mangement.
 * hledger
 #+begin_src emacs-lisp
   (use-package hledger-mode
+    :bind (("C-c e" . hledger-jentry)
+           ("C-c j" . hledger-run-comand))
     :custom
     (hledger-jfile "/home/liolin/finance/2021.journal")
+    (hledger-currency-string "CHF")
     :config
-    (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
+    (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode))
+    (add-to-list 'company-backends 'hledger-company))
 #+end_src
 * Emacs Server
 #+begin_src emacs-lisp
