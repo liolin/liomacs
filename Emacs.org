@@ -644,12 +644,18 @@ Load org mode and setup the hooks.
         (org-hugo-export-to-md)
         (kill-buffer))))
 
+  (defun liomacs/org-hugo--org-roam-save-buffer(&optional no-trace-links)
+    "On save export to hugo"
+    (when (org-roam-file-p)
+      (org-hugo-export-to-md)))
+
 
   (use-package org-roam
     :ensure t
     :hook
     (after-init . org-roam-mode)
     (org-roam-mode . flyspell-mode)
+    ;;(after-save . liomacs/org-hugo--org-roam-save-buffer)
     :init
     (setq org-roam-v2-ack t)
     :custom
@@ -871,6 +877,11 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 ** Org present
 #+begin_src emacs-lisp
   (use-package org-present)
+#+end_src
+** pomodoro setup
+#+begin_src emacs-lisp
+  (use-package org
+    :custom (org-clock-sound "~/.emacs.d/ping.wav"))
 #+end_src
 * TODO Tab bar mode
 #+begin_src emacs-lisp
