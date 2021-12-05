@@ -2,9 +2,12 @@
 ;; Setup straight for package management
 ;;
 
+
 (defvar bootstrap-version)
+
+(setq straight-base-dir liomacs/vendor-dir)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" liomacs/vendor-dir))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -15,8 +18,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;;(straight-use-package 'use-package)
-;;(setq straight-use-package-by-default t)
 
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
-(provide 'liomacs-straight)
+(provide 'liomacs-package-management)

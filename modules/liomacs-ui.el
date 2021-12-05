@@ -18,4 +18,17 @@
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+
+
+(use-package all-the-icons)  ;; Install all-the-icons, used by many other modes
+(use-package doom-themes
+  :init (load-theme 'doom-one t))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
 (provide 'liomacs-ui)
