@@ -36,22 +36,6 @@ I use straight.el for my package management with use-package integration. Instal
 #+end_src
 
 * UI Configuration
-** Dashboard
-I like to have a pretty start screen.
-#+begin_src emacs-lisp
-  (use-package dashboard
-    :custom
-    (dashboard-items '((recents . 5)
-                       (bookmarks . 5)
-                       (projects . 5)
-                       (agenda . 5)))
-    (dashboard-set-heading-icons t)
-    (dashboard-set-file-icons t)
-    (dashboard-startup-banner "~/Pictures/Logo/liolin_black_exempted.png")
-    ;;(initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-    :config
-    (dashboard-setup-startup-hook)) 
-#+end_src
 ** UI configuration
 I like a minimal GUI. Disable tool and menu bar.
 #+begin_src  emacs-lisp
@@ -80,13 +64,21 @@ Some packages looks a lot better with some fancy icons.
 ** Theme
 I like the default doom theme
 #+begin_src emacs-lisp
-;; Install and load theme
-(use-package doom-themes
-  :init (load-theme 'doom-one t))
+  ;; Install and load theme
+  (use-package doom-themes
+    :init (load-theme 'doom-one t))
 
-;; Install doom-modeline for pretty modeline
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
+  ;; (custom-set-faces
+  ;;  '(default (
+  ;;             (((type tty))
+  ;;              (:background "#181a26")) ;; awsome background color
+  ;;             (t
+  ;;              (:background "#181a26")))
+  ;;     ))
+
+  ;; Install doom-modeline for pretty modeline
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1))
 #+end_src
 
 ** Text
@@ -98,7 +90,6 @@ With colored brackets is it easier to find the counter parts.
 #+end_src
 
 * Editing
-** Global Key bindings
 ** Evil keybindng
 For editing text I like the vim key bindings more than the Emacs one. Install evil and evil-collection for a whole vim feeling insiede Emacs.
 #+begin_src emacs-lisp
@@ -145,7 +136,8 @@ Sometimes you onle know the prefix for a command. Maybe a list could help.
 #+begin_src emacs-lisp
   (use-package undo-tree
     :config
-    (global-undo-tree-mode))
+    (global-undo-tree-mode)
+    (evil-set-undo-system 'undo-tree))
 #+end_src
 * Completion framework
 ** ivy
@@ -222,6 +214,16 @@ Don't litter my filesystem with backup files.
 (setq make-backup-files nil)  ;; Disable backup files
 #+end_src
 * Programming
+** Cmake compilation
+#+begin_src emacs-lisp
+(defun liomacs/compile()
+  (interactive)
+  (compile
+   (concat
+    "make -C "
+    (projectile-project-root)
+    "build")))
+#+end_src
 ** Project management
 Projectile is a great package for navigating between project related buffers and files.
 #+begin_src emacs-lisp
@@ -644,6 +646,17 @@ Load org mode and setup the hooks.
         (org-hugo-export-to-md)
         (kill-buffer))))
 
+  (defun liomacs/testing ()
+    (interactive)
+    (message "testing my testing")
+    (let ((my_list (org-roam-db-query "SELECT file FROM nodes INNER JOIN tags ON nodes.id = tags.node_id WHERE tag = '\"private\"';")))
+      (dolist (file (org-roam--list-files org-roam-directory))
+        (if (member (list (expand-file-name file)) my_list)
+            (message "found")
+          (with-current-buffer (find-file-noselect file)
+            (org-hugo-export-to-md)
+            (kill-buffer))))))
+
   (defun liomacs/org-hugo--org-roam-save-buffer(&optional no-trace-links)
     "On save export to hugo"
     (when (org-roam-file-p)
@@ -661,12 +674,15 @@ Load org mode and setup the hooks.
     :custom
     (org-roam-directory "~/roam/")
     (org-roam-dailies-directory "daily/")
+    (org-roam-completion-everywhere t)
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
-           ("C-c n j" . org-roam-dailies-capture-today))
+           ("C-c n j" . org-roam-dailies-capture-today)
+           :map org-mode-map
+           ("C-M-i"    . completion-at-point))
     :config
     (org-roam-setup))
 #+end_src
@@ -878,6 +894,10 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 #+begin_src emacs-lisp
   (use-package org-present)
 #+end_src
+** Org noter
+#+begin_src emacs-lisp
+  (use-package org-noter)
+#+end_src
 ** pomodoro setup
 #+begin_src emacs-lisp
   (use-package org
@@ -988,10 +1008,11 @@ I use mu4e for my mail mangement.
   (use-package elfeed
     :bind (("C-x w" . elfeed))
     :custom
-    (elfeed-feeds '("https://hnrss.org/newest"
-                    "http://www.reddit.com/r/emacs/.rss"
+    (elfeed-search-filter "@1-week-ago +unread")
+    (elfeed-feeds '("http://www.reddit.com/r/emacs/.rss"
                     "http://www.reddit.com/r/rust/.rss"
                     "https://events.ccc.de/feed/"
+                    "https://blog.tecosaur.com/tmio/rss.xml"
                     "https://xenodium.com/rss.xml"))) 
 #+end_src
 * hledger
@@ -1006,7 +1027,14 @@ I use mu4e for my mail mangement.
     (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode))
     (add-to-list 'company-backends 'hledger-company))
 #+end_src
+* Kana
+#+begin_src emacs-lisp
+  (use-package kana)
+  ;;(use-package ddskk)
+#+end_src
 * Emacs Server
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+
+
