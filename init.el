@@ -38,6 +38,7 @@
     liomacs-doc
     liomacs-pass
     liomacs-rss
+    liomacs-org
     liomacs-backup
     liomacs-project-management
     liomacs-version-control

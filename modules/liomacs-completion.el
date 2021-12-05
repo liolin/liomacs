@@ -31,7 +31,6 @@
          ("C-r" . 'counsel-minibuffer-history)))
 
 (use-package ivy-rich
-  :after ivy
   :init
   (ivy-rich-mode 1))
 
@@ -46,7 +45,6 @@
   (company-idle-delay 0.0))
 
 (use-package company-box
-  :after company
   :hook (company-mode . company-box-mode))
 
 (provide 'liomacs-completion)
