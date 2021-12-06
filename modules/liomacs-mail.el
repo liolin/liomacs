@@ -54,6 +54,8 @@
      ("/liolin/Sent"    . ?s)
      ("/liolin/Trash"   . ?t)))
   :config
+  (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
+ 
   (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
 
 
@@ -69,4 +71,14 @@
   (smtpmail-smtp-service 587)
   (smtpmail-stream-type 'starttls)
   (message-send-mail-function 'smtpmail-send-it))
+
+
+(defun liomacs/org-mime-setup-css ()
+  (org-mime-change-element-style
+   "body" (format "font-family: %s"
+		  "Arial")))
+(use-package org-mime
+  :hook
+  (org-mime-html . liomacs/org-mime-setup-css))
+
 (provide 'liomacs-mail)
