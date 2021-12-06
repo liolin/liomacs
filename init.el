@@ -3,18 +3,10 @@
 ;;
 
 
-;; Move to own module
 (defvar liomacs/full-name
   "Olivier Lischer")
 (defvar liomacs/mail-address
   "olivier.lischer@liolin.ch")
-(defvar liomacs/project-dir "~/code")
-
-(setq user-full-name liomacs/full-name
-      user-mail-address liomacs/mail-address)
-
-
-
 
 (defvar liomacs/emacs-dir
   "~/code/liomacs"
@@ -39,6 +31,7 @@
     liomacs-pass
     liomacs-rss
     liomacs-org
+    liomacs-hledger
     liomacs-backup
     liomacs-project-management
     liomacs-version-control
@@ -53,6 +46,9 @@
     liomacs-server)
   "A list of all modules to load")
 
+
+(setq user-full-name liomacs/full-name
+      user-mail-address liomacs/mail-address)
 
 (unless (file-exists-p liomacs/save-dir)
   (make-directory liomacs/save-dir))

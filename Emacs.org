@@ -1,20 +1,23 @@
 #+TITLE: Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./Emacs.el
 
-* User configuration
+* DONE User configuration
+CLOSED: [2021-12-06 Mon 17:58]
 Setting some basic user variables.
 #+begin_src emacs-lisp
 (setq user-full-name "Olivier Lischer"
       user-mail-address "olivier.lischer@liolin.ch")
 #+end_src
 
-* GC
+* DONE GC
+CLOSED: [2021-12-05 Sun 16:04]
 #+begin_src emacs-lisp
   (setq-default
      gc-cons-threshold (* 8 1024 1024))
 #+end_src
 
-* Package management
+* DONE Package management
+CLOSED: [2021-12-05 Sun 16:04]
 I use straight.el for my package management with use-package integration. Install it and configure it!
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
@@ -35,8 +38,10 @@ I use straight.el for my package management with use-package integration. Instal
 
 #+end_src
 
-* UI Configuration
-** UI configuration
+* DONE UI Configuration
+CLOSED: [2021-12-05 Sun 18:40]
+** DONE UI configuration
+CLOSED: [2021-12-05 Sun 16:04]
 I like a minimal GUI. Disable tool and menu bar.
 #+begin_src  emacs-lisp
   (tool-bar-mode -1)    ;; Disable the tool bar
@@ -55,13 +60,15 @@ I like a minimal GUI. Disable tool and menu bar.
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
-** Font configuration
+** DONE Font configuration
+CLOSED: [2021-12-05 Sun 18:38]
 Some packages looks a lot better with some fancy icons.
 #+begin_src emacs-lisp
 (use-package all-the-icons)  ;; Install all-the-icons, used by many other modes
 #+end_src
 
-** Theme
+** DONE Theme
+CLOSED: [2021-12-05 Sun 18:40]
 I like the default doom theme
 #+begin_src emacs-lisp
   ;; Install and load theme
@@ -81,7 +88,8 @@ I like the default doom theme
     :init (doom-modeline-mode 1))
 #+end_src
 
-** Text
+** DONE Text
+CLOSED: [2021-12-05 Sun 18:39]
 With colored brackets is it easier to find the counter parts.
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -89,8 +97,10 @@ With colored brackets is it easier to find the counter parts.
     (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-* Editing
-** Evil keybindng
+* DONE Editing
+CLOSED: [2021-12-05 Sun 19:01]
+** DONE Evil keybindng
+CLOSED: [2021-12-05 Sun 18:58]
 For editing text I like the vim key bindings more than the Emacs one. Install evil and evil-collection for a whole vim feeling insiede Emacs.
 #+begin_src emacs-lisp
   ;; Install evil-mode and enable it
@@ -121,7 +131,8 @@ For editing text I like the vim key bindings more than the Emacs one. Install ev
   (define-key evil-motion-state-map "go" 'xref-find-definitions-other-window)
 #+end_src
 
-** which-key
+** DONE which-key
+CLOSED: [2021-12-05 Sun 18:59]
 Sometimes you onle know the prefix for a command. Maybe a list could help.
 #+begin_src emacs-lisp
 ;; Shows which key you could press next, to complete a key stroke
@@ -132,15 +143,18 @@ Sometimes you onle know the prefix for a command. Maybe a list could help.
   (setq which-key-idle-delay 1))
 #+end_src
 
-** undo-tree
+** DONE undo-tree
+CLOSED: [2021-12-05 Sun 19:01]
 #+begin_src emacs-lisp
   (use-package undo-tree
     :config
     (global-undo-tree-mode)
     (evil-set-undo-system 'undo-tree))
 #+end_src
-* Completion framework
-** ivy
+* DONE Completion framework
+CLOSED: [2021-12-05 Sun 19:06]
+** DONE ivy
+CLOSED: [2021-12-05 Sun 19:02]
 I don't like the default completion framework from emacs. Replace it with ivy and counsel.
 #+begin_src emacs-lisp
 ;; Install the completion framework ivy and replace the default emacs functions with it.
@@ -175,7 +189,8 @@ I don't like the default completion framework from emacs. Replace it with ivy an
   (ivy-rich-mode 1))
 #+end_src
 
-** company
+** DONE company
+CLOSED: [2021-12-05 Sun 19:05]
 Company is a gread package for completing text. Especially with lsp.
 #+begin_src emacs-lisp
   (use-package company
@@ -193,7 +208,8 @@ Company is a gread package for completing text. Especially with lsp.
   (use-package company-box
     :hook (company-mode . company-box-mode))
 #+end_src
-* Helpful
+* DONE Helpful
+CLOSED: [2021-12-05 Sun 19:08]
 Helpful is a great helpsystem and a replacement for the default one. It has code examples and a lot more.
 #+begin_src emacs-lisp
 ;; Replace the default helpsystem with a better one with code examples etc.
@@ -208,23 +224,30 @@ Helpful is a great helpsystem and a replacement for the default one. It has code
   ([remap describe-key] . helpful-key))
 #+end_src
 
-* File Management
+* DONE File Management
+CLOSED: [2021-12-05 Sun 21:15]
 Don't litter my filesystem with backup files.
 #+begin_src emacs-lisp
 (setq make-backup-files nil)  ;; Disable backup files
 #+end_src
 * Programming
-** Cmake compilation
+** KILL Cmake compilation
+CLOSED: [2021-12-06 Mon 17:56]
 #+begin_src emacs-lisp
-(defun liomacs/compile()
-  (interactive)
-  (compile
-   (concat
-    "make -C "
-    (projectile-project-root)
-    "build")))
+  (defun liomacs/compile()
+    (interactive)
+    (compile
+     (concat
+      "make -C "
+      (projectile-project-root)
+      "build")))
+
+
+  (use-package cmake-mode)
+
 #+end_src
-** Project management
+** DONE Project management
+CLOSED: [2021-12-05 Sun 19:20]
 Projectile is a great package for navigating between project related buffers and files.
 #+begin_src emacs-lisp
 ;; Install projectile and bind it.
@@ -244,7 +267,8 @@ Projectile is a great package for navigating between project related buffers and
   :config (counsel-projectile-mode))
 #+end_src
 
-** Version controll
+** DONE Version controll
+CLOSED: [2021-12-05 Sun 19:21]
 When working with git from inside emacs magit is a must have.
 #+begin_src emacs-lisp
 ;; Install the emacs interface for git
@@ -253,7 +277,8 @@ When working with git from inside emacs magit is a must have.
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 
-** Language server protocol
+** DONE Language server protocol
+CLOSED: [2021-12-05 Sun 19:24]
 Today a lot of languages has gread lsp support. With lsp-mode and company you have nearly an full IDE.
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -273,25 +298,29 @@ Today a lot of languages has gread lsp support. With lsp-mode and company you ha
   (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 #+end_src
 
-** Diagnostics
+** DONE Diagnostics
+CLOSED: [2021-12-05 Sun 19:34]
 Show me the syntax errors and other problems in a buffer.
 #+begin_src emacs-lisp
   (use-package flycheck)
 #+end_src
-** Debugging
+** DONE Debugging
+CLOSED: [2021-12-05 Sun 20:50]
 Sometimes you have to debug your code. 
 #+begin_src emacs-lisp
   (use-package dap-mode)
 #+end_src
-** Snippets
+** DONE Snippets
+CLOSED: [2021-12-05 Sun 20:48]
 #+begin_src emacs-lisp
   (use-package yasnippet
     :hook (prog-mode . yas-minor-mode))
   
   (use-package yasnippet-snippets
-    :after yasnippet)
+    ;;:after yasnippet)
 #+end_src
-** Rust
+** DONE Rust
+CLOSED: [2021-12-05 Sun 19:28]
 My favourite language. I use rust-analyzer as lsp in the background.
 #+begin_src emacs-lisp
   ;; Enables the rust language in the buffer
@@ -328,7 +357,8 @@ My favourite language. I use rust-analyzer as lsp in the background.
       :hook
       (csharp-mode . dotnet-mode))
 #+end_src
-** C++
+** DONE C++
+CLOSED: [2021-12-05 Sun 20:50]
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :hook
@@ -370,7 +400,8 @@ My Windows manager is XMonad. So Haskell is a must have for editing.
   (setq org-cite-global-bibliography '("~/biblio/main.bib"))
 #+end_src
 * Org mode
-** Basic setup
+** DONE Basic setup
+CLOSED: [2021-12-05 Sun 21:30]
 Setup custom functions and set the location of my org files.
 #+begin_src emacs-lisp
   (defun liomacs/org-mode-setup() 
@@ -393,7 +424,8 @@ Setup custom functions and set the location of my org files.
   (setq org-directory "~/org/")
 #+end_src
 
-** Org font setup
+** DONE Org font setup
+CLOSED: [2021-12-05 Sun 21:43]
 Normal text blocks should have an non mono spaced font. But code, tables and co should be mono spaced.
 #+begin_src emacs-lisp
   (defun liomacs/org-font-setup ()
@@ -421,7 +453,8 @@ Normal text blocks should have an non mono spaced font. But code, tables and co 
 
 #+end_src
 
-** Load org mode
+** DONE Load org mode
+CLOSED: [2021-12-05 Sun 21:28]
 Load org mode and setup the hooks.
 #+begin_src emacs-lisp
   (use-package org
@@ -446,12 +479,14 @@ Load org mode and setup the hooks.
   ;;(use-package org-plus-contrib)
 #+end_src
 
-** Org export
+** DONE Org export
+CLOSED: [2021-12-05 Sun 21:48]
 #+begin_src emacs-lisp
   (use-package ox-hugo
     :after ox)
 #+end_src
-** Org babel
+** DONE Org babel
+CLOSED: [2021-12-05 Sun 21:48]
 #+begin_src emacs-lisp
   (use-package org
     :init
@@ -484,7 +519,8 @@ Load org mode and setup the hooks.
 
 #+end_src
 
-** Org capture
+** DONE Org capture
+CLOSED: [2021-12-05 Sun 22:22]
 #+begin_src emacs-lisp
   (use-package doct)          ;; Package to simplify writing org capture templates
   (use-package org-cliplink)  ;; Package to copy link from clipboard in to the template
@@ -629,13 +665,15 @@ Load org mode and setup the hooks.
   
 #+end_src
 
-** Org refile
+** DONE Org refile
+CLOSED: [2021-12-05 Sun 22:03]
 #+begin_src emacs-lisp
   (use-package org
     :custom
     (org-refile-targets '(("~/org/Agenda/GTD.org" :maxlevel . 1))))
 #+end_src
-** Org roam
+** DONE Org roam
+CLOSED: [2021-12-05 Sun 22:17]
 #+begin_src emacs-lisp
   ;; Thanks to Sidharth Arya
   ;; https://sidhartharya.me/exporting-org-roam-notes-to-hugo/
@@ -699,7 +737,8 @@ Install org-roam-ui for a interactive web fronted to org-roam.
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
-** Org agenda
+** DONE Org agenda
+CLOSED: [2021-12-05 Sun 21:26]
 #+begin_src emacs-lisp
   (use-package org
     :custom
@@ -725,7 +764,8 @@ Install org-roam-ui for a interactive web fronted to org-roam.
       "gr" 'org-agenda-redo))
 #+end_src
 
-** Org transclusion
+** KILL Org transclusion
+CLOSED: [2021-12-06 Mon 16:48]
 #+begin_src emacs-lisp
   (use-package org-transclusion
     :straight (:host github :repo "nobiot/org-transclusion"
@@ -734,17 +774,20 @@ Install org-roam-ui for a interactive web fronted to org-roam.
     (:map org-roam-mode-map
           ("C-c r" . org-transclusion-mode)))
 #+end_src
-** Org journal
+** KILL Org journal
+CLOSED: [2021-12-06 Mon 16:27]
 #+begin_src emacs-lisp
   (use-package org-journal
     :custom
     (org-journal-dir "~/org/journal/"))
 #+end_src
-** Org drill
+** KILL Org drill
+CLOSED: [2021-12-06 Mon 16:27]
 #+begin_src emacs-lisp
   (use-package org-drill)
 #+end_src
-** Org tree slide 
+** KILL Org tree slide 
+CLOSED: [2021-12-06 Mon 16:27]
 #+begin_src emacs-lisp
   (use-package org-tree-slide
     :hook ((org-tree-slide-play . liomacs/presentation-setup)
@@ -765,7 +808,8 @@ Install org-roam-ui for a interactive web fronted to org-roam.
     (text-scale-mode 0)              ;; Disable font scaling
     (blink-cursor-mode 1))           ;; Enable the blinking cursor
 #+end_src
-** Org temp 
+** DONE Org temp 
+CLOSED: [2021-12-05 Sun 22:08]
 #+begin_src emacs-lisp
 ;; Enables expandsion
 (require 'org-tempo)
@@ -802,7 +846,8 @@ Install org-roam-ui for a interactive web fronted to org-roam.
   ;;(define-key org-mode-map (kbd "C-RET") 'org-insert-item)
   (define-key org-mode-map [remap org-insert-heading-respect-content] 'org-insert-item)
 #+end_src
-** Org mime
+** DONE Org mime
+CLOSED: [2021-12-06 Mon 07:50]
 #+begin_src emacs-lisp
   (defun liomacs/org-mime-setup-css ()
     (org-mime-change-element-style
@@ -812,15 +857,18 @@ Install org-roam-ui for a interactive web fronted to org-roam.
     :hook
     (org-mime-html . liomacs/org-mime-setup-css))
 #+end_src
-** Org plot
+** KILL Org plot
+CLOSED: [2021-12-06 Mon 16:29]
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
-** Org ql
+** KILL Org ql
+CLOSED: [2021-12-06 Mon 16:30]
 #+begin_src emacs-lisp
   (use-package org-ql)
 #+end_src
-** Org tables
+** KILL Org tables
+CLOSED: [2021-12-06 Mon 16:30]
 #+begin_src emacs-lisp
   (defun org-table-goto-beginning ()
     (interactive)
@@ -836,7 +884,8 @@ Install org-roam-ui for a interactive web fronted to org-roam.
                 ("C-c t b" . org-table-goto-beginning)
                 ("C-c t e" . org-table-goto-end)))
 #+end_src
-** Org contacts
+** DONE Org contacts
+CLOSED: [2021-12-06 Mon 16:32]
 Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode-and-syncing-them-to-your-phone-android-ios-whatever-.html][Managing your contacts in org-mode and syncing them to your phone (Android, i...]]
 
 #+begin_src emacs-lisp
@@ -890,15 +939,18 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
     "~/Downloads/"
    "contacts.vcf")))
 #+end_src
-** Org present
+** KILL Org present
+CLOSED: [2021-12-06 Mon 16:48]
 #+begin_src emacs-lisp
   (use-package org-present)
 #+end_src
-** Org noter
+** DONE Org noter
+CLOSED: [2021-12-05 Sun 22:24]
 #+begin_src emacs-lisp
   (use-package org-noter)
 #+end_src
-** pomodoro setup
+** KILL pomodoro setup
+CLOSED: [2021-12-06 Mon 16:30]
 #+begin_src emacs-lisp
   (use-package org
     :custom (org-clock-sound "~/.emacs.d/ping.wav"))
@@ -911,7 +963,8 @@ Inspired by: [[https://isamert.net/2021/04/21/managing-your-contacts-in-org-mode
 #+begin_src emacs-lisp
 (setq x-select-enable-clipboard t)
 #+end_src
-* E-Mail
+* DONE E-Mail
+CLOSED: [2021-12-05 Sun 20:53]
 I use mu4e for my mail mangement.
 #+begin_src emacs-lisp
   (use-package mu4e
@@ -944,7 +997,7 @@ I use mu4e for my mail mangement.
                     (mu4e-sent-folder . "/notes/Sent")
                     (mu4e-trash-folder . "/notes/Trash")
                     (mu4e-refile-folder . "/archiv")))
-  
+
            (make-mu4e-context
             :name "gmail"
             :match-func
@@ -957,20 +1010,21 @@ I use mu4e for my mail mangement.
                     (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
                     (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
                     (mu4e-refile-folder . "/archiv")))))
-  
+
     :custom
     (mu4e-org-link-query-in-headers-mode t)
     (mu4e-change-filenames-when-moving t)
     (mu4e-update-interval (* 5 60))
     (mu4e-get-mail-command "mbsync -a")
     (mu4e-maildir "~/.mail")
-  
-  
+
+
     (mu4e-maildir-shortcuts
      '(("/liolin/Inbox"  . ?i)
        ("/liolin/Sent"    . ?s)
        ("/liolin/Trash"   . ?t)))
     :config
+    (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
     (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
 #+end_src
   
@@ -990,8 +1044,10 @@ I use mu4e for my mail mangement.
     (smtpmail-stream-type 'starttls)
     (message-send-mail-function 'smtpmail-send-it))
 #+end_src
-* Document view
-** PDF
+* DONE Document view
+CLOSED: [2021-12-05 Sun 20:54]
+** DONE PDF
+CLOSED: [2021-12-05 Sun 20:54]
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :config
@@ -999,11 +1055,13 @@ I use mu4e for my mail mangement.
   
   
 #+end_src
-* pass
+* DONE pass
+CLOSED: [2021-12-05 Sun 20:59]
 #+begin_src emacs-lisp
   (use-package pass)
 #+end_src
-* RSS / Atom Feed
+* DONE RSS / Atom Feed
+CLOSED: [2021-12-05 Sun 20:59]
 #+begin_src emacs-lisp
   (use-package elfeed
     :bind (("C-x w" . elfeed))
@@ -1015,7 +1073,8 @@ I use mu4e for my mail mangement.
                     "https://blog.tecosaur.com/tmio/rss.xml"
                     "https://xenodium.com/rss.xml"))) 
 #+end_src
-* hledger
+* DONE hledger
+CLOSED: [2021-12-06 Mon 16:51]
 #+begin_src emacs-lisp
   (use-package hledger-mode
     :bind (("C-c e" . hledger-jentry)
@@ -1032,7 +1091,8 @@ I use mu4e for my mail mangement.
   (use-package kana)
   ;;(use-package ddskk)
 #+end_src
-* Emacs Server
+* DONE Emacs Server
+CLOSED: [2021-12-05 Sun 21:06]
 #+begin_src emacs-lisp
   (server-start)
 #+end_src

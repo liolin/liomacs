@@ -55,7 +55,6 @@
      ("/liolin/Trash"   . ?t)))
   :config
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
- 
   (add-to-list 'mu4e-view-actions '("Browser" . mu4e-action-view-in-browser) t))
 
 

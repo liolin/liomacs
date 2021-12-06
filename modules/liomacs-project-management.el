@@ -1,3 +1,5 @@
+(defvar liomacs/project-dir "~/code")
+
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
