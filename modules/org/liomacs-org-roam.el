@@ -18,6 +18,13 @@
 	  (org-hugo-export-to-md)
 	  (kill-buffer))))))
 
+
+(defun liomacs/update-org-id-files ()
+  "Adds all IDs from the org-roam files to the org-id-locations-file"
+  (interactive)
+  (let ((fil (org-roam--list-files org-roam-directory)))
+    (org-id-update-id-locations fil)))
+
 (defun liomacs/org-hugo--org-roam-save-buffer(&optional no-trace-links)
   "On save export to hugo"
   (when (org-roam-file-p)
@@ -29,7 +36,6 @@
   :hook
   (after-init . org-roam-mode)
   (org-roam-mode . flyspell-mode)
-  ;;(after-save . liomacs/org-hugo--org-roam-save-buffer)
   :init
   (setq org-roam-v2-ack t)
   :custom
@@ -42,6 +48,7 @@
 	 ("C-c n i" . org-roam-node-insert)
 	 ("C-c n c" . org-roam-capture)
 	 ("C-c n j" . org-roam-dailies-capture-today)
+	 ("C-c n u" . liomacs/update-org-id-files)
 	 :map org-mode-map
 	 ("C-M-i"    . completion-at-point))
   :config

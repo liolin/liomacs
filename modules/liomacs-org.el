@@ -18,13 +18,13 @@
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (liomacs/load-org-modules)
   :custom
-  (org-directory "~/org")
+  (org-directory "~/org/")
   (org-ellipsis " ▾")
   (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL")))
   (org-log-done 'time)
   (org-modules '(org-habit))
   (org-startup-folded t))
 
-(liomacs/load-org-modules)
 (provide 'liomacs-org)
