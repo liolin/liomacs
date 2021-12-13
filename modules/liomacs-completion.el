@@ -21,6 +21,10 @@
 (use-package consult
   :bind (("C-s" . consult-line)))
 
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
 (use-package embark)
 (use-package embark-consult)
 
