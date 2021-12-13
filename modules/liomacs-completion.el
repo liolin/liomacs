@@ -4,35 +4,25 @@
   :custom
   (which-key-idle-delay 1))
 
-
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
+(use-package vertico
+  :bind (:map vertico-map
+	 ("C-j" . vertico-next)
+	 ("C-k" . vertico-previous))
+  :custom
+  (vertico-cycle t)
   :config
-  (ivy-mode 1))
-
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
-
-(use-package ivy-rich
+  (setq completion-styles '(basic substring partial-completion))
+  (setq read-file-name-completion-ignore-case t
+	read-buffer-completion-ignore-case t
+	completion-ignore-case t)
   :init
-  (ivy-rich-mode 1))
+  (vertico-mode))
+
+(use-package consult
+  :bind (("C-s" . consult-line)))
+
+(use-package embark)
+(use-package embark-consult)
 
 (use-package company
   :hook (prog-mode . company-mode)

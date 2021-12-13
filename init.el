@@ -28,6 +28,7 @@
     liomacs-undo
     liomacs-help
     liomacs-doc
+    liomacs-perspective
     liomacs-pass
     liomacs-rss
     liomacs-org
@@ -41,8 +42,7 @@
     liomacs-debugging
     liomacs-rust
     liomacs-cpp
-
-    ;;liomacs-mu4e
+    liomacs-mail
     liomacs-server)
   "A list of all modules to load")
 
