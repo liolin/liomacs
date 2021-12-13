@@ -10,12 +10,7 @@
   :hook (lsp-mode . lsp-ui-mode)
   :custom (lsp-ui-doc-position 'bottom))
 
-(use-package lsp-ivy
-  :after ivy
-  :commands lsp-ivy-workspace-symbol)
-
 (use-package lsp-treemacs
-  :after ivy
   :commands lsp-treemacs-errors-list)
 
 
