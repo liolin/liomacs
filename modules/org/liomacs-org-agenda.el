@@ -1,6 +1,6 @@
 (use-package org
   :bind
-  ("C-c a" . org-agenda-list)
+  ("C-c a" . org-agenda)
   :custom
   (org-agenda-files (append 
 		     '("~/org/Agenda/GTD.org"
