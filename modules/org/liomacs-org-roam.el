@@ -30,6 +30,10 @@
   (when (org-roam-file-p)
     (org-hugo-export-to-md)))
 
+(defun liomacs/search-roam-files ()
+  "Grep for a string in the `~/roam' using `rg'."
+  (interactive)
+  (consult-ripgrep "~/roam" ""))
 
 (use-package org-roam
   :ensure t
@@ -49,6 +53,7 @@
 	 ("C-c n c" . org-roam-capture)
 	 ("C-c n j" . org-roam-dailies-capture-today)
 	 ("C-c n u" . liomacs/update-org-id-files)
+	 ("C-c n r" . liomcas/search-roam-files)
 	 :map org-mode-map
 	 ("C-M-i"    . completion-at-point))
   :config
