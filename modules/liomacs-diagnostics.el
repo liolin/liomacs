@@ -1,6 +1,7 @@
 (use-package flycheck)
 
 (use-package lsp-ltex
+  :after lsp
   :ensure t
   :config
   (flycheck-add-next-checker 'lsp 'proselint)
