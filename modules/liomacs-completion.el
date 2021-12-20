@@ -4,6 +4,7 @@
   :custom
   (which-key-idle-delay 1))
 
+
 (use-package vertico
   :bind (:map vertico-map
 	 ("C-j" . vertico-next)
@@ -11,12 +12,15 @@
   :custom
   (vertico-cycle t)
   :config
-  (setq completion-styles '(basic substring partial-completion))
   (setq read-file-name-completion-ignore-case t
 	read-buffer-completion-ignore-case t
 	completion-ignore-case t)
   :init
   (vertico-mode))
+
+(use-package orderless
+  :ensure t
+  :custom (completion-styles '(orderless)))
 
 (use-package consult
   :bind (("C-s" . consult-line)))
