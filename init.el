@@ -28,7 +28,7 @@
     liomacs-undo
     liomacs-help
     liomacs-doc
-    liomacs-perspective
+    liomacs-workspace
     liomacs-pass
     liomacs-rss
     liomacs-org
