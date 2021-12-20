@@ -6,6 +6,8 @@
 (use-package persp-mode
   :custom
   (persp-keymap-prefix (kbd "C-x x"))
+  (persp-auto-save-opt 0) ;; no auto save of all perspective
+  :bind ([remap persp-frame-switch] . persp-switch)
   :init
   (persp-mode))
 
