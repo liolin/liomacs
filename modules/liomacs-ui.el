@@ -5,6 +5,7 @@
 
 (tool-bar-mode -1)    ;; Disable the tool bar
 (menu-bar-mode -1)    ;; Disable the menu bar
+(scroll-bar-mode -1)  ;; Disable the scroll bar 
 (column-number-mode)  ;; Enables the column number in the mode line
 (set-fringe-mode 10)  ;; Set the size of the fringe
 (blink-cursor-mode 0) ;; Disable blinking cursor
