@@ -6,6 +6,7 @@
 
 (use-package org
   :custom
+  (org-latex-title-command "")
   (org-latex-toc-command "")
   (org-latex-listings 't)
   (org-latex-compiler "xelatex")
