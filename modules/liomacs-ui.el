@@ -20,6 +20,7 @@
 
 
 
+;; after installation run M-x all-the-icons-install-fonts
 (use-package all-the-icons)  ;; Install all-the-icons, used by many other modes
 (use-package doom-themes
   :init (load-theme 'doom-one t))
