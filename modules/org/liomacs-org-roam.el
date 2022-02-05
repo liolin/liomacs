@@ -53,7 +53,7 @@
 	 ("C-c n c" . org-roam-capture)
 	 ("C-c n j" . org-roam-dailies-capture-today)
 	 ("C-c n u" . liomacs/update-org-id-files)
-	 ("C-c n r" . liomcas/search-roam-files)
+	 ("C-c n r" . liomacs/search-roam-files)
 	 :map org-mode-map
 	 ("<tab>"    . completion-at-point))
   :config
