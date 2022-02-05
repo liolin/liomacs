@@ -13,12 +13,4 @@
       ((tags-todo "+uni")
        (agenda "")))))
   :config
-  (set-face-attribute 'org-headline-done nil :strike-through t)
-  (evil-set-initial-state 'org-agenda-mode 'normal))
-  ;; (evil-collection-define-key 'normal 'org-agenda-mode-map
-  ;;   "l" 'org-agenda-later
-  ;;   "e" 'org-agenda-earlier
-  ;;   "d" 'org-agenda-day-view
-  ;;   "w" 'org-agenda-week-view
-  ;;   "t" 'org-agenda-todo
-  ;;   "gr" 'org-agenda-redo))
+  (set-face-attribute 'org-headline-done nil :strike-through t))
