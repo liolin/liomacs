@@ -55,7 +55,7 @@
 	 ("C-c n u" . liomacs/update-org-id-files)
 	 ("C-c n r" . liomcas/search-roam-files)
 	 :map org-mode-map
-	 ("<tab>"    . completion-at-point))
+	 ("C-c n <tab>"    . completion-at-point))
   :config
   (org-roam-setup))
 
