@@ -45,6 +45,7 @@
     liomacs-haskell
     liomacs-csharp
     liomacs-kotlin
+    liomacs-latex
     liomacs-mail
     liomacs-server)
   "A list of all modules to load")
@@ -69,7 +70,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((eval add-hook 'after-save-hook
+   '((lsp-ltex-language . "de-CH")
+     (eval add-hook 'after-save-hook
 	   (lambda nil
 	     (if
 		 (y-or-n-p "Tangle?")
