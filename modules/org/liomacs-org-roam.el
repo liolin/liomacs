@@ -38,10 +38,7 @@
 (use-package org-roam
   :ensure t
   :hook
-  (after-init . org-roam-mode)
-  (org-roam-mode . flyspell-mode)
-  :init
-  (setq org-roam-v2-ack t)
+  (org-roam-mode . lsp-deferred)
   :custom
   (org-roam-directory "~/roam/")
   (org-roam-dailies-directory "daily/")
@@ -55,15 +52,9 @@
 	 ("C-c n u" . liomacs/update-org-id-files)
 	 ("C-c n r" . liomacs/search-roam-files)
 	 :map org-mode-map
-	 ("C-c n <tab>"    . completion-at-point))
-  :config
-  (org-roam-setup))
-
-
+	 ("C-c n <tab>"    . completion-at-point)))
 
 (use-package org-roam-ui
-  ;; :straight
-  ;; (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
   :custom
   (org-roam-ui-sync-theme t)
   (org-roam-ui-follow t)

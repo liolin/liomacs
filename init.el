@@ -28,8 +28,7 @@
     liomacs-undo
     liomacs-help
     liomacs-doc
-    ;;liomacs-workspace
-    liomacs-pomodoro
+    ;;;liomacs-workspace
     liomacs-pass
     liomacs-rss
     liomacs-org
