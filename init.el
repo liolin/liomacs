@@ -29,7 +29,6 @@
     liomacs-help
     liomacs-doc
     ;;liomacs-workspace
-    liomacs-pomodoro
     liomacs-pass
     liomacs-rss
     liomacs-org
