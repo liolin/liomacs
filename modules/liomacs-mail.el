@@ -1,4 +1,6 @@
 (use-package mu4e
+  :ensure nil
+  :load-path "/usr/share/emacs/site-lisp/mu4e/"
   :config
   (setq mu4e-contexts
 	(list
