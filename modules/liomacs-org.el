@@ -25,7 +25,8 @@
   (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL")))
   (org-log-done 'time)
   (org-modules '(org-habit))
-  (org-startup-folded t))
+  (org-startup-folded t)
+  (org-clock-sound "~/code/liomacs/ping.wav"))
 
 
 (provide 'liomacs-org)

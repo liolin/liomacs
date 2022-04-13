@@ -11,3 +11,5 @@
 			      (org-remove-inline-images)
 			      (org-present-show-cursor)
 			      (org-present-read-write))))
+
+(use-package ox-reveal)
