@@ -3,6 +3,7 @@
   :hook
   (TeX-mode . lsp-deferred)
   (TeX-mode . flycheck-mode)
+  (TeX-mode . yas-minor-mode)
   :config
   (setq TeX-auto-save nil)
   (setq TeX-parse-self t)

@@ -9,6 +9,7 @@
 (column-number-mode)  ;; Enables the column number in the mode line
 (set-fringe-mode 10)  ;; Set the size of the fringe
 (blink-cursor-mode 0) ;; Disable blinking cursor
+(set-face-attribute 'default nil :height 120)
 
 (setq display-line-numbers-type 'relative)  ;; The line numbering should be realtive to current position
 (global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
@@ -17,6 +18,7 @@
 		term-mode-hook
 		shell-mode-hook
 		eshell-mode-hook
+		doc-view-mode-hook
 		pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 

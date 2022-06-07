@@ -15,6 +15,11 @@
   (setq rustic-format-on-save t)
   :hook
   (rustic-mode . lsp-deferred)
-  (rustic-mode . hs-minor-mode))
+  (rustic-mode . hs-minor-mode)
+  (rustic-mode . electric-pair-mode))
+
+(use-package lsp-mode
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "check"))
 
 (provide 'liomacs-rust)
