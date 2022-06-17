@@ -43,6 +43,7 @@
     liomacs-rust
     liomacs-cpp
     liomacs-haskell
+    liomacs-nix
     liomacs-csharp
     liomacs-kotlin
     liomacs-latex
