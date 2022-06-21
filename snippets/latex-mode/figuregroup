@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: figuregroup
+# key: groupfig
+# --
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=3in]{$1}
+    \caption{$2 \label{fig:$3}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=3in]{$4}
+    \caption{$5 \label{fig:$6}}
+  \end{subfigure}
+  \caption{
+    \label{fig:$7}
+    $8
+  }
+\end{figure}
+$0
