@@ -1,4 +1,6 @@
 (use-package evil
+  :hook
+  (evil-insert-state-exit . save-buffer)
   :custom
   (evil-want-integration t)
   (evil-want-keybinding nil)
