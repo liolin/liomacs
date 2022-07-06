@@ -47,6 +47,7 @@
     liomacs-csharp
     liomacs-kotlin
     liomacs-latex
+    liomacs-yaml
     liomacs-mail
     liomacs-server)
   "A list of all modules to load")

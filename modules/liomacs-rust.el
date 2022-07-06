@@ -11,6 +11,8 @@
 	      ("C-c C-c q" . lsp-workspace-restart)
 	      ("C-c C-c Q" . lsp-workspace-shutdown)
 	      ("C-c C-c s" . lsp-rust-analyzer-status))
+  :custom
+  (rustic-format-display-method #'ignore)
   :config
   (setq rustic-format-on-save t)
   :hook
