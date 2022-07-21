@@ -1,5 +1,6 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :hook (prog-mode . lsp)
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
