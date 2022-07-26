@@ -5,6 +5,7 @@
   (org-agenda-files (append 
 		     '("~/org/Agenda/GTD.org"
 		       "~/org/Agenda/school.org"
+		       "~/org/Agenda/inbox.org"
 		       "~/org/Agenda/Events.org"
 		       "~/org/Agenda/Habits.org"
 		       "~/org/contacts.org")))

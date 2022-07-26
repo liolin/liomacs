@@ -16,4 +16,9 @@
 	       '("ost-summary"
 		 "\\documentclass{article}"
 		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+  (add-to-list 'org-latex-classes
+	       '("ost-exam-summary"
+		 "\\documentclass{extarticle}"
+		 ("\\section{%s}" . "\\section*{%s}")
 		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\"))))
