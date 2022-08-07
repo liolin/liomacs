@@ -8,6 +8,7 @@
 		       "~/org/Agenda/inbox.org"
 		       "~/org/Agenda/Events.org"
 		       "~/org/Agenda/Habits.org"
+		       "~/org/Agenda/work.org"
 		       "~/org/contacts.org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-custom-commands
