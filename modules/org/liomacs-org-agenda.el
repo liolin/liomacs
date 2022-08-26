@@ -3,13 +3,7 @@
   ("C-c a" . org-agenda)
   :custom
   (org-agenda-files (append 
-		     '("~/org/Agenda/GTD.org"
-		       "~/org/Agenda/school.org"
-		       "~/org/Agenda/inbox.org"
-		       "~/org/Agenda/Events.org"
-		       "~/org/Agenda/Habits.org"
-		       "~/org/Agenda/work.org"
-		       "~/org/contacts.org")))
+		     (directory-files "~/org/Agenda" t ".org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-custom-commands
    '(("u" "Agenda / ToDo list for uni"
