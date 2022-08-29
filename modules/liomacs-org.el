@@ -29,4 +29,9 @@
   (org-clock-sound "~/code/liomacs/ping.wav"))
 
 
+(use-package org-contrib
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))) ;; ignore headlines with ignore tag
+
 (provide 'liomacs-org)
