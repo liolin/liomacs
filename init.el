@@ -3,6 +3,8 @@
 ;;
 
 
+(defgroup liomacs nil "Custom group for my custom settings")
+
 (defvar liomacs/full-name
   "Olivier Lischer")
 (defvar liomacs/mail-address
@@ -14,6 +16,9 @@
 (defvar liomacs/module-dir
   (expand-file-name "modules" liomacs/emacs-dir)
   "Location of the custom configuration")
+(defvar liomacs/org-modules-dir
+  (expand-file-name "org" liomacs/module-dir)
+  "Location of the custom org modules")
 (defvar liomacs/vendor-dir
   (expand-file-name "vendor" liomacs/emacs-dir)
   "lisp from somewhere")
