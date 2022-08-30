@@ -61,6 +61,8 @@
 	       ((org-agenda-overriding-header "In Progress")
 		(org-agenda-files '("~/org/Agenda/sa.org"
 				    "~/org/Agenda/projects.org"
+				    "~/org/Agenda/work.org"
+				    "~/org/Agenda/school.org"
 				    "~/org/Agenda/GTD.org"))))
 	 (todo "TODO"
 	       ((org-agenda-overriding-header "Projects")
@@ -89,7 +91,7 @@
   :custom
   (org-directory "~/org/")
   (org-ellipsis " ▾")
-  (org-todo-keywords '((sequence "TODO" "WORKING" "WAIT" "|" "DONE" "KILL")))
+  (org-todo-keywords '((sequence "TODO" "NEXT" "WORKING" "WAIT" "|" "DONE" "KILL")))
   (org-log-done 'time)
   (org-modules '(org-habit))
   (org-startup-folded t)
