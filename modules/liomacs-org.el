@@ -57,6 +57,9 @@
 	 (todo "TODO"
 	       ((org-agenda-overriding-header "OST")
 		(org-agenda-files '("~/org/Agenda/school.org"))))
+	 (todo "TODO"
+	       ((org-agenda-overriding-header "IFS")
+		(org-agenda-files '("~/org/Agenda/work.org"))))
 	 (todo "NEXT"
 	       ((org-agenda-overriding-header "In Progress")
 		(org-agenda-files '("~/org/Agenda/sa.org"
