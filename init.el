@@ -72,7 +72,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((lsp-ltex-language . "de-CH")
+   '((org-attach-id-dir . "static/attachment")
+     (org-attach-id-dir . "static/pdf")
+     (lsp-ltex-language . "de-CH")
      (eval add-hook 'after-save-hook
 	   (lambda nil
 	     (if

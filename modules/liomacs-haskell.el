@@ -4,7 +4,7 @@
 
 (use-package lsp-haskell
   :custom
-  (lsp-haskell-server-path "haskell-language-server")
+  (lsp-haskell-server-path "haskell-language-server-wrapper")
   :hook
   (haskell-mode . lsp-deferred)
   (haskell-literate-mode . lsp))
