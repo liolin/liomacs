@@ -112,6 +112,7 @@
 	("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
          "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t))))
 
+(use-package org-cliplink)
 
 (use-package org-contrib
   :config

@@ -5,6 +5,7 @@
 (use-package lsp-haskell
   :custom
   (lsp-haskell-server-path "haskell-language-server-wrapper")
+  :bind (:map haskell-mode-map ("C-c h" . haskell-hoogle))
   :hook
   (haskell-mode . lsp-deferred)
   (haskell-literate-mode . lsp))
