@@ -99,6 +99,7 @@
   (org-modules '(org-habit))
   (org-startup-folded t)
   (org-clock-sound "~/code/liomacs/ping.wav")
+  (org-attach-use-inheritance t)
   (org-agenda-files (append 
 		     (directory-files "~/org/Agenda" t ".org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
