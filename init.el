@@ -54,6 +54,7 @@
     liomacs-kotlin
     liomacs-latex
     liomacs-yaml
+    liomacs-editorconfig
     liomacs-mail
     liomacs-server)
   "A list of all modules to load")
