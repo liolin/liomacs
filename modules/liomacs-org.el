@@ -89,6 +89,10 @@
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
   (set-face-attribute 'org-headline-done nil :strike-through t)
+  (org-link-set-parameters
+   "yt"
+   :follow (lambda (path)
+	     (async-shell-command (format "mpv \"https:%s\"" path))))
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
   (liomacs/load-org-modules)
   :custom

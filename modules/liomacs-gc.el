@@ -3,11 +3,13 @@
 ;;
 
 
-(defvar liomacs/gc-cons-threshold (* 8 1024 1024))
+(defun liomacs/minibuffer-setup-hook ()
+  (setq gc-cons-threshold most-positive-fixnum))
 
-(setq-default
- gc-cons-threshold liomacs/gc-cons-threshold)
+(defun liomacs/minibuffer-exit-hook ()
+  (setq gc-cons-threshold (* 8 1024 1024)))
 
-
+(add-hook 'minibuffer-setup-hook #'liomacs/minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'liomacs/minibuffer-exit-hook)
 
 (provide 'liomacs-gc)

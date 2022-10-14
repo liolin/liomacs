@@ -63,35 +63,36 @@
 (setq user-full-name liomacs/full-name
       user-mail-address liomacs/mail-address)
 
-(unless (file-exists-p liomacs/save-dir)
-  (make-directory liomacs/save-dir))
-(add-to-list 'load-path liomacs/module-dir)
-(add-to-list 'load-path liomacs/vendor-dir)
+(let ((gc-cons-threshold most-positive-fixnum))
+  (unless (file-exists-p liomacs/save-dir)
+    (make-directory liomacs/save-dir))
+  (add-to-list 'load-path liomacs/module-dir)
+  (add-to-list 'load-path liomacs/vendor-dir)
 
-(require 'liomacs-package-management)
-(mapc 'require liomacs/modules)
+  (require 'liomacs-package-management)
+  (mapc 'require liomacs/modules)
 
 
-;; End init.el
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   '((org-attach-id-dir . "static/attachment")
-     (org-attach-id-dir . "static/pdf")
-     (lsp-ltex-language . "de-CH")
-     (eval add-hook 'after-save-hook
-	   (lambda nil
-	     (if
-		 (y-or-n-p "Tangle?")
-		 (org-babel-tangle)))
-	   nil t)
-     (org-attach-id-dir . "attachment/"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  ;; End init.el
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(safe-local-variable-values
+     '((org-attach-id-dir . "static/attachment")
+       (org-attach-id-dir . "static/pdf")
+       (lsp-ltex-language . "de-CH")
+       (eval add-hook 'after-save-hook
+	     (lambda nil
+	       (if
+		   (y-or-n-p "Tangle?")
+		   (org-babel-tangle)))
+	     nil t)
+       (org-attach-id-dir . "attachment/"))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   ))
