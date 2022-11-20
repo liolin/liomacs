@@ -52,6 +52,7 @@
     liomacs-nix
     liomacs-csharp
     liomacs-kotlin
+    liomacs-python
     liomacs-latex
     liomacs-yaml
     liomacs-editorconfig
