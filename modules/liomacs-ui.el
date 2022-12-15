@@ -14,8 +14,7 @@
 (setq display-line-numbers-type 'relative)  ;; The line numbering should be realtive to current position
 (global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
 ;; Disable line numbering in the following modes
-(dolist (mode '(org-mode-hook
-		term-mode-hook
+(dolist (mode '(term-mode-hook
 		shell-mode-hook
 		eshell-mode-hook
 		doc-view-mode-hook
