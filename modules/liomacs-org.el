@@ -51,7 +51,7 @@
 	 (todo "TODO"
 	       ((org-agenda-overriding-header "Emails")
 		(org-agenda-files '("~/org/Agenda/emails.org"))))
-	 (todo "TODO"
+	 (alltodo ""
 	       ((org-agenda-overriding-header "SA")
 		(org-agenda-files '("~/org/Agenda/sa.org"))))
 	 (todo "TODO"
