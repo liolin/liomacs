@@ -14,7 +14,7 @@
   :custom
   (rustic-format-display-method #'ignore)
   :config
-  (setq rustic-format-on-save t)
+  (setq rustic-format-on-save nil)
   :hook
   (rustic-mode . lsp-deferred)
   (rustic-mode . hs-minor-mode)
