@@ -1,3 +1,8 @@
+(defun liolin/mailto (url)
+  (if (equal (length (s-trim url)) 0)
+      (message-mail)
+    (browse-url-mail url)))
+
 (use-package mu4e
   :ensure nil
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
