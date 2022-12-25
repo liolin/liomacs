@@ -45,29 +45,29 @@
 	((agenda ""
 		 ((org-agenda-span 'day)
 		  (org-deadline-warning-days 365)))
-	 (todo "TODO"
+	 (alltodo ""
 	       ((org-agenda-overriding-header "To Refile")
 		(org-agenda-files '("~/org/Agenda/inbox.org"))))
-	 (todo "TODO"
+	 (alltodo ""
 	       ((org-agenda-overriding-header "Emails")
 		(org-agenda-files '("~/org/Agenda/emails.org"))))
 	 (alltodo ""
-	       ((org-agenda-overriding-header "SA")
-		(org-agenda-files '("~/org/Agenda/sa.org"))))
-	 (todo "TODO"
+	       ((org-agenda-overriding-header "BA")
+		(org-agenda-files '("~/org/Agenda/ba.org"))))
+	 (alltodo ""
 	       ((org-agenda-overriding-header "OST")
 		(org-agenda-files '("~/org/Agenda/school.org"))))
-	 (todo "TODO"
+	 (alltodo ""
 	       ((org-agenda-overriding-header "IFS")
 		(org-agenda-files '("~/org/Agenda/work.org"))))
 	 (todo "NEXT"
 	       ((org-agenda-overriding-header "In Progress")
-		(org-agenda-files '("~/org/Agenda/sa.org"
+		(org-agenda-files '("~/org/Agenda/ba.org"
 				    "~/org/Agenda/projects.org"
 				    "~/org/Agenda/work.org"
 				    "~/org/Agenda/school.org"
 				    "~/org/Agenda/GTD.org"))))
-	 (todo "TODO"
+	 (alltodo ""
 	       ((org-agenda-overriding-header "Projects")
 		(org-agenda-files '("~/org/Agenda/projects.org"))))
 	 )))
