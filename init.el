@@ -33,6 +33,7 @@
     liomacs-undo
     liomacs-help
     liomacs-doc
+    liomacs-bookmark
     ;;liomacs-workspace
     liomacs-pass
     liomacs-rss

@@ -75,6 +75,7 @@
 (use-package org
   :hook
   (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
+  (org-mode . lsp-deferred)
   :bind
   ("C-c l" . org-store-link)
   ("C-c X" . org-capture)
@@ -92,7 +93,7 @@
   (org-link-set-parameters
    "yt"
    :follow (lambda (path)
-	     (async-shell-command (format "mpv \"https:%s\"" path))))
+	     (async-shell-command (format "mpv \"https://%s\"" path))))
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
   (liomacs/load-org-modules)
   :custom

@@ -1,0 +1,15 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("YT - Music"
+ (filename . "~/org/Agenda/GTD.org")
+ (front-context-string . "** YT - Music\n**")
+ (rear-context-string . "rößte Auswahl]]\n")
+ (position . 16986))
+("org-capture-last-stored"
+ (filename . "~/roam/20221229174718-how_does_the_semantic_checker_construct_the_symbol_table.org")
+ (front-context-string . "- tags :: [[id:6")
+ (rear-context-string . "e symbol table\n\n")
+ (position . 135))
+)
