@@ -72,6 +72,30 @@
 		(org-agenda-files '("~/org/Agenda/projects.org"))))
 	 )))
 
+(setq org-publish-project-alist
+      '(("roam-org"
+	 :base-directory "~/roam/"
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :publishing-directory "/tmp/roam_html/"
+	 :html-head "<link rel=\"stylesheet\"
+		  href=\"static/css/deadb17.css\" type=\"text/css\"/>"
+	 :html-preamble t
+	 :sitemap-filename "index.org")
+	("roam-attachment"
+	 :base-directory "~/roam/static/attachment/"
+	 :base-extension "png\\|png\\|jpg"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 :publishing-directory "/tmp/roam_html/static/attachment/")
+	("roam-css"
+	 :base-directory "~/roam/static/css/"
+	 :base-extension "css"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 :publishing-directory "/tmp/roam_html/static/css/")
+	("roam" :components ("roam-org" "roam-attachment" "roam-css"))))
+      
 (use-package org
   :hook
   (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
@@ -116,7 +140,9 @@
 	("l" "link" entry (file liomacs/org-inbox-file)
          "* TODO %(org-cliplink-capture)" :immediate-finish t)
 	("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-         "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t))))
+         "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
+  (org-publish-project-alist liomacs/org-publish-project-alist))
+
 
 (use-package org-cliplink)
 
