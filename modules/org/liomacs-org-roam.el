@@ -44,10 +44,12 @@
   (org-roam-directory "~/roam/")
   (org-roam-dailies-directory "daily/")
   (org-roam-completion-everywhere t)
-  (org-roam-capture-templates '(("d" "default" plain "\n- tags :: %?"
-				 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-						    "#+title: ${title}\n")
-				 :unnarrowed t)))
+  (org-roam-capture-templates
+   '(("d" "default" plain "\n- tags :: %?"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			 "#+title: ${title}\n")
+      :unnarrowed t)))
+  (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
   :init
   (setq org-roam-v2-ack t)
   :config
