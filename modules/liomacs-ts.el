@@ -10,6 +10,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-mode))
 (add-hook 'web-mode-hook
 	  (lambda ()
 	    (when (string-equal "tsx" (file-name-extension buffer-file-name))

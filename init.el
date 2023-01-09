@@ -57,7 +57,6 @@
     liomacs-latex
     liomacs-yaml
     liomacs-editorconfig
-    liomacs-mail
     liomacs-server)
   "A list of all modules to load")
 
@@ -73,6 +72,8 @@
 
   (require 'liomacs-package-management)
   (mapc 'require liomacs/modules)
+  (unless (not (eq (system-name) "NB-IFS-501047"))
+    (require 'liomacs-mail))
 
 
   ;; End init.el
