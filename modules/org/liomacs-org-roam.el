@@ -35,6 +35,17 @@
   (interactive)
   (consult-ripgrep "~/roam" ""))
 
+(defun liomacs/org-roam-node-visit-other ()
+  (interactive)
+  (org-roam-node-visit (org-roam-node-at-point) t))
+
+;; This alias is required otherwise the backlink buffer does not work.
+(defalias 'org-font-lock-ensure
+        (if (fboundp 'font-lock-ensure)
+            #'font-lock-ensure
+          (lambda (&optional _beg _end)
+            (with-no-warnings (font-lock-fontify-buffer)))))
+
 (use-package org-roam
   :ensure t
   :hook
@@ -62,6 +73,8 @@
 	 ("C-c n j" . org-roam-dailies-capture-today)
 	 ("C-c n u" . liomacs/update-org-id-files)
 	 ("C-c n r" . liomacs/search-roam-files)
+	 :map org-roam-mode-map
+	 ("<tab>"    . liomacs/org-roam-node-visit-other)
 	 :map org-mode-map
 	 ("C-c n <tab>"    . completion-at-point)))
 
