@@ -57,6 +57,7 @@
     liomacs-latex
     liomacs-yaml
     liomacs-editorconfig
+    liomacs-shell
     liomacs-server)
   "A list of all modules to load")
 
