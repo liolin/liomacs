@@ -73,7 +73,7 @@
 
   (require 'liomacs-package-management)
   (mapc 'require liomacs/modules)
-  (unless (not (eq (system-name) "NB-IFS-501047"))
+  (unless (eq (system-name) "NB-IFS-501047")
     (require 'liomacs-mail))
 
 
