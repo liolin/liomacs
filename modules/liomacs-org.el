@@ -79,8 +79,11 @@
 	 :publishing-function org-html-publish-to-html
 	 :publishing-directory "/tmp/roam_html/"
 	 :html-head "<link rel=\"stylesheet\"
-		  href=\"static/css/deadb17.css\" type=\"text/css\"/>"
+		  href=\"static/css/roam.css\" type=\"text/css\"/>"
 	 :html-preamble t
+	 :html-validation-link nil
+	 :with-toc nil
+	 :section-numbers nil
 	 :sitemap-filename "index.org")
 	("roam-attachment"
 	 :base-directory "~/roam/static/attachment/"
@@ -100,6 +103,7 @@
   :hook
   (org-agenda-finalize . liomacs/org-agenda-finalize-hook)
   (org-mode . lsp-deferred)
+  (org-export-before-processing . liomacs/org-roam-collect-backlinks-string)
   :bind
   ("C-c l" . org-store-link)
   ("C-c X" . org-capture)

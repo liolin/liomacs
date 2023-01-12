@@ -30,6 +30,21 @@
   (when (org-roam-file-p)
     (org-hugo-export-to-md)))
 
+(defun liomacs/org-roam-collect-backlinks-string (backend)
+  "Insert backlinks into the end of the org file before parsing it."
+  (when (org-roam-node-at-point)
+    (goto-char (point-max))
+    ;; Add a new header for the references
+    (insert "\n\n* Referenced in\n")
+    (let* ((backlinks (org-roam-backlinks-get (org-roam-node-at-point))))
+      (dolist (backlink backlinks)
+	(let* ((source-node (org-roam-backlink-source-node backlink))
+	       (point (org-roam-backlink-point backlink)))
+	  (insert
+	   (format "- [[./%s][%s]]\n"
+		   (file-relative-name (org-roam-node-file source-node) org-roam-directory)
+		   (org-roam-node-title source-node))))))))
+
 (defun liomacs/search-roam-files ()
   "Grep for a string in the `~/roam' using `rg'."
   (interactive)
@@ -74,7 +89,7 @@
 	 ("C-c n u" . liomacs/update-org-id-files)
 	 ("C-c n r" . liomacs/search-roam-files)
 	 :map org-roam-mode-map
-	 ("<tab>"    . liomacs/org-roam-node-visit-other)
+	 ("C-c <tab>"    . liomacs/org-roam-node-visit-other)
 	 :map org-mode-map
 	 ("C-c n <tab>"    . completion-at-point)))
 
