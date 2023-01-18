@@ -60,7 +60,7 @@
 	 (alltodo ""
 	       ((org-agenda-overriding-header "IFS")
 		(org-agenda-files '("~/org/Agenda/work.org"))))
-	 (todo "NEXT"
+	 (todo "WORKING"
 	       ((org-agenda-overriding-header "In Progress")
 		(org-agenda-files '("~/org/Agenda/ba.org"
 				    "~/org/Agenda/projects.org"
