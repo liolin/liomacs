@@ -1,4 +1,4 @@
 (setq bookmark-default-file
-      (expand-file-name "bookmarks" liomacs/emacs-dir))
+      (expand-file-name "org/bookmarks" liomacs/share-dir))
 
 (provide 'liomacs-bookmark)
