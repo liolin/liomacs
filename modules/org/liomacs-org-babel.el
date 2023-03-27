@@ -9,6 +9,7 @@
      (dot . t)
      (latex . t)
      (shell . t)
+     (hledger . t)
      (python . t)))
   :custom
   (org-plantuml-jar-path (expand-file-name "/usr/share/java/plantuml/plantuml.jar"))

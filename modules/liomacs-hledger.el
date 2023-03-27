@@ -16,11 +16,14 @@
 
 
 (use-package ledger-mode
+  :hook
+  (ledger-mode . company-mode)
   :custom
   (ledger-mode-should-check-version nil)
   (ledger-report-links-in-register nil)
+  (ledger-default-date-format "%Y-%m-%d")
   (ledger-binary-path "hledger")
   :init
-  (add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode)))
+  (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode)))
 
 (provide 'liomacs-hledger)
