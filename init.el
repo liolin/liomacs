@@ -78,8 +78,8 @@
 
   (require 'liomacs-package-management)
   (mapc 'require liomacs/modules)
-  ;; (unless (equal (system-name) "NB-IFS-501047")
-  ;;   (require 'liomacs-mail))
+  (unless (equal (system-name) "NB-IFS-501047")
+    (require 'liomacs-mail))
 
 
   ;; End init.el

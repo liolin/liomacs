@@ -4,7 +4,9 @@
   (tide-hl-identifier-mode +1))
 
 (use-package tide
-  :hook (typescript-mode . setup-tide-mode))
+  :hook
+  (typescript-mode . setup-tide-mode)
+  (typescript-mode . hs-minor-mode))
 
 (use-package web-mode
   :hook
@@ -15,7 +17,9 @@
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode)))
 
-(use-package ng2-mode)
+(use-package ng2-mode
+  :hook
+  (ng2-mode . hs-minor-mode))
 
 (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-mode))
 
