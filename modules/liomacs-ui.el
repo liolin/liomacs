@@ -11,7 +11,7 @@
 (blink-cursor-mode 0) ;; Disable blinking cursor
 (set-face-attribute 'default nil :height 120)
 
-(setq display-line-numbers-type 'relative)  ;; The line numbering should be realtive to current position
+(setq display-line-numbers-type 'visual)  ;; The line numbering should be realtive to current position
 (global-display-line-numbers-mode t)  ;; Enables line numbering in all modes
 ;; Disable line numbering in the following modes
 (dolist (mode '(term-mode-hook
