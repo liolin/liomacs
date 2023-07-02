@@ -63,6 +63,7 @@
   (scroll-bar-mode -1)
   (set-fringe-mode 10)
   (blink-cursor-mode 0)
+  (indent-tabs-mode nil)
   (global-display-line-numbers-mode t)
   (dolist (mode '(term-mode-hook
 		  shell-mode-hook
@@ -573,6 +574,14 @@
   ;;(rustic-mode . lsp-deferred)
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
+
+;;
+;; Java
+;;
+(use-package lsp-java
+  :demand t
+  :hook
+  (java-mode . lsp-deferred))
 
 ;;
 ;; LaTeX
