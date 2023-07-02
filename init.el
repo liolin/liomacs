@@ -86,30 +86,26 @@
 (use-package telephone-line
   :config
   (telephone-line-mode 1))
-;; (use-package doom-modeline
-;;   :demand t
-;;   :hook (elpaca-after-init . doom-modeline-mode))
 
 (use-package all-the-icons
   :demand t)
 
-;; Expands to: (elpaca evil (use-package evil :demand t))
-(use-package evil
-  :demand t
-  :custom
-  (evil-want-integration t)
-  (evil-want-C-u-scroll t)
-  (evil-want-C-i-jump t)
-  :bind
-  ("<escape>" . keyboard-escape-quite)
-  :config
-  (evil-mode 1))
+ (use-package evil
+   :demand t
+   :custom
+   (evil-want-integration t)
+   (evil-want-keybinding nil)
+   (evil-want-C-u-scroll t)
+   (evil-want-C-i-jump t)
+   :bind
+   ("<escape>" . keyboard-escape-quite)
+   :config
+   (evil-mode 1))
 
 (use-package evil-collection
   :demand t
   :after evil
   :config
-  (message "%s" evil-want-integration)
   (evil-collection-init))
 
 ;; (use-package evil-surround
@@ -119,16 +115,15 @@
 ;;   (globa-evil-surround-mode 1))
 
 
-;; (use-package rainbow-delimiters
-;;   :hook
-;;   (prog-mode . rainbox-delimiters-mode))
+(use-package rainbow-delimiters
+  :demand t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 (use-package which-key
   :demand t
   :init
   (which-key-mode)
-  ;; :diminish
-  ;; which-key-mode
   :custom
   (which-key-idel-delay 1))
 
@@ -164,6 +159,7 @@
 
 (use-package embark
   :demand t)
+
 (use-package embark-consult
   :demand t)
 
@@ -191,6 +187,7 @@
   (global-undo-tree-mode)
   (evil-set-undo-system 'undo-tree))
 
+;; TODO: elpaca does not find it
 ;; (use-package fixmee
 ;;   :demand t
 ;;   :config
@@ -248,7 +245,7 @@
 	 :base-directory "~/roam/"
 	 :recursive t
 	 :publishing-function org-html-publish-to-html
-	 :publishing-directory "/tmp/roam_html/"
+	 :publishing-directory "~/code/roam_html/"
 	 :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
 	 :html-preamble t
 	 :html-validation-link nil
@@ -260,13 +257,13 @@
 	 :base-extension "png\\|jpg\\|jpeg"
 	 :recursive t
 	 :publishing-function org-publish-attachment
-	 :publishing-directory "/tmp/roam_html/static/attachment/")
+	 :publishing-directory "~/code/roam_html/static/attachment/")
 	("roam-css"
 	 :base-directory "~/roam/static/css/"
 	 :base-extension "css"
 	 :recursive t
 	 :publishing-function org-publish-attachment
-	 :publishing-directory "/tmp/roam_html/static/css/")
+	 :publishing-directory "~/code/roam_html/static/css/")
 	("roam" :components ("roam-org" "roam-attachment" "roam-css"))))
 
 (defun liomacs/org-agenda-process-inbox-item ()
@@ -289,7 +286,6 @@
      (dot . t)
      (latex . t)
      (shell . t)
-     (hledger . t)
      (python . t)))
   ;; :hook
   ;; (org-mode . lsp-deferred)
@@ -344,7 +340,6 @@
   (require 'ox-latex)
 
   (org-indent-mode)
-  ;; (variable-pitch-mode 1)
   (visual-line-mode 1)
   (set-face-attribute 'org-headline-done nil :strike-through t)
   (org-link-set-parameters
@@ -352,7 +347,7 @@
    :follow
    (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
 
-  ;; TODO: add agenda view
+  ;; agenda-view
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
 
   ;; org-latex
@@ -378,6 +373,7 @@
   :config
   (setq org-latex-prefer-user-labels t))
 
+;; TODO: Improve this config
 (use-package citar
   :demand t
   :custom
@@ -401,7 +397,8 @@
   :init
   (setq org-roam-v2-ack t)
   :hook
-  ;;(org-roam-mode . lsp-deferred)
+  ;; TODO: Enable again when everything is fine
+  ;; (org-roam-mode . lsp-deferred)
   (org-roam-mode . org-roam-db-autosync-mode)
   :custom
   (org-roam-directory "~/roam")
@@ -420,11 +417,7 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n u" . liomacs/update-org-id-files)
-  ;;("C-c n r" . liomacs/search-roam-files)
-  :map org-roam-mode-map
-  ;;("C-c <tab>" . liomacs/org-roam-node-visit-other)
-  ))
+  ("C-c n u" . liomacs/update-org-id-files)))
 
 (use-package org-noter
   :demand t)
@@ -446,18 +439,23 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-;;
 ;; mu4e
-;; TODO: Creates some errors
 ;;
 (defun liolin/mailto (url)
   (if (equal (length (s-trim url)) 0)
       (message-mail)
     (browse-url-mail url)))
 
+;; TODO: Does not find emacs lisp files from elpaca
 ;; (use-package mu4e
-;;   :elpaca nil
+;;   :demand t
+;;   :elpaca ( :host github 
+;; 	    :repo "djcb/mu"  
+;; 	    :branch "master"
+;; 	    :files ("mu4e/*")   
+;; 	    :pre-build (("./autogen.sh") ("make"))) 
 ;;   :custom
+;;   (mu4e-mu-binary "~/.local/bin/mu")
 ;;   (mu4e-org-link-query-in-headers-mode t)
 ;;   (mu4e-change-filename-when-moving t)
 ;;   (mu4e-update-interval (* 5 60))
@@ -480,8 +478,7 @@
 ;; 		  (mu4e-trash-folder  . "/liolin/Trash")
 ;; 		  (mu4e-refile-folder . "/archiv")))))
 ;;   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
-;;   ;;(add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
-;;   )
+;;   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
 ;; (use-package mu4e-alert
 ;;   :demand t
@@ -490,14 +487,15 @@
 ;;   :config
 ;;   (mu4e-alert-set-default-style 'libnotify))
 
-;; (use-package smtpmail
-;;   :elpaca nil
-;;   :custom
-;;   (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
-;;   (smtpmail-smtp-service 587)
-;;   (smtpmail-stream-type 'starttls)
-;;   (message-send-mail-function 'smtpmail-send-it))
+(use-package smtpmail
+  :elpaca nil
+  :custom
+  (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
+  (smtpmail-smtp-service 587)
+  (smtpmail-stream-type 'starttls)
+  (message-send-mail-function 'smtpmail-send-it))
 
+;;
 ;;
 ;; pdf-tool
 ;;
@@ -579,6 +577,7 @@
 ;;
 ;; LaTeX
 ;;
+;; TODO: Is not found
 ;; (use-package auctex
 ;;   :demand t
 ;;   :hook
@@ -592,14 +591,6 @@
 ;; 	reftex-default-bibliography '("~/biblio/main.bib"))
 ;;   (setq-default Tex-master nil))
 
-;;
-;; Angular
-;;
-(use-package ng2-mode
-  :demand t
-  :hook
-  (ng2-mode . hs-minor-mode))
-
 (use-package json-mode
   :demand t)
 
@@ -612,12 +603,33 @@
 (use-package lsp-ltex
   :demand t
   :after lsp
+  :hook (text-mode . (lambda ()
+		       (require 'lsp-ltex)
+		       (lsp-deferred)))
+  :init
+  (setq lsp-ltex-version "15.2.0")
   :config
   (flycheck-add-next-checker 'lsp 'proselint)
   (setq lsp-ltex-language "en-GB"))
 
+;;
+;; ledger
+;;
+(use-package ledger-mode
+  :demand t
+  :hook
+  (ledger-mode . company-mode)
+  :custom
+  (ledger-mode-should-check-version nil)
+  (ledger-mode-links-in-register nil)
+  (ledger-default-date-format "%Y-%m-%d")
+  (ledger-binary-path "hledger")
+  :init
+  (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode)))
 
+;;
 ;; server
+;;
 (use-package server
   :elpaca nil
   :config
@@ -626,12 +638,16 @@
 
 ;; Don't install anything. Defer execution of BODY
 (elpaca nil (message "deferred"))
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files nil nil nil "Customized with use-package org")
+ '(org-agenda-files
+   '("/home/liolin/org/Agenda/Events.org" "/home/liolin/org/Agenda/GTD.org" "/home/liolin/org/Agenda/Habits.org" "/home/liolin/org/Agenda/ba.org" "/home/liolin/org/Agenda/calendar_ost.org" "/home/liolin/org/Agenda/emails.org" "/home/liolin/org/Agenda/inbox.org" "/home/liolin/org/Agenda/projects.org" "/home/liolin/org/Agenda/reports.org" "/home/liolin/org/Agenda/sa.org" "/home/liolin/org/Agenda/school.org" "/home/liolin/org/Agenda/work.org") nil nil "Customized with use-package org")
  '(org-latex-src-block-backend 't nil nil "Customized with use-package org")
  '(safe-local-variable-values
    '((projectile-project-compilation-cmd . "cd Documentation/ && make")
