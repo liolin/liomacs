@@ -1,4 +1,4 @@
-(defvar elpaca-installer-version 0.4)
+(defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -19,6 +19,7 @@
                  ((zerop (call-process "git" nil buffer t "clone"
                                        (plist-get order :repo) repo)))
                  ((zerop (call-process "git" nil buffer t "checkout"
+
                                        (or (plist-get order :ref) "--"))))
                  (emacs (concat invocation-directory invocation-name))
                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
@@ -77,7 +78,8 @@
    delete-old-versions t
    kept-new-versions 6
    kept-old-versions 2
-   version-control t))
+   version-control t
+   indent-tabs-mode nil))
 
 (use-package color-theme-sanityinc-tomorrow
   :demand t
@@ -582,7 +584,6 @@
   :demand t
   :hook
   (java-mode . lsp-deferred))
-
 ;;
 ;; LaTeX
 ;;
