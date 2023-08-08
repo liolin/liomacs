@@ -314,7 +314,7 @@
      ("l" "link" entry (file liomacs/org-inbox-file)
       "* TODO %(org-cliplink-capture)" :immediate-finish t)
      ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-      "* TODO [[%link][%description]]\n\n %i" :immediate-finish t)))
+      "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
   ;; org-babel
   (org-confirm-babel-evaluate nil)
   ;; org-planuml
