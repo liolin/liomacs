@@ -81,6 +81,242 @@
    version-control t
    indent-tabs-mode nil))
 
+(setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
+(setq liomacs/org-email-file "~/org/Agenda/emails.org")
+(setq liomacs/org-agenda-todo-view
+      '("i" "Agenda"
+	((agenda ""
+		 ((org-agenda-span 'day)
+		  (org-deadline-warning-days 365)))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "To Refile")
+		   (org-agenda-files '("~/org/Agenda/inbox.org"))))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "Emails")
+		   (org-agenda-files '("~/org/Agenda/emails.org"))))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "BA")
+		   (org-agenda-files '("~/org/Agenda/ba.org"))))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "OST")
+		   (org-agenda-files '("~/org/Agenda/school.org"))))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "IFS")
+		   (org-agenda-files '("~/org/Agenda/work.org"))))
+	 (todo "WORKING"
+	       ((org-agenda-overriding-header "In Progress")
+		(org-agenda-files '("~/org/Agenda/ba.org"
+				    "~/org/Agenda/projects.org"
+				    "~/org/Agenda/work.org"
+				    "~/org/Agenda/school.org"
+				    "~/org/Agenda/GTD.org"))))
+	 (alltodo ""
+		  ((org-agenda-overriding-header "Projects")
+		   (org-agenda-files '("~/org/Agenda/projects.org")))))))
+
+(setq org-publish-project-alist
+      '(("roam-org"
+	 :base-directory "~/roam/"
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :publishing-directory "~/code/roam_html/"
+	 :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
+	 :html-preamble t
+	 :html-validation-link nil
+	 :with-toc nil
+	 :section-number nil
+	 :sitemap-filename "index.org")
+	("roam-attachment"
+	 :base-directory "~/roam/static/attachment/"
+	 :base-extension "png\\|jpg\\|jpeg"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 :publishing-directory "~/code/roam_html/static/attachment/")
+	("roam-css"
+	 :base-directory "~/roam/static/css/"
+	 :base-extension "css"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 :publishing-directory "~/code/roam_html/static/css/")
+	("roam" :components ("roam-org" "roam-attachment" "roam-css"))))
+
+(defun liomacs/org-agenda-process-inbox-item ()
+  "Process a single item in the org-agenda."
+  (org-with-wide-buffer
+   (org-agenda-set-tags)
+   (org-agenda-priority)
+   (org-agenda-refile nil nil t)))
+
+(use-package org
+  :demand t
+  :init
+  ;; org-babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (haskell . t)
+     (ditaa . t)
+     (plantuml . t)
+     (dot . t)
+     (latex . t)
+     (shell . t)
+     (python . t)))
+  ;; :hook
+  ;; (org-mode . lsp-deferred)
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c X" . org-capture)
+  ("C-c a" . org-agenda)
+  :custom
+  (org-directory "~/org/")
+  (org-ellipsis " ▾")
+  (org-todo-keywords '((sequence "TODO" "NEXT" "WORKING" "WAIT" "|" "DONE" "KILL")))
+  (org-log-done 'time)
+  (org-startup-folded t)
+  (org-attach-use-inheritance t)
+  (org-agenda-files
+   (append (directory-files "~/org/Agenda" t ".org")))
+  (org-agenda-skip-deadline-prewarning-if-scheduled t)
+  (org-capture-templates
+   `(("i" "inbox" entry (file liomacs/org-inbox-file)
+      "* TODO %?")
+     ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
+      "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
+     ("l" "link" entry (file liomacs/org-inbox-file)
+      "* TODO %(org-cliplink-capture)" :immediate-finish t)
+     ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
+      "* TODO [[%link][%description]]\n\n %i" :immediate-finish t)))
+  ;; org-babel
+  (org-confirm-babel-evaluate nil)
+  ;; org-planuml
+  (org-plantuml-jar-path (expand-file-name "/usr/share/java/plantuml/plantuml.jar"))
+  (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
+
+  ;; org-latex
+  (org-latex-title-command "")
+  (org-latex-toc-command "")
+  (org-latex-listings 't)
+  (org-latex-compiler "xelatex")
+  (org-latex-prefer-user-labels t)
+  (org-latex-pdf-process
+   '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f"))
+
+  ;; org-cite
+  (org-cite-global-bibliography '("~/biblio/main.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+
+  ;; TODO: project alist
+  :config
+  (require 'org-protocol)
+  (require 'org-tempo)
+  (require 'org-agenda)
+  (require 'ox-latex)
+
+  (org-indent-mode)
+  (visual-line-mode 1)
+  (set-face-attribute 'org-headline-done nil :strike-through t)
+  (org-link-set-parameters
+   "yt"
+   :follow
+   (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
+
+  ;; agenda-view
+  (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
+
+  ;; org-latex
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color"))
+  (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
+  (add-to-list 'org-latex-packages-alist '("" "subcaption"))
+  (add-to-list 'org-latex-classes
+	       '("ost-summary"
+		 "\\documentclass{article}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+  (add-to-list 'org-latex-classes
+	       '("ost-exam-summary"
+		 "\\documentclass{extarticle}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\"))))
+
+(use-package org-ref
+  :bind
+  (:map org-mode-map
+	("C-c ]" . org-ref-insert-link-hydra/body))
+  :config
+  (setq org-latex-prefer-user-labels t))
+
+;; TODO: Improve this config
+(use-package citar
+  :demand t
+  :after all-the-icons
+  :custom
+  (citar-bibliography '("~/biblio/main.bib"))
+  (citar-notes-paths '("~/biblio/main"))
+  (citar-symbols
+   `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
+     (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
+     (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
+  (citar-symbol-separator " "))
+
+
+(defun liomacs/update-org-id-files ()
+  "Adds all IDs from the org-roam files to the org-id-locations-file"
+  (interactive)
+  (let ((fil (org-roam--list-files org-roam-directory)))
+    (org-id-update-id-locations fil)))
+
+(use-package org-roam
+  :demand t
+  :init
+  (setq org-roam-v2-ack t)
+  :hook
+  ;; TODO: Enable again when everything is fine
+  ;; (org-roam-mode . lsp-deferred)
+  (org-roam-mode . org-roam-db-autosync-mode)
+  :custom
+  (org-roam-directory "~/roam")
+  (org-roam-dailies-directory "daily/")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain "\n- tags :: %?"
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			 "#+title: ${title}\n")
+      :unnarrowed t)))
+  (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle)
+  ("C-c n f" . org-roam-node-find)
+  ("C-c n g" . org-roam-graph)
+  ("C-c n i" . org-roam-node-insert)
+  ("C-c n c" . org-roam-capture)
+  ("C-c n j" . org-roam-dailies-capture-today)
+  ("C-c n u" . liomacs/update-org-id-files)))
+
+(use-package org-noter
+  :demand t)
+
+(use-package org-cliplink
+  :demand t)
+
+(use-package org-contrib
+  :demand t
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
+
+(use-package evil-org
+  :demand t
+  :after evil
+  :hook
+  (org-mode . evil-org-mode)
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+
 (use-package color-theme-sanityinc-tomorrow
   :demand t
   :config
@@ -206,242 +442,6 @@
   ([remap describe-key]       . helpful-key))
 
 
-;;;
-;;; Org mode config
-;;;
-
-(setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
-(setq liomacs/org-email-file "~/org/Agenda/emails.org")
-(setq liomacs/org-agenda-todo-view
-      '("i" "Agenda"
-	((agenda ""
-		 ((org-agenda-span 'day)
-		  (org-deadline-warning-days 365)))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "To Refile")
-		   (org-agenda-files '("~/org/Agenda/inbox.org"))))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "Emails")
-		   (org-agenda-files '("~/org/Agenda/emails.org"))))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "BA")
-		   (org-agenda-files '("~/org/Agenda/ba.org"))))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "OST")
-		   (org-agenda-files '("~/org/Agenda/school.org"))))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "IFS")
-		   (org-agenda-files '("~/org/Agenda/work.org"))))
-	 (todo "WORKING"
-	       ((org-agenda-overriding-header "In Progress")
-		(org-agenda-files '("~/org/Agenda/ba.org"
-				    "~/org/Agenda/projects.org"
-				    "~/org/Agenda/work.org"
-				    "~/org/Agenda/school.org"
-				    "~/org/Agenda/GTD.org"))))
-	 (alltodo ""
-		  ((org-agenda-overriding-header "Projects")
-		   (org-agenda-files '("~/org/Agenda/projects.org")))))))
-
-(setq org-publish-project-alist
-      '(("roam-org"
-	 :base-directory "~/roam/"
-	 :recursive t
-	 :publishing-function org-html-publish-to-html
-	 :publishing-directory "~/code/roam_html/"
-	 :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
-	 :html-preamble t
-	 :html-validation-link nil
-	 :with-toc nil
-	 :section-number nil
-	 :sitemap-filename "index.org")
-	("roam-attachment"
-	 :base-directory "~/roam/static/attachment/"
-	 :base-extension "png\\|jpg\\|jpeg"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 :publishing-directory "~/code/roam_html/static/attachment/")
-	("roam-css"
-	 :base-directory "~/roam/static/css/"
-	 :base-extension "css"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 :publishing-directory "~/code/roam_html/static/css/")
-	("roam" :components ("roam-org" "roam-attachment" "roam-css"))))
-
-(defun liomacs/org-agenda-process-inbox-item ()
-  "Process a single item in the org-agenda."
-  (org-with-wide-buffer
-   (org-agenda-set-tags)
-   (org-agenda-priority)
-   (org-agenda-refile nil nil t)))
-
-(use-package org
-  :demand t
-  :init
-  ;; org-babel
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (haskell . t)
-     (ditaa . t)
-     (plantuml . t)
-     (dot . t)
-     (latex . t)
-     (shell . t)
-     (python . t)))
-  ;; :hook
-  ;; (org-mode . lsp-deferred)
-  :bind
-  ("C-c l" . org-store-link)
-  ("C-c X" . org-capture)
-  ("C-c a" . org-agenda)
-  :custom
-  (org-directory "~/org/")
-  (org-ellipsis " ▾")
-  (org-todo-keywords '((sequence "TODO" "NEXT" "WORKING" "WAIT" "|" "DONE" "KILL")))
-  (org-log-done 'time)
-  (org-startup-folded t)
-  (org-attach-use-inheritance t)
-  (org-agenda-files
-   (append (directory-files "~/org/Agenda" t ".org")))
-  (org-agenda-skip-deadline-prewarning-if-scheduled t)
-  (org-capture-templates
-   `(("i" "inbox" entry (file liomacs/org-inbox-file)
-      "* TODO %?")
-     ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
-      "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
-     ("l" "link" entry (file liomacs/org-inbox-file)
-      "* TODO %(org-cliplink-capture)" :immediate-finish t)
-     ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-      "* TODO [[%link][%description]]\n\n %i" :immediate-finish t)))
-  ;; org-babel
-  (org-confirm-babel-evaluate nil)
-  ;; org-planuml
-  (org-plantuml-jar-path (expand-file-name "/usr/share/java/plantuml/plantuml.jar"))
-  (org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
-
-  ;; org-latex
-  (org-latex-title-command "")
-  (org-latex-toc-command "")
-  (org-latex-listings 't)
-  (org-latex-compiler "xelatex")
-  (org-latex-pdf-process
-   '("latexmk -f -pdf -%latex -interaction=nonstopmode -output-directory=%o -bibtex %f"))
-
-  ;; org-cite
-  (org-cite-global-bibliography '("~/biblio/main.bib"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-
-  ;; TODO: project alist
-  :config
-  (require 'org-protocol)
-  (require 'org-tempo)
-  (require 'org-agenda)
-  (require 'ox-latex)
-
-  (org-indent-mode)
-  (visual-line-mode 1)
-  (set-face-attribute 'org-headline-done nil :strike-through t)
-  (org-link-set-parameters
-   "yt"
-   :follow
-   (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
-
-  ;; agenda-view
-  (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
-
-  ;; org-latex
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color"))
-  (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
-  (add-to-list 'org-latex-packages-alist '("" "subcaption"))
-  (add-to-list 'org-latex-classes
-	       '("ost-summary"
-		 "\\documentclass{article}"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
-  (add-to-list 'org-latex-classes
-	       '("ost-exam-summary"
-		 "\\documentclass{extarticle}"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\"))))
-
-(use-package org-ref
-  :bind
-  (:map org-mode-map
-	("C-c ]" . org-ref-insert-link-hydra/body))
-  :config
-  (setq org-latex-prefer-user-labels t))
-
-;; TODO: Improve this config
-(use-package citar
-  :demand t
-  :custom
-  (citar-bibliography '("~/biblio/main.bib"))
-  (citar-notes-paths '("~/biblio/main"))
-  (citar-symbols
-   `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
-     (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-     (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
-  (citar-symbol-separator " "))
-
-
-(defun liomacs/update-org-id-files ()
-  "Adds all IDs from the org-roam files to the org-id-locations-file"
-  (interactive)
-  (let ((fil (org-roam--list-files org-roam-directory)))
-    (org-id-update-id-locations fil)))
-
-(use-package org-roam
-  :demand t
-  :init
-  (setq org-roam-v2-ack t)
-  :hook
-  ;; TODO: Enable again when everything is fine
-  ;; (org-roam-mode . lsp-deferred)
-  (org-roam-mode . org-roam-db-autosync-mode)
-  :custom
-  (org-roam-directory "~/roam")
-  (org-roam-dailies-directory "daily/")
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "default" plain "\n- tags :: %?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-			 "#+title: ${title}\n")
-      :unnarrowed t)))
-  (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
-  :bind
-  (("C-c n l" . org-roam-buffer-toggle)
-  ("C-c n f" . org-roam-node-find)
-  ("C-c n g" . org-roam-graph)
-  ("C-c n i" . org-roam-node-insert)
-  ("C-c n c" . org-roam-capture)
-  ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n u" . liomacs/update-org-id-files)))
-
-(use-package org-noter
-  :demand t)
-
-(use-package org-cliplink
-  :demand t)
-
-(use-package org-contrib
-  :demand t
-  :config
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
-
-(use-package evil-org
-  :demand t
-  :hook
-  (org-mode . evil-org-mode)
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-
 ;; mu4e
 ;;
 (defun liolin/mailto (url)
@@ -450,38 +450,62 @@
     (browse-url-mail url)))
 
 ;; TODO: Does not find emacs lisp files from elpaca
-;; (use-package mu4e
-;;   :demand t
-;;   :elpaca ( :host github 
-;; 	    :repo "djcb/mu"  
-;; 	    :branch "master"
-;; 	    :files ("mu4e/*")   
-;; 	    :pre-build (("./autogen.sh") ("make"))) 
-;;   :custom
-;;   (mu4e-mu-binary "~/.local/bin/mu")
-;;   (mu4e-org-link-query-in-headers-mode t)
-;;   (mu4e-change-filename-when-moving t)
-;;   (mu4e-update-interval (* 5 60))
-;;   (mu4-get-mail-command "mbsync -a")
-;;   (mu4e-maildir "~/.mail")
-;;   (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
-;; 			    ("/liolin/Sent"  . ?s)
-;; 			    ("/liolin/Trash" . ?t)))
-;;   :config
-;;   (setq mu4e-contexts
-;; 	`(,(make-mu4e-context
-;; 	  :name "liolin"
-;; 	  :match-func (lambda (msg)
-;; 			(when msg
-;; 			  (string-prefix-p "/liolin" (mu4e-message-field :maildir))))
-;; 	  :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
-;; 		  (user-full-name     . "Olivier Lischer")
-;; 		  (mu4e-drafts-folder . "/liolin/Drafts")
-;; 		  (mu4e-sent-folder   . "/liolin/Sent")
-;; 		  (mu4e-trash-folder  . "/liolin/Trash")
-;; 		  (mu4e-refile-folder . "/archiv")))))
-;;   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
-;;   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
+(use-package mu4e
+  :elpaca nil
+  :after org
+  ;; :elpaca ( :host github 
+  ;; 	    :repo "djcb/mu"  
+  ;; 	    :branch "master"
+  ;; 	    :files ("mu4e/*")   
+  ;; 	    :pre-build (("./autogen.sh") ("make")))
+  :custom
+  (mu4e-org-link-query-in-headers-mode t)
+  (mu4e-change-filename-when-moving t)
+  (mu4e-update-interval (* 5 60))
+  (mu4-get-mail-command "mbsync -a")
+  (mu4e-maildir "~/.mail")
+  (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
+			    ("/liolin/Sent"  . ?s)
+			    ("/liolin/Trash" . ?t)))
+  :config
+  (setq mu4e-contexts
+	`(,(make-mu4e-context
+	  :name "liolin"
+	  :match-func (lambda (msg)
+			(when msg
+			  (string-prefix-p "/liolin" (mu4e-message-field :maildir))))
+	  :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
+		  (user-full-name     . "Olivier Lischer")
+		  (mu4e-drafts-folder . "/liolin/Drafts")
+		  (mu4e-sent-folder   . "/liolin/Sent")
+		  (mu4e-trash-folder  . "/liolin/Trash")
+		  (mu4e-refile-folder . "/archiv")))
+	 ,(make-mu4e-context
+	  :name "notes"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/notes" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address . "notes@liolin.ch")
+		  (user-full-name    . "Olivier Lischer")
+		  (mu4e-drafts-folder . "/notes/Drafts")
+		  (mu4e-sent-folder . "/notes/Sent")
+		  (mu4e-trash-folder . "/notes/Trash")
+		  (mu4e-refile-folder . "/archiv")))
+	 ,(make-mu4e-context
+	  :name "gmail"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address . "olivier.lischer.blon@gmail.com")
+		  (user-full-name    . "Olivier Lischer")
+		  (mu4e-drafts-folder . "/gmail/[Gmail]/Entw&APw-rfe")
+		  (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
+		  (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
+		  (mu4e-refile-folder . "/archiv")))))
+  (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
+  (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
 ;; (use-package mu4e-alert
 ;;   :demand t
@@ -656,11 +680,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("/home/liolin/org/Agenda/Events.org" "/home/liolin/org/Agenda/GTD.org" "/home/liolin/org/Agenda/Habits.org" "/home/liolin/org/Agenda/ba.org" "/home/liolin/org/Agenda/calendar_ost.org" "/home/liolin/org/Agenda/emails.org" "/home/liolin/org/Agenda/inbox.org" "/home/liolin/org/Agenda/projects.org" "/home/liolin/org/Agenda/reports.org" "/home/liolin/org/Agenda/sa.org" "/home/liolin/org/Agenda/school.org" "/home/liolin/org/Agenda/work.org") nil nil "Customized with use-package org")
  '(org-latex-src-block-backend 't nil nil "Customized with use-package org")
  '(safe-local-variable-values
-   '((projectile-project-compilation-cmd . "cd Documentation/ && make")
+   '((eval add-hook 'after-save-hook
+	   (lambda nil
+	     (if
+		 (y-or-n-p "Tangle?")
+		 (org-babel-tangle)))
+	   nil t)
+     (projectile-project-compilation-cmd . "cd Documentation/ && make")
      (lsp-ltex-language . "de-CH")
      (org-hugo-base-dir . "~/code/dg"))))
 (custom-set-faces
