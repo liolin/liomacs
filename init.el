@@ -628,6 +628,9 @@
 (use-package json-mode
   :demand t)
 
+(use-package yaml-mode
+  :demand t)
+
 ;;
 ;; flycheck
 ;;
