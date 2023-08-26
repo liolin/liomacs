@@ -629,6 +629,9 @@
   :custom
   (js-indent-level 2))
 
+(use-package yaml-mode
+  :demand t)
+
 ;;
 ;; flycheck
 ;;
