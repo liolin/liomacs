@@ -47,9 +47,9 @@
 ;; Block until current queue processed.
 (elpaca-wait)
 
-;;Turns off elpaca-use-package-mode current declartion
-;;Note this will cause the declaration to be interpreted immediately (not deferred).
-;;Useful for configuring built-in emacs features.
+;; Turns off elpaca-use-package-mode current declartion
+;; Note this will cause the declaration to be interpreted immediately (not deferred).
+;; Useful for configuring built-in emacs features.
 (use-package emacs
   :elpaca nil
   :hook
@@ -489,7 +489,6 @@
       (message-mail)
     (browse-url-mail url)))
 
-;; TODO: Does not find emacs lisp files from elpaca
 (use-package mu4e
   :elpaca nil
   :after org
@@ -547,12 +546,12 @@
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
-;; (use-package mu4e-alert
-;;   :demand t
-;;   :hook
-;;   (elpaca-after-init . mu4e-alert-enable-notifications)
-;;   :config
-;;   (mu4e-alert-set-default-style 'libnotify))
+(use-package mu4e-alert
+  :demand t
+  :hook
+  (elpaca-after-init . mu4e-alert-enable-notifications)
+  :config
+  (mu4e-alert-set-default-style 'libnotify))
 
 (use-package smtpmail
   :elpaca nil
@@ -666,6 +665,11 @@
 ;;   (setq-default Tex-master nil))
 
 (use-package json-mode
+  :demand t
+  :custom
+  (js-indent-level 2))
+
+(use-package yaml-mode
   :demand t)
 
 ;;
@@ -676,7 +680,7 @@
 
 (use-package lsp-ltex
   :demand t
-  :after lsp
+  ;;:after lsp
   :hook (text-mode . (lambda ()
 		       (require 'lsp-ltex)
 		       (lsp-deferred)))
