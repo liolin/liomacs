@@ -512,7 +512,7 @@
 	  :name "liolin"
 	  :match-func (lambda (msg)
 			(when msg
-			  (string-prefix-p "/liolin" (mu4e-message-field :maildir))))
+			  (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
 	  :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
 		  (user-full-name     . "Olivier Lischer")
 		  (mu4e-drafts-folder . "/liolin/Drafts")
