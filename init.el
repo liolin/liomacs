@@ -185,7 +185,7 @@
      ("l" "link" entry (file liomacs/org-inbox-file)
       "* TODO %(org-cliplink-capture)" :immediate-finish t)
      ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-      "* TODO [[%link][%description]]\n\n %i" :immediate-finish t)))
+      "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
   ;; org-babel
   (org-confirm-babel-evaluate nil)
   ;; org-planuml
@@ -418,10 +418,10 @@
   :hook
   (company-mode . company-box-mode))
 
-(use-package tree-sitter
-  :elpaca nil 
-  :config
-  (global-tree-sitter-mode))
+;; (use-package tree-sitter
+;;   :elpaca nil 
+;;   :config
+;;   (global-tree-sitter-mode))
   ;; ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
   ;; ;; by switching on and off
   ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
