@@ -47,9 +47,9 @@
 ;; Block until current queue processed.
 (elpaca-wait)
 
-;;Turns off elpaca-use-package-mode current declartion
-;;Note this will cause the declaration to be interpreted immediately (not deferred).
-;;Useful for configuring built-in emacs features.
+;; Turns off elpaca-use-package-mode current declartion
+;; Note this will cause the declaration to be interpreted immediately (not deferred).
+;; Useful for configuring built-in emacs features.
 (use-package emacs
   :elpaca nil
   :hook
@@ -182,7 +182,7 @@
      ("l" "link" entry (file liomacs/org-inbox-file)
       "* TODO %(org-cliplink-capture)" :immediate-finish t)
      ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-      "* TODO [[%link][%description]]\n\n %i" :immediate-finish t)))
+      "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
   ;; org-babel
   (org-confirm-babel-evaluate nil)
   ;; org-planuml
@@ -415,6 +415,46 @@
   :hook
   (company-mode . company-box-mode))
 
+;; (use-package tree-sitter
+;;   :elpaca nil 
+;;   :config
+;;   (global-tree-sitter-mode))
+  ;; ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
+  ;; ;; by switching on and off
+  ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :demand t
+  :after tree-sitter)
+
+(use-package typescript-mode
+  :after tree-sitter
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
+
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+
+(use-package tsi
+  :after tree-sitter
+  :elpaca (tsi :fetcher github :repo "orzechowskid/tsi.el")
+  ;; define autoload definitions which when actually invoked will cause package to be loaded
+  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
+  :init
+  (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
+  (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
+  (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
+  (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
+
+
+
+
 (use-package undo-tree
   :demand t
   :custom
@@ -446,7 +486,6 @@
       (message-mail)
     (browse-url-mail url)))
 
-;; TODO: Does not find emacs lisp files from elpaca
 (use-package mu4e
   :elpaca nil
   :after org
@@ -470,7 +509,7 @@
 	  :name "liolin"
 	  :match-func (lambda (msg)
 			(when msg
-			  (string-prefix-p "/liolin" (mu4e-message-field :maildir))))
+			  (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
 	  :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
 		  (user-full-name     . "Olivier Lischer")
 		  (mu4e-drafts-folder . "/liolin/Drafts")
@@ -504,12 +543,12 @@
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
-;; (use-package mu4e-alert
-;;   :demand t
-;;   :hook
-;;   (elpaca-after-init . mu4e-alert-enable-notifications)
-;;   :config
-;;   (mu4e-alert-set-default-style 'libnotify))
+(use-package mu4e-alert
+  :demand t
+  :hook
+  (elpaca-after-init . mu4e-alert-enable-notifications)
+  :config
+  (mu4e-alert-set-default-style 'libnotify))
 
 (use-package smtpmail
   :elpaca nil
@@ -623,7 +662,9 @@
 ;;   (setq-default Tex-master nil))
 
 (use-package json-mode
-  :demand t)
+  :demand t
+  :custom
+  (js-indent-level 2))
 
 (use-package yaml-mode
   :demand t)
@@ -636,7 +677,7 @@
 
 (use-package lsp-ltex
   :demand t
-  :after lsp
+  ;;:after lsp
   :hook (text-mode . (lambda ()
 		       (require 'lsp-ltex)
 		       (lsp-deferred)))
