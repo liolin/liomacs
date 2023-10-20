@@ -70,7 +70,7 @@
 		  shell-mode-hook
 		  eshell-mode-hook
 		  doc-view-mode-hook
-		  pdf-view-mode hook))
+		  pdf-view-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
   (setq
    backup-by-copying t
@@ -604,6 +604,8 @@
 ;;
 (use-package lsp-mode
   :demand t
+  :hook
+  (prog-mode . lsp-mode)
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
@@ -639,6 +641,25 @@
   ;;(rustic-mode . lsp-deferred)
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
+
+(use-package haskell-mode)
+(use-package lsp-haskell
+  :after haskell-mode)
+
+;;
+;; Arduino
+;;
+(use-package arduino-mode
+  :mode "\\.ino\\'")
+(use-package arduino-cli-mode
+  :ensure t
+  :hook arduino-mode
+  :mode "\\.ino\\'"
+  :custom
+  (arduino-cli-default-fqbn "arduino:avr:uno")
+  (arduino-cli-default-port "/dev/ttyACM0")
+  (arduino-cli-warnings 'all)
+  (arduino-cli-verify t))
 
 ;;
 ;; Java
