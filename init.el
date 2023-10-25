@@ -627,8 +627,6 @@
 ;;
 (use-package lsp-mode
   :demand t
-  :hook
-  (prog-mode . lsp-mode)
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
@@ -661,13 +659,19 @@
   :custom
   (rustic-format-display-method #'ignore)
   :hook
-  ;;(rustic-mode . lsp-deferred)
+  (rustic-mode . lsp-deferred)
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
 
 (use-package haskell-mode)
 (use-package lsp-haskell
-  :after haskell-mode)
+  :after haskell-mode
+  :hook
+  (haskell-mode . lsp))
+
+(use-package plantuml-mode
+  :config
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 ;;
 ;; Arduino
@@ -725,9 +729,6 @@
 (use-package lsp-ltex
   :demand t
   ;;:after lsp
-  :hook (text-mode . (lambda ()
-		       (require 'lsp-ltex)
-		       (lsp-deferred)))
   :init
   (setq lsp-ltex-version "15.2.0")
   :config
@@ -761,13 +762,13 @@
 ;; Don't install anything. Defer execution of BODY
 (elpaca nil (message "deferred"))
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("/home/liolin/org/Agenda/Events.org" "/home/liolin/org/Agenda/GTD.org" "/home/liolin/org/Agenda/ba.org" "/home/liolin/org/Agenda/calendar_ost.org" "/home/liolin/org/Agenda/emails.org" "/home/liolin/org/Agenda/inbox.org" "/home/liolin/org/Agenda/projects.org" "/home/liolin/org/Agenda/reports.org" "/home/liolin/org/Agenda/sa.org" "/home/liolin/org/Agenda/school.org" "/home/liolin/org/Agenda/work.org") nil nil "Customized with use-package org")
  '(org-latex-src-block-backend 't nil nil "Customized with use-package org")
  '(safe-local-variable-values
    '((eval add-hook 'after-save-hook
