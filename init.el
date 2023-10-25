@@ -146,14 +146,13 @@
 
 (require 'cl-lib)
 (defun w-summary-type (values printf)
-  (message "%s" values)
   (format
    (or printf "%s")
    (cl-reduce (lambda (res ele)
 		(cond
 		 ((equal ele "[ ]") "[ ]")
 		 (t res)))
-	      values :initial-value "[X]")))
+	      (take 7 (reverse values)) :initial-value "[X]")))
 
 (use-package org
   :demand t
