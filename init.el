@@ -147,6 +147,17 @@
    (org-agenda-priority)
    (org-agenda-refile nil nil t)))
 
+(require 'cl-lib)
+(defun w-summary-type (values printf)
+  (message "%s" values)
+  (format
+   (or printf "%s")
+   (cl-reduce (lambda (res ele)
+		(cond
+		 ((equal ele "[ ]") "[ ]")
+		 (t res)))
+	      values :initial-value "[X]")))
+
 (use-package org
   :demand t
   :init
@@ -221,6 +232,10 @@
    "yt"
    :follow
    (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
+
+  (setq org-columns-summary-types
+	'(("W" . w-summary-type)))
+
 
   ;; agenda-view
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
