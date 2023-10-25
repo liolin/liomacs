@@ -95,9 +95,6 @@
 		  ((org-agenda-overriding-header "Emails")
 		   (org-agenda-files '("~/org/Agenda/emails.org"))))
 	 (alltodo ""
-		  ((org-agenda-overriding-header "BA")
-		   (org-agenda-files '("~/org/Agenda/ba.org"))))
-	 (alltodo ""
 		  ((org-agenda-overriding-header "OST")
 		   (org-agenda-files '("~/org/Agenda/school.org"))))
 	 (alltodo ""
