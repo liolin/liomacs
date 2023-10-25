@@ -70,7 +70,7 @@
 		  shell-mode-hook
 		  eshell-mode-hook
 		  doc-view-mode-hook
-		  pdf-view-mode hook))
+		  pdf-view-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
   (setq
    backup-by-copying t
@@ -144,6 +144,17 @@
    (org-agenda-priority)
    (org-agenda-refile nil nil t)))
 
+(require 'cl-lib)
+(defun w-summary-type (values printf)
+  (message "%s" values)
+  (format
+   (or printf "%s")
+   (cl-reduce (lambda (res ele)
+		(cond
+		 ((equal ele "[ ]") "[ ]")
+		 (t res)))
+	      values :initial-value "[X]")))
+
 (use-package org
   :demand t
   :init
@@ -199,7 +210,8 @@
    '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f"))
 
   ;; org-cite
-  (org-cite-global-bibliography '("~/biblio/main.bib"))
+  (org-cite-global-bibliography
+   (directory-files "~/biblio" t "^[A-Z|a-z|0-9].+.bib$"))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
@@ -218,6 +230,10 @@
    "yt"
    :follow
    (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
+
+  (setq org-columns-summary-types
+	'(("W" . w-summary-type)))
+
 
   ;; agenda-view
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
@@ -245,18 +261,25 @@
   :config
   (setq org-latex-prefer-user-labels t))
 
+(use-package bibtex
+  :elpaca nil
+  :custom
+  (bibtex-dialect 'biblatex)
+  (bibtex-align-at-equal-sign t))
+
+(use-package biblio)
+
 ;; TODO: Improve this config
 (use-package citar
   :demand t
   :after all-the-icons
   :custom
-  (citar-bibliography '("~/biblio/main.bib"))
-  (citar-notes-paths '("~/biblio/main"))
-  (citar-symbols
-   `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
-     (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-     (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
-  (citar-symbol-separator " "))
+  (citar-bibliography org-cite-global-bibliography)
+  :bind
+  (("C-c w c o" . citar-open)
+   (:map org-mode-map
+	 :package org
+	 ("C-c w C" . #'org-cite-insert))))
 
 
 (defun liomacs/update-org-id-files ()
@@ -641,9 +664,34 @@
   :custom
   (rustic-format-display-method #'ignore)
   :hook
-  ;;(rustic-mode . lsp-deferred)
+  (rustic-mode . lsp-deferred)
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
+
+(use-package haskell-mode)
+(use-package lsp-haskell
+  :after haskell-mode
+  :hook
+  (haskell-mode . lsp))
+
+(use-package plantuml-mode
+  :config
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
+
+;;
+;; Arduino
+;;
+(use-package arduino-mode
+  :mode "\\.ino\\'")
+(use-package arduino-cli-mode
+  :ensure t
+  :hook arduino-mode
+  :mode "\\.ino\\'"
+  :custom
+  (arduino-cli-default-fqbn "arduino:avr:uno")
+  (arduino-cli-default-port "/dev/ttyACM0")
+  (arduino-cli-warnings 'all)
+  (arduino-cli-verify t))
 
 ;;
 ;; Java
@@ -686,9 +734,6 @@
 (use-package lsp-ltex
   :demand t
   ;;:after lsp
-  :hook (text-mode . (lambda ()
-		       (require 'lsp-ltex)
-		       (lsp-deferred)))
   :init
   (setq lsp-ltex-version "15.2.0")
   :config
@@ -722,13 +767,13 @@
 ;; Don't install anything. Defer execution of BODY
 (elpaca nil (message "deferred"))
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("/home/liolin/org/Agenda/Events.org" "/home/liolin/org/Agenda/GTD.org" "/home/liolin/org/Agenda/ba.org" "/home/liolin/org/Agenda/calendar_ost.org" "/home/liolin/org/Agenda/emails.org" "/home/liolin/org/Agenda/inbox.org" "/home/liolin/org/Agenda/projects.org" "/home/liolin/org/Agenda/reports.org" "/home/liolin/org/Agenda/sa.org" "/home/liolin/org/Agenda/school.org" "/home/liolin/org/Agenda/work.org") nil nil "Customized with use-package org")
  '(org-latex-src-block-backend 't nil nil "Customized with use-package org")
  '(safe-local-variable-values
    '((eval add-hook 'after-save-hook
