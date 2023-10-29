@@ -56,6 +56,7 @@
   (minibuffer-setup . (lambda() (setq gc-cons-threshold most-positive-fixnum)))
   (minibuffer-exit . (lambda() (setq gc-cons-threshold (* 8 1024 1024))))
   :config
+  (setq-default indent-tabs-mode nil)
   (setq ring-bell-function #'ignore)
   (setq display-line-numbers-type 'visual)
   (tool-bar-mode -1)
@@ -64,7 +65,6 @@
   (scroll-bar-mode -1)
   (set-fringe-mode 10)
   (blink-cursor-mode 0)
-  (indent-tabs-mode nil)
   (global-display-line-numbers-mode t)
   (dolist (mode '(term-mode-hook
 		  shell-mode-hook
@@ -336,10 +336,15 @@
   (evil-org-agenda-set-keys))
 
 
-(use-package color-theme-sanityinc-tomorrow
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :demand t
+;;   :config
+;;   (load-theme 'sanityinc-tomorrow-eighties t))
+
+(use-package zenburn-theme
   :demand t
   :config
-  (load-theme 'sanityinc-tomorrow-eighties t))
+  (load-theme 'zenburn t))
 
 (use-package telephone-line
   :config
@@ -437,13 +442,11 @@
   :hook
   (company-mode . company-box-mode))
 
-;; (use-package tree-sitter
-;;   :elpaca nil 
-;;   :config
-;;   (global-tree-sitter-mode))
-  ;; ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
-  ;; ;; by switching on and off
-  ;; (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package tree-sitter
+  :config
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
   :demand t
@@ -452,9 +455,7 @@
 (use-package typescript-mode
   ;; :after tree-sitter
   :hook
-  (typescript-mode . (lambda () (indent-tabs-mode nil)))
   (typescript-mode . lsp-deferred)
-  ;; (typescriptreact-mode . indent-tabs-mode)
   ;; (typescriptreact-mode . lsp-deferred)
   :custom
   (typescript-indent-level 2)
