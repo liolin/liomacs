@@ -700,6 +700,15 @@
   :demand t
   :hook
   (java-mode . lsp-deferred))
+
+;;
+;; Typst
+;;
+(use-package typst-ts-mode
+  :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :custom
+  (typst-ts-mode-watch-options "--open"))
+
 ;;
 ;; LaTeX
 ;;
