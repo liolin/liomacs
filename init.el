@@ -599,8 +599,27 @@
   (pdf-tools-install))
 
 ;;
+;; shell
+;;
+(use-package eat
+  :demand t)
+
+;;
 ;; dired
 ;;
+(use-package dired
+  :elpaca nil
+  :hook
+  (dired-mode . (lambda ()
+                  (define-key
+                   evil-normal-state-local-map
+                   (kbd "h") 'dired-up-directory)
+                  (define-key
+                   evil-normal-state-local-map
+                   (kbd "l") 'dired-find-file)))
+  :custom
+  (dired-listing-switches "-alh"))
+
 (use-package all-the-icons-dired
   :hook
   (dired-mode . all-the-icons-dired-mode))
