@@ -484,7 +484,9 @@
   (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
 
 
-
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
 
 (use-package undo-tree
   :demand t
