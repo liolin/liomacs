@@ -605,6 +605,19 @@
   :hook
   (dired-mode . all-the-icons-dired-mode))
 
+(use-package diredfl
+  :demand t
+  :config
+  (diredfl-global-mode))
+
+(use-package dired-rsync
+  :demand t
+  :bind (:map dired-mode-map
+              ("C-c C-r" . dired-rsync)))
+
+(use-package fd-dired
+  :demand t)
+
 
 ;;
 ;; projectile
