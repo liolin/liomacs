@@ -181,6 +181,7 @@
   (org-log-done 'time)
   (org-startup-folded t)
   (org-attach-use-inheritance t)
+  (org-duration-format 'h:mm)
   (org-agenda-files
    (append (directory-files "~/org/Agenda" t ".org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
