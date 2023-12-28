@@ -118,10 +118,11 @@
 	 :publishing-function org-html-publish-to-html
 	 :publishing-directory "~/code/roam_html/"
 	 :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
-	 :html-preamble t
+	 :html-preamble "<div class=\"header\"><a href=\"https://dg.liolin.ch\" title=\"liolin's digital garden\">liolin's digital garden</a></div>"
 	 :html-validation-link nil
 	 :with-toc nil
 	 :section-number nil
+         :auto-sitemap t
 	 :sitemap-filename "index.org")
 	("roam-attachment"
 	 :base-directory "~/roam/static/attachment/"
@@ -313,7 +314,30 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n u" . liomacs/update-org-id-files)))
+  ("C-c n u" . liomacs/update-org-id-files))
+  :config
+  (require 'org-roam-export)
+  (add-hook 'org-export-before-processing-hook 'liomacs/add-extra-sections))
+
+(defun liomacs/collect-backlinks-string (backend)
+  (when (org-roam-node-at-point)
+    (goto-char (point-max))
+    (insert "\nNotes that link to this note\n")
+    (let* ((backlinks (org-roam-backlinks-get (org-roam-node-at-point))))
+      (dolist (backlink backlinks)
+        (let* ((source-node (org-roam-backlink-source-node backlink))
+               (point (org-roam-backlink-point backlink)))
+          (insert
+           (format "- [[./%s][%s]]\n"
+                   (file-name-nondirectory (org-roam-node-file source-node))
+                   (org-roam-node-title source-node))))))))
+
+(defun liomacs/add-extra-sections (backend)
+  (when (org-roam-node-at-point)
+    (save-excursion
+      (goto-char (point-max))
+      (insert "\n* Backlinks")
+      (liomacs/collect-backlinks-string backend))))
 
 (use-package org-noter
   :demand t)
