@@ -749,7 +749,12 @@
   (haskell-mode . lsp))
 
 (use-package plantuml-mode
+  :custom
+  (plantuml-executable-path "/usr/bin/plantuml")
+  (plantuml-default-exec-mode 'executable)
+  (plantuml-indent-level 4)
   :config
+  (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 ;;
