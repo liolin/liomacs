@@ -704,12 +704,15 @@
 ;;
 ;; lsp
 ;;
+(use-package direnv
+  :demand t)
 (use-package lsp-mode
   :demand t
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  (advice-add 'lsp :before #'direnv-update-environment))
 
 (use-package lsp-ui
   :demand t
@@ -786,6 +789,7 @@
 (use-package typst-ts-mode
   :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :custom
+  (typst-ts-mode-indent-offset 2)
   (typst-ts-mode-watch-options "--open"))
 
 ;;
