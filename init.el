@@ -626,6 +626,27 @@
   (pdf-tools-install))
 
 ;;
+;; rss
+;;
+(use-package elfeed
+  :bind
+  ("C-x w" . elfeed)
+  :custom
+  (elfeed-db-directory "~/ownCloud/Private/shared/elfeeddb")
+  (elfeed-search-filter "@1-week-ago +unread")
+  (elfeed-feeds '("http://www.reddit.com/r/emacs/.rss"      ;; Reddit /r/emacs
+		  "http://www.reddit.com/r/rust/.rss"       ;; Reddit /r/rust
+		  "https://events.ccc.de/feed/"             ;; CCC
+		  "https://blog.tecosaur.com/tmio/rss.xml"  ;; This Month in Org
+		  "https://xenodium.com/rss.xml"            ;; Some Tech & Emacs Blog
+                  "https://sachachua.com/blog/feed"         ;; Sasha Chua: Emacs Blog
+                  ;; NZZ - New
+                  "https://www.nzz.ch/recent.rss"           ;; NZZ Recent articels
+                  "https://www.nzz.ch/international.rss"    ;; NZZ International
+                  "https://www.nzz.ch/schweiz.rss"          ;; NZZ Switzerland
+                  "https://www.nzz.ch/technologie.rss"      ;; NZZ Technologie
+                  )))
+;;
 ;; shell
 ;;
 (use-package eat
