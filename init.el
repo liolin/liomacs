@@ -262,6 +262,18 @@
   :config
   (setq org-latex-prefer-user-labels t))
 
+(use-package org-alert
+  :demand t
+  :after org
+  :custom
+  (alert-default-style 'libnotify)
+  :config
+  (progn
+    (setq org-alert-interval 300)
+    (setq org-alert-notify-cutoff 10)
+    (setq org-alert-notify-after-event-cutoff 10)
+    (org-alert-enable)))
+
 (use-package bibtex
   :elpaca nil
   :custom
@@ -633,13 +645,14 @@
   ("C-x w" . elfeed)
   :custom
   (elfeed-db-directory "~/ownCloud/Private/shared/elfeeddb")
-  (elfeed-search-filter "@1-week-ago +unread")
+  (elfeed-search-filter "@1-day-ago +unread")
   (elfeed-feeds '("http://www.reddit.com/r/emacs/.rss"      ;; Reddit /r/emacs
 		  "http://www.reddit.com/r/rust/.rss"       ;; Reddit /r/rust
 		  "https://events.ccc.de/feed/"             ;; CCC
 		  "https://blog.tecosaur.com/tmio/rss.xml"  ;; This Month in Org
 		  "https://xenodium.com/rss.xml"            ;; Some Tech & Emacs Blog
                   "https://sachachua.com/blog/feed"         ;; Sasha Chua: Emacs Blog
+                  "https://os.phil-opp.com/rss.xml"         ;; Writing an OS in Rust
                   ;; NZZ - New
                   "https://www.nzz.ch/recent.rss"           ;; NZZ Recent articels
                   "https://www.nzz.ch/international.rss"    ;; NZZ International
