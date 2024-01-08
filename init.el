@@ -47,9 +47,15 @@
 ;; Block until current queue processed.
 (elpaca-wait)
 
-;; Turns off elpaca-use-package-mode current declartion
-;; Note this will cause the declaration to be interpreted immediately (not deferred).
-;; Useful for configuring built-in emacs features.
+(require 'secrets "/home/liolin/code/liomacs/secrets.el" t)
+
+(defun liomacs/find-file-large-file-hook ()
+  "Use this to disable modes, which make emacs slow in large files"
+  (interactive)
+  ;; (font-lock-mode -1) ;; in extrem cases, this might also help
+  (display-line-numbers-mode 0))
+
+
 (use-package emacs
   :elpaca nil
   :hook
@@ -261,6 +267,16 @@
 	("C-c ]" . org-ref-insert-link-hydra/body))
   :config
   (setq org-latex-prefer-user-labels t))
+
+(use-package org-caldav
+  :demand t
+  :config
+  (setq org-caldav-url liomacs/org-caldav-url
+        org-caldav-calendar-id liomacs/org-caldav-calendar-id
+        org-caldav-inbox liomacs/org-caldav-inbox
+        org-caldav-files liomacs/org-caldav-files
+        org-icalendar-timezone liomacs/org-icalendar-timezone
+        org-caldav-calendars liomacs/org-caldav-calendars))
 
 (use-package org-alert
   :demand t
