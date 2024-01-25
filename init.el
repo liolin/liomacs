@@ -388,16 +388,12 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(load-theme 'base16-gruvbox-dark-hard-dark t)
 
-;; (use-package color-theme-sanityinc-tomorrow
+;; (use-package zenburn-theme
 ;;   :demand t
 ;;   :config
-;;   (load-theme 'sanityinc-tomorrow-eighties t))
-
-(use-package zenburn-theme
-  :demand t
-  :config
-  (load-theme 'zenburn t))
+;;   (load-theme 'zenburn t))
 
 (use-package telephone-line
   :config
