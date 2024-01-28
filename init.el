@@ -585,6 +585,13 @@
   (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
 			    ("/liolin/Sent"  . ?s)
 			    ("/liolin/Trash" . ?t)))
+  (mu4e-headers-fields
+   '((:human-date . 12)
+     (:flags . 6)
+     (:maildir . 22)
+     (:mailing-list . 10)
+     (:from . 22)
+     (:subject)))
   :config
   (setq mu4e-contexts
 	`(,(make-mu4e-context
