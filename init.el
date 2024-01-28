@@ -580,7 +580,7 @@
   (mu4e-org-link-query-in-headers-mode t)
   (mu4e-change-filename-when-moving t)
   (mu4e-update-interval (* 5 60))
-  (mu4-get-mail-command "mbsync -a")
+  (mu4e-get-mail-command "mbsync -a")
   (mu4e-maildir "~/.mail")
   (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
 			    ("/liolin/Sent"  . ?s)
