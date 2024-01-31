@@ -361,11 +361,12 @@
                    (org-roam-node-title source-node))))))))
 
 (defun liomacs/add-extra-sections (backend)
-  (when (org-roam-node-at-point)
-    (save-excursion
-      (goto-char (point-max))
-      (insert "\n* Backlinks")
-      (liomacs/collect-backlinks-string backend))))
+  (when (eq backend 'html)
+      (when (org-roam-node-at-point)
+        (save-excursion
+          (goto-char (point-max))
+          (insert "\n* Backlinks")
+          (liomacs/collect-backlinks-string backend)))))
 
 (use-package org-noter
   :demand t)
