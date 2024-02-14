@@ -305,7 +305,7 @@
    `(org-footnote ((t (:foreground ,base0C))))
    `(org-formula ((t (:foreground ,base08))))
    `(org-hide ((t (:foreground ,base03))))
-   `(org-link ((t (:foreground ,base0D))))
+   `(org-link ((t (:foreground ,base0D :underline t))))
    `(org-scheduled ((t (:foreground ,base0B))))
    `(org-scheduled-previously ((t (:foreground ,base09))))
    `(org-scheduled-today ((t (:foreground ,base0B))))
