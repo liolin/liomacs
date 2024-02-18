@@ -1,4 +1,4 @@
-(defvar elpaca-installer-version 0.5)
+(defvar elpaca-installer-version 0.6)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -39,9 +39,9 @@
 
 ;; Install use-package support
 (elpaca elpaca-use-package
-  ;; Enable :elpaca use-package keyword.
+  ;; Enable :ensure use-package keyword.
   (elpaca-use-package-mode)
-  ;; Assume :elpaca t unless otherwise specified.
+  ;; Assume :ensure t unless otherwise specified.
   (setq elpaca-use-package-by-default t))
 
 ;; Block until current queue processed.
@@ -57,7 +57,7 @@
 
 
 (use-package emacs
-  :elpaca nil
+  :ensure nil
   :hook
   (minibuffer-setup . (lambda() (setq gc-cons-threshold most-positive-fixnum)))
   (minibuffer-exit . (lambda() (setq gc-cons-threshold (* 8 1024 1024))))
@@ -215,6 +215,7 @@
   (org-latex-prefer-user-labels t)
   (org-latex-pdf-process
    '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f"))
+  (org-latex-src-block-backend 'minted)
 
   ;; org-cite
   (org-cite-global-bibliography
@@ -291,7 +292,7 @@
     (org-alert-enable)))
 
 (use-package bibtex
-  :elpaca nil
+  :ensure nil
   :custom
   (bibtex-dialect 'biblatex)
   (bibtex-align-at-equal-sign t))
@@ -324,7 +325,7 @@
   :hook
   ;; TODO: Enable again when everything is fine
   ;; (org-roam-mode . lsp-deferred)
-  (org-roam-mode . org-roam-db-autosync-mode)
+  (org-roam-mode . (lambda () (org-roam-db-autosync-mode 1)))
   :custom
   (org-roam-directory "~/roam")
   (org-roam-dailies-directory "daily/")
@@ -524,7 +525,7 @@
 
 (use-package tsi
   :after tree-sitter
-  :elpaca (tsi :fetcher github :repo "orzechowskid/tsi.el")
+  :ensure (tsi :fetcher github :repo "orzechowskid/tsi.el")
   ;; define autoload definitions which when actually invoked will cause package to be loaded
   :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
   :init
@@ -570,13 +571,8 @@
     (browse-url-mail url)))
 
 (use-package mu4e
-  :elpaca nil
+  :ensure nil
   :after org
-  ;; :elpaca ( :host github 
-  ;; 	    :repo "djcb/mu"  
-  ;; 	    :branch "master"
-  ;; 	    :files ("mu4e/*")   
-  ;; 	    :pre-build (("./autogen.sh") ("make")))
   :custom
   (mu4e-org-link-query-in-headers-mode t)
   (mu4e-change-filename-when-moving t)
@@ -641,7 +637,7 @@
   (mu4e-alert-set-default-style 'libnotify))
 
 (use-package smtpmail
-  :elpaca nil
+  :ensure nil
   :custom
   (smtpmail-smtp-server "asmtp.mail.hostpoint.ch")
   (smtpmail-smtp-service 587)
@@ -689,7 +685,7 @@
 ;; dired
 ;;
 (use-package dired
-  :elpaca nil
+  :ensure nil
   :hook
   (dired-mode . (lambda ()
                   (define-key
@@ -758,15 +754,12 @@
 ;;
 ;; lsp
 ;;
-(use-package direnv
-  :demand t)
 (use-package lsp-mode
   :demand t
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t)
-  (advice-add 'lsp :before #'direnv-update-environment))
+  (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
   :demand t
@@ -795,7 +788,7 @@
   :custom
   (rustic-format-display-method #'ignore)
   :hook
-  (rustic-mode . lsp-deferred)
+  (rustic-mode . lsp)
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
 
@@ -836,15 +829,6 @@
   :demand t
   :hook
   (java-mode . lsp-deferred))
-
-;;
-;; Typst
-;;
-(use-package typst-ts-mode
-  :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
-  :custom
-  (typst-ts-mode-indent-offset 2)
-  (typst-ts-mode-watch-options "--open"))
 
 ;;
 ;; LaTeX
@@ -905,7 +889,7 @@
 ;; server
 ;;
 (use-package server
-  :elpaca nil
+  :ensure nil
   :config
   (unless (server-running-p) (server-start)))
 
