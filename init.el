@@ -547,11 +547,10 @@
   (global-undo-tree-mode)
   (evil-set-undo-system 'undo-tree))
 
-;; TODO: elpaca does not find it
-;; (use-package fixmee
-;;   :demand t
-;;   :config
-;;   (global-fixmee-mode 1))
+(use-package fixmee
+  :demand t
+  :config
+  (global-fixmee-mode 1))
 
 (use-package helpful
   :demand t
