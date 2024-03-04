@@ -346,7 +346,8 @@
   ("C-c n u" . liomacs/update-org-id-files))
   :config
   (require 'org-roam-export)
-  (add-hook 'org-export-before-processing-hook 'liomacs/add-extra-sections))
+  (add-hook 'org-export-before-processing-hook 'liomacs/add-extra-sections)
+  (add-hook 'org-export-before-processing-hook 'liomacs/add-latex-conf))
 
 (defun liomacs/collect-backlinks-string (backend)
   (when (org-roam-node-at-point)
@@ -368,6 +369,13 @@
           (goto-char (point-max))
           (insert "\n* Backlinks")
           (liomacs/collect-backlinks-string backend)))))
+
+(defun liomacs/add-latex-conf (backend)
+  (when (eq backend 'latex)
+      (when (org-roam-node-at-point)
+        (save-excursion
+          (goto-char (point-min))
+          (insert "#+INCLUDE: \"./setup.conf\"\n")))))
 
 (use-package org-noter
   :demand t)
