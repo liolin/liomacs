@@ -829,6 +829,11 @@
   (arduino-cli-warnings 'all)
   (arduino-cli-verify t))
 
+(use-package yasnippet
+  :bind
+  ("C-c o" . yas-expand))
+(use-package yasnippet-snippets)
+
 ;;
 ;; Java
 ;;
@@ -837,22 +842,26 @@
   :hook
   (java-mode . lsp-deferred))
 
+
 ;;
 ;; LaTeX
 ;;
-;; TODO: Is not found
-;; (use-package auctex
-;;   :demand t
-;;   :hook
-;;   (TeX-mode . lsp-deferred)
-;;   (TeX-mode . flycheck-mode)
-;;   (TeX-mode . turn-on-reftex)
-;;   :config
-;;   (setq TeX-auto-save t
-;; 	TeX-parse-self t
-;; 	reftex-plug-into-auctex 1
-;; 	reftex-default-bibliography '("~/biblio/main.bib"))
-;;   (setq-default Tex-master nil))
+(use-package auctex
+  :ensure (auctex
+           :pre-build (("./autogen.sh")
+                       ("./configure"
+                        "--with-texmf-dir=$(dirname $(kpsexpand '$TEXMFHOME'))")
+                       ("make")))
+  :hook
+  (TeX-mode . lsp-deferred)
+  (TeX-mode . flycheck-mode)
+  (TeX-mode . turn-on-reftex)
+  :config
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        reftex-plug-into-auctex 1
+        reftex-default-bibliography '("~/biblio/main.bib"))
+  (setq-default Tex-master nil))
 
 (use-package json-mode
   :demand t
