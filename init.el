@@ -1,4 +1,4 @@
-(defvar elpaca-installer-version 0.6)
+(defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -47,6 +47,8 @@
 ;; Block until current queue processed.
 (elpaca-wait)
 
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load-file custom-file)
 (require 'secrets "/home/liolin/code/liomacs/secrets.el" t)
 
 (defun liomacs/find-file-large-file-hook ()
@@ -921,28 +923,3 @@
 
 ;; Don't install anything. Defer execution of BODY
 (elpaca nil (message "deferred"))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("/home/liolin/org/Agenda/Events.org" "/home/liolin/org/Agenda/GTD.org" "/home/liolin/org/Agenda/ba.org" "/home/liolin/org/Agenda/calendar_ost.org" "/home/liolin/org/Agenda/emails.org" "/home/liolin/org/Agenda/inbox.org" "/home/liolin/org/Agenda/projects.org" "/home/liolin/org/Agenda/reports.org" "/home/liolin/org/Agenda/sa.org" "/home/liolin/org/Agenda/school.org" "/home/liolin/org/Agenda/work.org") nil nil "Customized with use-package org")
- '(org-latex-src-block-backend 't nil nil "Customized with use-package org")
- '(safe-local-variable-values
-   '((eval add-hook 'after-save-hook
-	   (lambda nil
-	     (if
-		 (y-or-n-p "Tangle?")
-		 (org-babel-tangle)))
-	   nil t)
-     (projectile-project-compilation-cmd . "cd Documentation/ && make")
-     (lsp-ltex-language . "de-CH")
-     (org-hugo-base-dir . "~/code/dg"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
