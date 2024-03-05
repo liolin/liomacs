@@ -184,6 +184,8 @@
   :custom
   (org-directory "~/org/")
   (org-ellipsis " ▾")
+  (org-startup-with-inline-images t)
+  (org-image-actual-width '(300))
   (org-todo-keywords '((sequence "TODO" "NEXT" "WORKING" "WAIT" "|" "DONE" "KILL")))
   (org-log-done 'time)
   (org-startup-folded t)
@@ -324,7 +326,7 @@
   (setq org-roam-v2-ack t)
   :hook
   ;; TODO: Enable again when everything is fine
-  ;; (org-roam-mode . lsp-deferred)
+  (org-roam-mode . lsp-deferred)
   (org-roam-mode . (lambda () (org-roam-db-autosync-mode 1)))
   :custom
   (org-roam-directory "~/roam")
@@ -748,7 +750,7 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package smerge
+(use-package smerge-mode
   :ensure nil
   :custom
   (smerge-command-prefix "\C-cv"))
