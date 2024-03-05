@@ -556,9 +556,9 @@
   (evil-set-undo-system 'undo-tree))
 
 (use-package fixmee
-  :demand t
-  :config
-  (global-fixmee-mode 1))
+  :demand t)
+  ;; :config
+  ;; (global-fixmee-mode 1))
 
 (use-package helpful
   :demand t
@@ -862,6 +862,9 @@
         reftex-plug-into-auctex 1
         reftex-default-bibliography '("~/biblio/main.bib"))
   (setq-default Tex-master nil))
+
+(use-package darkroom
+  :ensure t)
 
 (use-package json-mode
   :demand t
