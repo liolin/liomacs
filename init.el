@@ -557,8 +557,6 @@
 
 (use-package fixmee
   :demand t)
-  ;; :config
-  ;; (global-fixmee-mode 1))
 
 (use-package helpful
   :demand t
@@ -750,6 +748,11 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package smerge
+  :ensure nil
+  :custom
+  (smerge-command-prefix "\C-cv"))
+
 (use-package diff-hl
   :demand t
   :hook
@@ -882,11 +885,12 @@
 
 (use-package lsp-ltex
   :demand t
-  ;;:after lsp
+  :after lsp
   :init
   (setq lsp-ltex-version "15.2.0")
   :config
   (flycheck-add-next-checker 'lsp 'proselint)
+  ;; (flycheck-add-next-checker 'proselint)
   (setq lsp-ltex-language "en-GB"))
 
 ;;
