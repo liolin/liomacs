@@ -489,22 +489,62 @@
 (use-package embark-consult
   :demand t)
 
-(use-package company
+(use-package corfu
   :demand t
   :bind
-  (:map company-active-map
-	("<tab>" . company-complete-selection)
-	:map prog-mode-map
-	("<tab>" . company-indent-or-complete-common))
+  ("M-<tab>" . completion-at-point)
+  (:map corfu-map
+        ("J" . corfu-next)
+        ("K" . corfu-previous)
+        ("<escape>" . corfu-quit)
+        ("<return>" . corfu-insert)
+        ("M-d" . corfu-info-documentation)
+        ("M-l" . corfu-info-location))
   :custom
-  (custom-minimum-prefix-length 1)
-  (custom-idle-delay 0.5))
+  (corfu-auto nil)
+  (corfu-auto-prefix 2)
+  (corfu-auto-dealy 0.25)
+  (corfu-min-width 80)
+  (corfu-max-width corfu-min-width)
+  (corfu-count 14)
+  (corfu-scroll-margin 4)
+  (corfu-cycle nil)
+  (corfu-quite-ab-boundary nil)
+  (corfu-preselect-first t)
 
-(use-package company-box
-  :demand t
-  :hook
-  (company-mode . company-box-mode))
+  (tab-always-indent 'complete)
+  (completion-cycle-threshold nil)
 
+  (lsp-completion-provider :none) ; Use corfu instead the default for lsp completions
+  :init
+  (global-corfu-mode)
+  :config
+  ;; https://kristofferbalintona.me/posts/202202270056/
+  (defun liomacs/corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active)
+                (bound-and-true-p vertico--input))
+      (setq-local corfu-auto nil)
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'liomacs/corfu-enable-always-in-minibuffer 1)
+
+
+  ;; Setup lsp to use corfu for lsp completion
+  (defun liomacs/corfu-setup-lsp ()
+    "Use orderless completion style with lsp-capf instead of the
+  default lsp-passthrough."
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))))
+
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-blend-background t)
+  (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package tree-sitter
   :config
@@ -770,6 +810,7 @@
 ;;
 (use-package lsp-mode
   :demand t
+  :hook (lsp-completion-mode . liomacs/corfu-setup-lsp)
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
@@ -838,7 +879,10 @@
 
 (use-package yasnippet
   :bind
-  ("C-c o" . yas-expand))
+  ("C-c o" . yas-expand)
+  :init
+  (yas-global-mode))
+
 (use-package yasnippet-snippets)
 
 ;;
@@ -902,8 +946,6 @@
 ;;
 (use-package ledger-mode
   :demand t
-  :hook
-  (ledger-mode . company-mode)
   :custom
   (ledger-mode-should-check-version nil)
   (ledger-mode-links-in-register nil)
