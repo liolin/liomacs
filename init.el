@@ -57,7 +57,6 @@
   ;; (font-lock-mode -1) ;; in extrem cases, this might also help
   (display-line-numbers-mode 0))
 
-
 (use-package emacs
   :ensure nil
   :hook
@@ -789,6 +788,7 @@
 ;;
 (use-package magit
   :demand t
+  :after transient
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -898,23 +898,41 @@
 ;; LaTeX
 ;;
 (use-package auctex
-  :ensure (auctex
-           :pre-build (("./autogen.sh")
-                       ("./configure"
-                        "--with-texmf-dir=$(dirname $(kpsexpand '$TEXMFHOME'))")
-                       ("make")))
+  :ensure (auctex :pre-build (("./autogen.sh")
+                              ("./configure" "--without-texmf-dir" "--with-lispdir=.")
+                              ("make")
+                              ("install-info" "doc/auctex.info" "doc/dir")
+                              ("install-info" "doc/preview-latex.info" "doc/dir")))
+  :mode (("\\.tex\\'" . LaTeX-mode)
+         ("\\.tex\\.erb\\'" . LaTex-mode)
+         ("\\.etx\\'" . LaTex-mode))
+  :init
+  (add-hook 'tex-mode-hook
+            (lambda ()
+              (load "auctex.el")
+              (setq TeX-command-extra-options "-shell-escape")))
+
   :hook
-  (TeX-mode . lsp-deferred)
-  (TeX-mode . flycheck-mode)
-  (TeX-mode . turn-on-reftex)
+  (LaTeX-mode . lsp-deferred)
+  (LaTeX-mode . flycheck-mode)
+  (LaTeX-mode . turn-on-reftex)
   :config
+  (setq-default TeX-global-PDF-mode 1)
+  (setq-default  preview-scale-function 1.5)
+  (setq-default Tex-master nil)
+  (setq-default Tex-output-dir "out")
   (setq TeX-auto-save t
         TeX-parse-self t
         reftex-plug-into-auctex 1
-        reftex-default-bibliography '("~/biblio/main.bib"))
-  (setq-default Tex-master nil))
+        reftex-default-bibliography '("~/biblio/main.bib")
+        reftex-plug-into-AUCTeX t
+        default-truncate-lines t
+        TeX-save-query nil
+        TeX-source-correlate-method 'synctex))
 
 (use-package darkroom
+  :hook
+  (darkroom-mode . visual-line-mode)
   :ensure t)
 
 (use-package json-mode
