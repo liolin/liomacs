@@ -500,7 +500,7 @@
         ("M-d" . corfu-info-documentation)
         ("M-l" . corfu-info-location))
   :custom
-  (corfu-auto nil)
+  (corfu-auto t)
   (corfu-auto-prefix 2)
   (corfu-auto-dealy 0.25)
   (corfu-min-width 80)
