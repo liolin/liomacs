@@ -282,17 +282,18 @@
         org-icalendar-timezone liomacs/org-icalendar-timezone
         org-caldav-calendars liomacs/org-caldav-calendars))
 
-(use-package org-alert
-  :demand t
-  :after org
-  :custom
-  (alert-default-style 'libnotify)
-  :config
-  (progn
-    (setq org-alert-interval 300)
-    (setq org-alert-notify-cutoff 10)
-    (setq org-alert-notify-after-event-cutoff 10)
-    (org-alert-enable)))
+;; Comment out, because of debugging and i'm not really using it
+;; (use-package org-alert
+;;  :demand t
+;;  :after org
+;;  :custom
+;;  (alert-default-style 'libnotify)
+;;  :config
+;;  (progn
+;;    (setq org-alert-interval 300)
+;;    (setq org-alert-notify-cutoff 10)
+;;    (setq org-alert-notify-after-event-cutoff 10)
+;;    (org-alert-enable)))
 
 (use-package bibtex
   :ensure nil
@@ -323,12 +324,13 @@
 
 (use-package org-roam
   :demand t
+  :after org
   :init
   (setq org-roam-v2-ack t)
+  (org-roam-db-autosync-enable)
   :hook
   ;; TODO: Enable again when everything is fine
   (org-roam-mode . lsp-deferred)
-  (org-roam-mode . (lambda () (org-roam-db-autosync-mode 1)))
   :custom
   (org-roam-directory "~/roam")
   (org-roam-dailies-directory "daily/")
@@ -415,17 +417,17 @@
 (use-package all-the-icons
   :demand t)
 
- (use-package evil
-   :demand t
-   :custom
-   (evil-want-integration t)
-   (evil-want-keybinding nil)
-   (evil-want-C-u-scroll t)
-   (evil-want-C-i-jump t)
-   :bind
-   ("<escape>" . keyboard-escape-quite)
-   :config
-   (evil-mode 1))
+(use-package evil
+  :demand t
+  :custom
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  (evil-want-C-u-scroll t)
+  (evil-want-C-i-jump t)
+  :bind
+  ("<escape>" . keyboard-escape-quite)
+  :config
+  (evil-mode 1))
 
 (use-package evil-collection
   :demand t
@@ -598,8 +600,9 @@
   (global-undo-tree-mode)
   (evil-set-undo-system 'undo-tree))
 
-(use-package fixmee
-  :demand t)
+;; disabled for debugging and i'm not really using it
+;; (use-package fixmee
+;;   :demand t)
 
 (use-package helpful
   :demand t
