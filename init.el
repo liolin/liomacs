@@ -404,12 +404,7 @@
   :custom
   (org-noter-notes-window-location 'horizontal-split)
   (org-noter-always-crate-frame nil)
-  (org-noter-hide-other t)
-  :config
-  (evil-collection-define-key 'normal 'org-noter-doc-mode-map
-    (kbd "i") 'org-noter-insert-note)
-  (evil-collection-define-key 'normal 'org-noter-doc-mode-map
-    (kbd "q") 'org-noter-kill-session))
+  (org-noter-hide-other t))
 
 (use-package org-cliplink
   :demand t)
