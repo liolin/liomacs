@@ -322,6 +322,11 @@
   (let ((fil (org-roam--list-files org-roam-directory)))
     (org-id-update-id-locations fil)))
 
+(defun liomacs/search-roam ()
+  (interactive)
+  (rg (read-from-minibuffer "Pattern:") "*.org" "~/roam")
+  (switch-to-buffer (rg-buffer-name)))
+
 (use-package org-roam
   :demand t
   :after org
@@ -348,7 +353,8 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n u" . liomacs/update-org-id-files))
+  ("C-c n u" . liomacs/update-org-id-files)
+  ("C-c n s" . liomacs/search-roam))
   :config
   (require 'org-roam-export)
   (add-hook 'org-export-before-processing-hook 'liomacs/add-extra-sections)
