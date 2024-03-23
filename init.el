@@ -375,15 +375,35 @@
           (insert "\n* Backlinks")
           (liomacs/collect-backlinks-string backend)))))
 
+(defun liomacs/--remove-first-property-drawer ()
+  (delete-region
+   (point-min)
+   (car
+    (org-element-map
+        (org-element-parse-buffer)
+        'property-drawer #'org-element-end
+        ))))
+
 (defun liomacs/add-latex-conf (backend)
   (when (eq backend 'latex)
       (when (org-roam-node-at-point)
         (save-excursion
+          (liomacs/--remove-first-property-drawer)
           (goto-char (point-min))
           (insert "#+INCLUDE: \"./setup.conf\"\n")))))
 
 (use-package org-noter
-  :demand t)
+  :demand t
+  :after (:any org pdf-view)
+  :custom
+  (org-noter-notes-window-location 'horizontal-split)
+  (org-noter-always-crate-frame nil)
+  (org-noter-hide-other t)
+  :config
+  (evil-collection-define-key 'normal 'org-noter-doc-mode-map
+    (kbd "i") 'org-noter-insert-note)
+  (evil-collection-define-key 'normal 'org-noter-doc-mode-map
+    (kbd "q") 'org-noter-kill-session))
 
 (use-package org-cliplink
   :demand t)
