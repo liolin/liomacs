@@ -80,6 +80,7 @@
 		  pdf-view-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
   (setq
+   load-prefer-newer t
    backup-by-copying t
    backup-directory-alist '(("." . "~/.saves"))
    delete-old-versions t
@@ -151,16 +152,6 @@
    (org-agenda-set-tags)
    (org-agenda-priority)
    (org-agenda-refile nil nil t)))
-
-(require 'cl-lib)
-(defun w-summary-type (values printf)
-  (format
-   (or printf "%s")
-   (cl-reduce (lambda (res ele)
-		(cond
-		 ((equal ele "[ ]") "[ ]")
-		 (t res)))
-	      (take 7 (reverse values)) :initial-value "[X]")))
 
 (use-package org
   :ensure t
@@ -241,10 +232,6 @@
    "yt"
    :follow
    (lambda (path) (async-shell-command (format "mpv \"https://%s\"" path))))
-
-  (setq org-columns-summary-types
-	'(("W" . w-summary-type)))
-
 
   ;; agenda-view
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
@@ -416,7 +403,7 @@
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package evil-org
-  :ensure t
+  :demand t
   :after evil
   :hook
   (org-mode . evil-org-mode)
@@ -426,12 +413,8 @@
 
 (load-theme 'base16-gruvbox-dark-hard-dark t)
 
-;; (use-package zenburn-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'zenburn t))
-
 (use-package telephone-line
+  :ensure t
   :config
   (telephone-line-mode 1))
 
@@ -439,7 +422,7 @@
   :ensure t)
 
 (use-package evil
-  :ensure t
+  :demand t
   :custom
   (evil-want-integration t)
   (evil-want-keybinding nil)
@@ -451,17 +434,10 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  :ensure t
+  :demand t
   :after evil
   :config
   (evil-collection-init))
-
-;; (use-package evil-surround
-;;   :ensure t
-;;   :after evil
-;;   :config
-;;   (globa-evil-surround-mode 1))
-
 
 (use-package rainbow-delimiters
   :ensure t
@@ -550,7 +526,6 @@
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'liomacs/corfu-enable-always-in-minibuffer 1)
 
-
   ;; Setup lsp to use corfu for lsp completion
   (defun liomacs/corfu-setup-lsp ()
     "Use orderless completion style with lsp-capf instead of the
@@ -569,6 +544,7 @@
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package tree-sitter
+  :demand t
   :config
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
@@ -621,10 +597,6 @@
   :config
   (global-undo-tree-mode)
   (evil-set-undo-system 'undo-tree))
-
-;; disabled for debugging and i'm not really using it
-;; (use-package fixmee
-;;   :ensure t)
 
 (use-package helpful
   :ensure t
@@ -813,6 +785,7 @@
 ;;
 (use-package transient
   :ensure t)
+
 (use-package magit
   :ensure t
   :after transient
@@ -823,14 +796,6 @@
   :ensure nil
   :custom
   (smerge-command-prefix "\C-cv"))
-
-(use-package diff-hl
-  :ensure t
-  :hook
-  (magit-pre-refresh diff-hl-magit-pre-refresh)
-  (magit-post-refresh diff-hl-magit-post-refresh)
-  :config
-  (global-diff-hl-mode))
 
 ;;
 ;; lsp
@@ -925,11 +890,12 @@
 ;; LaTeX
 ;;
 (use-package auctex
-  :ensure (auctex :pre-build (("./autogen.sh")
-                              ("./configure" "--without-texmf-dir" "--with-lispdir=.")
-                              ("make")
-                              ("install-info" "doc/auctex.info" "doc/dir")
-                              ("install-info" "doc/preview-latex.info" "doc/dir")))
+  :ensure (auctex
+           :pre-build (("./autogen.sh")
+                       ("./configure" "--without-texmf-dir" "--with-lispdir=.")
+                       ("make")
+                       ("install-info" "doc/auctex.info" "doc/dir")
+                       ("install-info" "doc/preview-latex.info" "doc/dir")))
   :mode (("\\.tex\\'" . LaTeX-mode)
          ("\\.tex\\.erb\\'" . LaTex-mode)
          ("\\.etx\\'" . LaTex-mode))
@@ -1006,7 +972,3 @@
   :ensure nil
   :config
   (unless (server-running-p) (server-start)))
-
-
-;; Don't install anything. Defer execution of BODY
-(elpaca nil (message "deferred"))
