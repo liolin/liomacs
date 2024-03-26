@@ -810,6 +810,8 @@
 ;;
 ;; magit
 ;;
+(use-package transient
+  :demand t)
 (use-package magit
   :demand t
   :after transient
