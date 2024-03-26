@@ -144,7 +144,14 @@
 	 :recursive t
 	 :publishing-function org-publish-attachment
 	 :publishing-directory "~/code/roam_html/static/css/")
-	("roam" :components ("roam-org" "roam-attachment" "roam-css"))))
+        ("roam-pdf"
+         :base-directory "~/roam/"
+         :recursive t
+         :publishing-function org-latex-publish-to-pdf
+         :publishing-directory "~/code/roam_html/pdf"
+         :with-toc nil
+         :section-number nil)
+	("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
 
 (defun liomacs/org-agenda-process-inbox-item ()
   "Process a single item in the org-agenda."
@@ -209,7 +216,8 @@
   (org-latex-prefer-user-labels t)
   (org-latex-pdf-process
    '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f"))
-  (org-latex-src-block-backend 'minted)
+  (org-latex-src-block-backend 'listings)
+  (org-latex-listings-options '(("numbers" "left")))
 
   ;; org-cite
   (org-cite-global-bibliography
@@ -237,6 +245,7 @@
   (add-to-list 'org-agenda-custom-commands liomacs/org-agenda-todo-view)
 
   ;; org-latex
+  (add-to-list 'org-latex-listings-langs '(csharp "[Sharp]C"))
   (add-to-list 'org-latex-packages-alist '("" "listings"))
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
@@ -344,8 +353,8 @@
   ("C-c n s" . liomacs/search-roam))
   :config
   (require 'org-roam-export)
-  (add-hook 'org-export-before-processing-hook 'liomacs/add-extra-sections)
-  (add-hook 'org-export-before-processing-hook 'liomacs/add-latex-conf))
+  (add-hook 'org-export-before-processing-hook 'liomacs/ox-html-add-extra-sections)
+  (add-hook 'org-export-before-processing-hook 'liomacs/ox-latex-add-conf))
 
 (defun liomacs/collect-backlinks-string (backend)
   (when (org-roam-node-at-point)
@@ -360,13 +369,13 @@
                    (file-name-nondirectory (org-roam-node-file source-node))
                    (org-roam-node-title source-node))))))))
 
-(defun liomacs/add-extra-sections (backend)
-  (when (eq backend 'html)
-      (when (org-roam-node-at-point)
-        (save-excursion
-          (goto-char (point-max))
-          (insert "\n* Backlinks")
-          (liomacs/collect-backlinks-string backend)))))
+(defun liomacs/ox-html-add-extra-sections (backend)
+  (when (and (eq backend 'html)
+             (org-roam-node-at-point))
+    (save-excursion
+      (goto-char (point-max))
+      (insert "\n* Backlinks")
+      (liomacs/collect-backlinks-string backend))))
 
 (defun liomacs/--remove-first-property-drawer ()
   (delete-region
@@ -374,16 +383,21 @@
    (car
     (org-element-map
         (org-element-parse-buffer)
-        'property-drawer #'org-element-end
-        ))))
+        'property-drawer #'org-element-end))))
 
-(defun liomacs/add-latex-conf (backend)
-  (when (eq backend 'latex)
-      (when (org-roam-node-at-point)
-        (save-excursion
-          (liomacs/--remove-first-property-drawer)
-          (goto-char (point-min))
-          (insert "#+INCLUDE: \"./setup.conf\"\n")))))
+(defun liomacs/--end-location-first-property-drawer ()
+  (goto-char (point-min))
+  (car
+   (org-element-map
+       (org-element-parse-buffer)
+       'property-drawer #'org-element-end)))
+
+(defun liomacs/ox-latex-add-conf (backend)
+  (when (and (org-roam-node-at-point)
+             (eq backend 'latex))
+    (save-excursion
+      (goto-char (liomacs/--end-location-first-property-drawer))
+      (insert "#+INCLUDE: ./setup.conf\n"))))
 
 (use-package org-noter
   :ensure t
@@ -554,29 +568,16 @@
   :after tree-sitter)
 
 (use-package typescript-mode
-  ;; :after tree-sitter
   :hook
   (typescript-mode . lsp-deferred)
-  ;; (typescriptreact-mode . lsp-deferred)
   :custom
   (typescript-indent-level 2)
   :config
-  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-  ;; (define-derived-mode typescriptreact-mode typescript-mode
-  ;;   "TypeScript TSX")
-
-  ;; use our derived mode for tsx files
-  ;; (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  ;; by default, typescript-mode is mapped to the treesitter typescript parser
-  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-  ;; (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
   (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-mode)))
 
 (use-package tsi
   :after tree-sitter
   :ensure (tsi :fetcher github :repo "orzechowskid/tsi.el")
-  ;; define autoload definitions which when actually invoked will cause package to be loaded
   :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
   :init
   (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
