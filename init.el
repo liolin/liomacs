@@ -163,7 +163,7 @@
 	      (take 7 (reverse values)) :initial-value "[X]")))
 
 (use-package org
-  :demand t
+  :ensure t
   :init
   ;; org-babel
   (org-babel-do-load-languages
@@ -273,7 +273,7 @@
   (setq org-latex-prefer-user-labels t))
 
 (use-package org-caldav
-  :demand t
+  :ensure t
   :config
   (setq org-caldav-url liomacs/org-caldav-url
         org-caldav-calendar-id liomacs/org-caldav-calendar-id
@@ -284,7 +284,7 @@
 
 ;; Comment out, because of debugging and i'm not really using it
 ;; (use-package org-alert
-;;  :demand t
+;;  :ensure t
 ;;  :after org
 ;;  :custom
 ;;  (alert-default-style 'libnotify)
@@ -305,7 +305,7 @@
 
 ;; TODO: Improve this config
 (use-package citar
-  :demand t
+  :ensure t
   :after all-the-icons
   :custom
   (citar-bibliography org-cite-global-bibliography)
@@ -328,7 +328,7 @@
   (switch-to-buffer (rg-buffer-name)))
 
 (use-package org-roam
-  :demand t
+  :ensure t
   :after org
   :init
   (setq org-roam-v2-ack t)
@@ -399,7 +399,7 @@
           (insert "#+INCLUDE: \"./setup.conf\"\n")))))
 
 (use-package org-noter
-  :demand t
+  :ensure t
   :after (:any org pdf-view)
   :custom
   (org-noter-notes-window-location 'horizontal-split)
@@ -407,16 +407,16 @@
   (org-noter-hide-other t))
 
 (use-package org-cliplink
-  :demand t)
+  :ensure t)
 
 (use-package org-contrib
-  :demand t
+  :ensure t
   :config
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package evil-org
-  :demand t
+  :ensure t
   :after evil
   :hook
   (org-mode . evil-org-mode)
@@ -427,7 +427,7 @@
 (load-theme 'base16-gruvbox-dark-hard-dark t)
 
 ;; (use-package zenburn-theme
-;;   :demand t
+;;   :ensure t
 ;;   :config
 ;;   (load-theme 'zenburn t))
 
@@ -436,10 +436,10 @@
   (telephone-line-mode 1))
 
 (use-package all-the-icons
-  :demand t)
+  :ensure t)
 
 (use-package evil
-  :demand t
+  :ensure t
   :custom
   (evil-want-integration t)
   (evil-want-keybinding nil)
@@ -451,32 +451,32 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  :demand t
+  :ensure t
   :after evil
   :config
   (evil-collection-init))
 
 ;; (use-package evil-surround
-;;   :demand t
+;;   :ensure t
 ;;   :after evil
 ;;   :config
 ;;   (globa-evil-surround-mode 1))
 
 
 (use-package rainbow-delimiters
-  :demand t
+  :ensure t
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
 (use-package which-key
-  :demand t
+  :ensure t
   :init
   (which-key-mode)
   :custom
   (which-key-idel-delay 1))
 
 (use-package vertico
-  :demand t
+  :ensure t
   :init
   (vertico-mode)
   :bind
@@ -491,28 +491,28 @@
 	completion-ignore-case t))
 
 (use-package orderless
-  :demand t
+  :ensure t
   :custom
   (completion-styles '(orderless)))
 
 (use-package consult
-  :demand t
+  :ensure t
   :bind
   ("C-s" . consult-line))
 
 (use-package marginalia
-  :demand t
+  :ensure t
   :init
   (marginalia-mode))
 
 (use-package embark
-  :demand t)
+  :ensure t)
 
 (use-package embark-consult
-  :demand t)
+  :ensure t)
 
 (use-package corfu
-  :demand t
+  :ensure t
   :bind
   ("M-<tab>" . completion-at-point)
   (:map corfu-map
@@ -574,7 +574,7 @@
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
-  :demand t
+  :ensure t
   :after tree-sitter)
 
 (use-package typescript-mode
@@ -614,7 +614,8 @@
   (editorconfig-mode 1))
 
 (use-package undo-tree
-  :demand t
+  :ensure t
+  :after evil-mode
   :custom
   (undo-tree-auto-save-history)
   :config
@@ -623,10 +624,10 @@
 
 ;; disabled for debugging and i'm not really using it
 ;; (use-package fixmee
-;;   :demand t)
+;;   :ensure t)
 
 (use-package helpful
-  :demand t
+  :ensure t
   :after embark
   :bind
   ([remap describe-function]  . helpful-callable)
@@ -702,7 +703,7 @@
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
 (use-package mu4e-alert
-  :demand t
+  :ensure t
   :hook
   (elpaca-after-init . mu4e-alert-enable-notifications)
   :config
@@ -721,7 +722,7 @@
 ;; pdf-tool
 ;;
 (use-package pdf-tools
-  :demand t
+  :ensure t
   :config
   (pdf-tools-install))
 
@@ -751,7 +752,7 @@
 ;; shell
 ;;
 (use-package eat
-  :demand t)
+  :ensure t)
 
 ;;
 ;; dired
@@ -774,17 +775,17 @@
   (dired-mode . all-the-icons-dired-mode))
 
 (use-package diredfl
-  :demand t
+  :ensure t
   :config
   (diredfl-global-mode))
 
 (use-package dired-rsync
-  :demand t
+  :ensure t
   :bind (:map dired-mode-map
               ("C-c C-r" . dired-rsync)))
 
 (use-package fd-dired
-  :demand t)
+  :ensure t)
 
 
 ;;
@@ -792,7 +793,7 @@
 ;;
 (setq liomacs/project-dir "~/code")
 (use-package projectile
-  :demand t
+  :ensure t
   :init
   (when (file-directory-p liomacs/project-dir)
     (setq projectile-project-search-path (list liomacs/project-dir)))
@@ -805,15 +806,15 @@
   (projectile-mode))
 
 (use-package rg
-  :demand t)
+  :ensure t)
 
 ;;
 ;; magit
 ;;
 (use-package transient
-  :demand t)
+  :ensure t)
 (use-package magit
-  :demand t
+  :ensure t
   :after transient
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -824,7 +825,7 @@
   (smerge-command-prefix "\C-cv"))
 
 (use-package diff-hl
-  :demand t
+  :ensure t
   :hook
   (magit-pre-refresh diff-hl-magit-pre-refresh)
   (magit-post-refresh diff-hl-magit-post-refresh)
@@ -835,7 +836,7 @@
 ;; lsp
 ;;
 (use-package lsp-mode
-  :demand t
+  :ensure t
   :hook (lsp-completion-mode . liomacs/corfu-setup-lsp)
   :custom
   (lsp-keymap-prefix "C-c l")
@@ -843,7 +844,7 @@
   (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
-  :demand t
+  :ensure t
   :commands lsp-ui-mode
   :hook
   (lsp-mode . lsp-ui-mode)
@@ -852,7 +853,7 @@
 
 ;; languages
 (use-package rustic
-  :demand t
+  :ensure t
   :bind
   (:map rustic-mode-map
 	("C-c C-c j" . hs-show-block)
@@ -915,7 +916,7 @@
 ;; Java
 ;;
 (use-package lsp-java
-  :demand t
+  :ensure t
   :hook
   (java-mode . lsp-deferred))
 
@@ -962,21 +963,21 @@
   :ensure t)
 
 (use-package json-mode
-  :demand t
+  :ensure t
   :custom
   (js-indent-level 2))
 
 (use-package yaml-mode
-  :demand t)
+  :ensure t)
 
 ;;
 ;; flycheck
 ;;
 (use-package flycheck
-  :demand t)
+  :ensure t)
 
 (use-package lsp-ltex
-  :demand t
+  :ensure t
   :after lsp
   :init
   (setq lsp-ltex-version "15.2.0")
@@ -989,7 +990,7 @@
 ;; ledger
 ;;
 (use-package ledger-mode
-  :demand t
+  :ensure t
   :custom
   (ledger-mode-should-check-version nil)
   (ledger-mode-links-in-register nil)
