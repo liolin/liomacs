@@ -155,6 +155,7 @@
 
 (defun liomacs/org-agenda-process-inbox-item ()
   "Process a single item in the org-agenda."
+  (interactive)
   (org-with-wide-buffer
    (org-agenda-set-tags)
    (org-agenda-priority)
@@ -816,6 +817,14 @@
   (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-position 'bottom))
+
+;;
+;; code folding
+;;
+(use-package hs-mode
+  :ensure nil
+  :hook
+  (prog-mode . hs-minor-mode))
 
 ;; languages
 (use-package rustic
