@@ -59,13 +59,15 @@
 
 (use-package emacs
   :ensure nil
-  :hook
-  (minibuffer-setup . (lambda() (setq gc-cons-threshold most-positive-fixnum)))
-  (minibuffer-exit . (lambda() (setq gc-cons-threshold (* 8 1024 1024))))
+  ;; TODO: Fix this, gc-cons-threshold is not set back to old value
+  ;; :hook
+  ;; (minibuffer-setup . (lambda() (setq gc-cons-threshold most-positive-fixnum)))
+  ;; (minibuffer-exit . (lambda() (setq gc-cons-threshold (* 8 1024 1024))))
   :config
   (setq-default indent-tabs-mode nil)
   (setq ring-bell-function #'ignore)
-  (setq display-line-numbers-type 'visual)
+  ;; TODO: This causes enormous performance problems
+  ;;(setq display-line-numbers-type 'visual)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (electric-pair-mode 1)
