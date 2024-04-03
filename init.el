@@ -490,7 +490,7 @@
   (corfu-count 14)
   (corfu-scroll-margin 4)
   (corfu-cycle nil)
-  (corfu-quite-ab-boundary nil)
+  (corfu-quit-at-boundary nil)
   (corfu-preselect-first t)
 
   (tab-always-indent 'complete)
