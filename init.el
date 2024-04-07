@@ -66,7 +66,9 @@
         delete-old-versions t
         kept-new-versions 6
         kept-old-versions 2
-        version-control t)
+        version-control t
+  ;; TODO: This causes enormous performance problems
+        display-line-numbers-type 'visual)
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -75,8 +77,6 @@
 
   (electric-pair-mode 1)
   (global-display-line-numbers-mode t)
-  ;; TODO: This causes enormous performance problems
-  ;;(setq display-line-numbers-type 'visual)
   (dolist (mode '(term-mode-hook
 		  shell-mode-hook
 		  eshell-mode-hook
@@ -475,8 +475,6 @@
   :bind
   ("M-<tab>" . completion-at-point)
   (:map corfu-map
-        ("J" . corfu-next)
-        ("K" . corfu-previous)
         ("<escape>" . corfu-quit)
         ("<return>" . corfu-insert)
         ("M-d" . corfu-info-documentation)
