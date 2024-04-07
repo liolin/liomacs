@@ -256,6 +256,8 @@
   (require 'org-agenda)
   (require 'ox-latex)
 
+  (add-to-list 'org-structure-template-alist '("d" . "definition"))
+
   (org-indent-mode)
   (visual-line-mode 1)
   (set-face-attribute 'org-headline-done nil :strike-through t)
