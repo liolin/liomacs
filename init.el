@@ -535,8 +535,8 @@
 
 
 ;; visual
-;; ;;(load-theme 'base16-gruvbox-dark-hard-dark t)
-(load-theme 'leuven-dark)
+(load-theme 'base16-gruvbox-dark-hard-dark t)
+;; (load-theme 'leuven-dark)
 
 (use-package telephone-line
   :config

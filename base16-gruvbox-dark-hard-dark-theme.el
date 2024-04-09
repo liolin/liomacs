@@ -7,7 +7,7 @@
 
 (deftheme base16-gruvbox-dark-hard-dark)
 
-(let ((base00 "#1d2021")
+(let* ((base00 "#1d2021")
       (base01 "#3c3836")
       (base02 "#504945")
       (base03 "#665c54")
@@ -22,7 +22,18 @@
       (base0C "#8ec07c")
       (base0D "#83a598")
       (base0E "#d3869b")
-      (base0F "#d65d0e"))
+      (base0F "#d65d0e")
+
+
+      (ol1 `(:height 1.5 :weight bold :overline ,base02 :foreground ,base0D))
+      (ol2 `(:height 1.0 :weight bold :overline ,base02 :foreground ,base0C))
+      (ol3 `(:height 1.0 :weight bold :foreground ,base0E))
+      (ol4 `(:height 1.0 :weight bold :slant normal :foreground ,base01))
+      (ol5 `(:height 1.0 :weight bold :slant normal :foreground ,base0A))
+      (ol6 `(:height 1.0 :weight bold :slant italic :foreground ,base09))
+      (ol7 `(:height 1.0 :weight bold :slant italic :foreground ,base0C))
+      (ol8 `(:height 1.0 :weight bold :slant italic :foreground ,base0B))
+      )
 
   (unless (display-graphic-p)
     (setq base00 "black"
@@ -300,6 +311,14 @@
    `(org-document-info ((t (:foreground ,base0C))))
    `(org-document-info-keyword ((t (:foreground ,base0B))))
    `(org-document-title ((t (:weight bold :foreground ,base09 :height 1.44))))
+   `(org-level-1 ((t ,ol1)))
+   `(org-level-2 ((t ,ol2)))
+   `(org-level-3 ((t ,ol3)))
+   `(org-level-4 ((t ,ol4)))
+   `(org-level-5 ((t ,ol5)))
+   `(org-level-6 ((t ,ol6)))
+   `(org-level-7 ((t ,ol7)))
+   `(org-level-8 ((t ,ol8)))
    `(org-done ((t (:foreground ,base0B))))
    `(org-ellipsis ((t (:foreground ,base04))))
    `(org-footnote ((t (:foreground ,base0C))))
