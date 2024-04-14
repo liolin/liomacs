@@ -216,6 +216,7 @@
   (org-agenda-files
    (append (directory-files "~/org/Agenda" t ".org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
+  (org-agenda-tags-column 120)
   (org-capture-templates
    `(("i" "inbox" entry (file liomacs/org-inbox-file)
       "* TODO %?")
@@ -548,6 +549,10 @@
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
+(use-package rainbow-mode
+  :hook
+  (prog-mode . rainbow-mode))
+
 ;; programming
 (use-package tree-sitter
   :config
@@ -660,10 +665,9 @@
 		  "https://xenodium.com/rss.xml"            ;; Some Tech & Emacs Blog
                   "https://sachachua.com/blog/feed"         ;; Sasha Chua: Emacs Blog
                   "https://os.phil-opp.com/rss.xml"         ;; Writing an OS in Rust
+                  "https://thorstenball.com/atom.xml"       ;; Thorsten Ball
                   ;; NZZ - New
                   "https://www.nzz.ch/recent.rss"           ;; NZZ Recent articels
-                  "https://www.nzz.ch/international.rss"    ;; NZZ International
-                  "https://www.nzz.ch/schweiz.rss"          ;; NZZ Switzerland
                   "https://www.nzz.ch/technologie.rss"      ;; NZZ Technologie
                   )))
 ;; shell
