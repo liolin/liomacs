@@ -67,8 +67,8 @@
         kept-new-versions 6
         kept-old-versions 2
         version-control t
-  ;; TODO: This causes enormous performance problems
-        display-line-numbers-type 'visual)
+        display-line-numbers-type 'visual
+        gc-cons-threshold 100000000)
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -732,7 +732,12 @@
   :custom
   (lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  (setq lsp-enable-file-watchers nil
+        read-process-output-max (* 1024 1024))) ;; 1MB
+
+(use-package dap-mode
+  :after lsp)
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -825,8 +830,19 @@
 
 ;; Java
 (use-package lsp-java
+  :after lsp
   :hook
-  (java-mode . lsp-deferred))
+  (java-mode . lsp-deferred)
+  :config
+  (setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk")
+  (setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk/bin/java"
+        dap-java-java-command "/usr/lib/jvm/java-17-openjdk/bin/java"
+        lsp-java-vmargs '("-Xmx4g"))
+  )
+
+;; TODO: Do I want this?
+;; (use-package lsp-treemacs
+;;   :after lsp)
 
 
 ;; LaTeX
