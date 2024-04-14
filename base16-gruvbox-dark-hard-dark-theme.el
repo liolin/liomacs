@@ -300,7 +300,9 @@
 
    ;; org-mode
    `(org-agenda-structure ((t (:foreground ,base0E))))
-   `(org-agenda-date ((t (:foreground ,base0D :underline nil))))
+   `(org-agenda-date ((t (:height 1.6 :weight bold :foreground ,base0D :underline nil))))
+   `(org-agenda-date-today ((t (:height 1.6 :weight bold :foreground ,base0C :underline nil))))
+   `(org-agenda-date-weekend ((t (:height 1.6 :weight bold :foreground ,base01))))
    `(org-agenda-done ((t (:foreground ,base0B))))
    `(org-agenda-dimmed-todo-face ((t (:foreground ,base04))))
    `(org-block ((t (:foreground ,base09))))
