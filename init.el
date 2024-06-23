@@ -605,6 +605,17 @@
 		  (mu4e-sent-folder   . "/liolin/Sent")
 		  (mu4e-trash-folder  . "/liolin/Trash")
 		  (mu4e-refile-folder . "/archiv")))
+          ,(make-mu4e-context
+            :name "mailinglist"
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-prefix-p "/mailinglist" (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address  . "liolin@liolin.ch")
+                    (user-full-name     . "Olivier Lischer")
+                    (mu4e-drafts-folder . "/mailinglist/Drafts")
+                    (mu4e-sent-folder   . "/mailinglist/Sent")
+                    (mu4e-trash-folder  . "/mailinglist/Trash")
+                    (mu4e-refile-folder . "/archiv")))
 	 ,(make-mu4e-context
 	  :name "notes"
 	  :match-func
