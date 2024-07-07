@@ -68,7 +68,8 @@
         kept-old-versions 2
         version-control t
         display-line-numbers-type 'visual
-        gc-cons-threshold 100000000)
+        read-process-output-max (* 10 1024 1024) ;; 10MB
+        gc-cons-threshold 200000000)
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -475,22 +476,20 @@
 (use-package embark-consult)
 
 (use-package corfu
-  :bind
-  ("M-<tab>" . completion-at-point)
-  (:map corfu-map
-        ("<escape>" . corfu-quit)
-        ("<return>" . corfu-insert)
-        ("M-d" . corfu-info-documentation)
-        ("M-l" . corfu-info-location))
   :custom
+  (corfu-cycle t)
   (corfu-auto t)
   (corfu-auto-prefix 2)
-  (corfu-auto-dealy 0.25)
+  (corfu-auto-dealy 0)
+  (corfu-popupinfo-delay '(0.5 . 0.2))
+  (corfu-preview-current 'insert)
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)
+
   (corfu-min-width 80)
   (corfu-max-width corfu-min-width)
   (corfu-count 14)
   (corfu-scroll-margin 4)
-  (corfu-cycle nil)
   (corfu-quit-at-boundary nil)
   (corfu-preselect-first t)
 
@@ -498,8 +497,18 @@
   (completion-cycle-threshold nil)
 
   (lsp-completion-provider :none) ; Use corfu instead the default for lsp completions
+
+  :bind
+  ("M-<tab>" . completion-at-point)
+  (:map corfu-map
+        ("<escape>" . corfu-quit)
+        ("<return>" . corfu-insert)
+        ("M-d" . corfu-info-documentation)
+        ("M-l" . corfu-info-location))
   :init
   (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode)
   :config
   ;; https://kristofferbalintona.me/posts/202202270056/
   (defun liomacs/corfu-enable-always-in-minibuffer ()
@@ -554,13 +563,190 @@
   (prog-mode . rainbow-mode))
 
 ;; programming
-(use-package tree-sitter
+(use-package treesit
+  :ensure nil
+  :mode (("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode)
+         ("\\.ts\\'" . typescript-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.json\\'" . json-ts-mode)
+         ("\\.Dockerfile\\'" . dockerfile-ts-mode)
+         ;; TODO: Add rust, haskell, ...
+         )
+  :preface
+  (defun liomacs/setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+               (bash "https://github.com/tree-sitter/tree-sitter-bash")
+               (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
+               (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.20.2"))
+               (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
+               (go "https://github.com/tree-sitter/tree-sitter-go" "v0.20.0")
+               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+               (make "https://github.com/alemuller/tree-sitter-make")
+               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+               (cmake "https://github.com/uyha/tree-sitter-cmake")
+               (c "https://github.com/tree-sitter/tree-sitter-c")
+               (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+               (toml "https://github.com/tree-sitter/tree-sitter-toml")
+               (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
+               (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
+               (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
+               (prisma "https://github.com/victorhqc/tree-sitter-prisma")))
+      (add-to-list 'treesit-language-source-alist grammar)
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+  (dolist (mapping
+           '((python-mode . python-ts-mode)
+             (css-mode . css-ts-mode)
+             (typescript-mode . typescript-ts-mode)
+             (js-mode . typescript-ts-mode)
+             (js2-mode . typescript-ts-mode)
+             (c-mode . c-ts-mode)
+             (c++-mode . c++-ts-mode)
+             (c-or-c++-mode . c-or-c++-ts-mode)
+             (bash-mode . bash-ts-mode)
+             (css-mode . css-ts-mode)
+             (json-mode . json-ts-mode)
+             (js-json-mode . json-ts-mode)
+             (sh-mode . bash-ts-mode)
+             (sh-base-mode . bash-ts-mode)))
+    (add-to-list 'major-mode-remap-alist mapping))
   :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (liomacs/setup-install-grammars))
 
-(use-package tree-sitter-langs
-  :after tree-sitter)
+(use-package flycheck
+  :init (global-flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error)
+              ("M-p" . flycheck-previous-error)))
+
+(use-package lsp-mode
+  :diminish "LSP"
+  ;; :hook (lsp-completion-mode . liomacs/corfu-setup-lsp)
+  :hook ((lsp-mode . lsp-diagnostics-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         ((tsx-ts-mode
+           typescript-ts-mode
+           js-ts-mode) . lsp-deferred))
+  :custom
+  (lsp-keymap-prefix "C-c l")
+  (lsp-completion-provider :none)
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)
+  (lsp-keep-workspace-alive nil)
+  (lsp-idle-delay 0.5)
+  ;; core
+  (lsp-enable-xref t)
+  (lsp-auto-configure t)
+  (lsp-eldoc-enable-hover t)
+  (lsp-enable-dap-auto-configure t)
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding nil) ;; I use hs
+  (lsp-enable-imenu t)
+  (lsp-enable-indentation nil)
+  (lsp-enable-links nil) ;; W have `browse-url'
+  (lsp-enable-on-type-formatting nil) ;; prettier and co handle this
+  (lsp-enable-suggest-server-download t)
+  (lsp-enable-symbol-highlighting t)
+  (lsp-enable-text-document-color nil) ;; This is treesitter's job
+  ;; ui
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-ui-sideline-diagnostic-max-lines 20)
+  ;; completion
+  (lsp-completion-enable t)
+  (lsp-completion-enable-additional-text-edit t)
+  (lsp-enable-snippet t)
+  (lsp-completion-show-kind t)
+  ;; headerline
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)
+  (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
+  ;; modeline
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
+  (lsp-modeline-workspace-status-enable nil)
+  (lsp-signature-doc-lines 1)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-eldoc-render-all nil)
+  ;; lens
+  (lsp-lens-enable nil)
+  ;; semantic
+  (lsp-semantic-tokens-enable nil) ;; Related to highlighting, we use treesitter
+  :preface
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
+
+       (let ((bytecode (read (current-buffer))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  :init
+  (setq lsp-use-plists t)
+  (advice-add (if (progn (require 'json)
+                         (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+                'json-read)
+              :around
+              #'lsp-booster--advice-json-parse)
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
+
+(use-package lsp-completion
+  :ensure nil
+  :no-require
+  :hook ((lsp-mode . lsp-completion-mode)))
+
+(use-package yasnippet
+  :bind
+  ("C-c o" . yas-expand)
+  :init
+  (yas-global-mode))
+
+(use-package yasnippet-snippets)
+
+
+(use-package lsp-ui
+  :commands 
+  (lsp-ui-doc-show
+   lsp-ui-doc-glance)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . 'lsp-ui-doc-glance))
+  :after (lsp-mode evil)
+  :config (setq lsp-ui-doc-enable t
+                evil-lookup-func #'lsp-ui-doc-glance
+                lsp-ui-doc-show-with-cursor nil
+                lsp-ui-doc-include-signature t
+                lsp-ui-doc-position 'at-point)) ;; change back to 'bottom?
+
+(use-package dap-mode
+  :after lsp-mode)
+
+
+;; TODO: Fix missing recipe
+;; (use-package lsp-eslint
+;;   :demand t
+;;   :after lsp-mode)
 
 (use-package editorconfig
   :init
@@ -741,26 +927,6 @@
   :custom
   (smerge-command-prefix "\C-cv"))
 
-;; lsp
-(use-package lsp-mode
-  :hook (lsp-completion-mode . liomacs/corfu-setup-lsp)
-  :custom
-  (lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t)
-  (setq lsp-enable-file-watchers nil
-        read-process-output-max (* 1024 1024))) ;; 1MB
-
-(use-package dap-mode
-  :after lsp)
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :hook
-  (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
 ;; code folding
 (use-package hs-mode
   :ensure nil
@@ -794,24 +960,6 @@
   (add-to-list 'load-path "/home/liolin/.opam/default/share/emacs/site-lisp")
   (require 'ocp-indent))
 
-(use-package typescript-mode
-  :hook
-  (typescript-mode . lsp-deferred)
-  :custom
-  (typescript-indent-level 2)
-  :config
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-mode)))
-
-(use-package tsi
-  :after tree-sitter
-  :ensure (tsi :fetcher github :repo "orzechowskid/tsi.el")
-  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
-  :init
-  (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
-  (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
-  (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
-  (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
-
 (use-package haskell-mode)
 (use-package lsp-haskell
   :after haskell-mode
@@ -839,14 +987,6 @@
   (arduino-cli-warnings 'all)
   (arduino-cli-verify t))
 
-;; (use-package yasnippet
-;;   :bind
-;;   ("C-c o" . yas-expand)
-;;   :init
-;;   (yas-global-mode))
-
-;; (use-package yasnippet-snippets)
-
 ;; Java
 (use-package lsp-java
   :after lsp
@@ -858,10 +998,6 @@
         dap-java-java-command "/usr/lib/jvm/java-17-openjdk/bin/java"
         lsp-java-vmargs '("-Xmx4g"))
   )
-
-;; TODO: Do I want this?
-;; (use-package lsp-treemacs
-;;   :after lsp)
 
 
 ;; LaTeX
@@ -911,14 +1047,11 @@
   :hook
   (darkroom-mode . visual-line-mode))
 
-(use-package json-mode
-  :custom
-  (js-indent-level 2))
+;; (use-package json-mode
+;;   :custom
+;;   (js-indent-level 2))
 
 (use-package yaml-mode)
-
-;; flycheck
-(use-package flycheck)
 
 (use-package lsp-ltex
   :after lsp
