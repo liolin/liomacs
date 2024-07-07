@@ -619,7 +619,19 @@
     (add-to-list 'major-mode-remap-alist mapping))
   :config
   (liomacs/setup-install-grammars)
-  ;; TODO: Structural editing with Combobulate
+  (use-package combobulate ;; based on tree sitter
+    :ensure (:host github :repo "mickeynp/combobulate" :branch "master")
+    :preface
+    (setq combobulate-key-prefix "C-c o")
+    :hook
+    ((python-ts-mode . combobulate-mode)
+     (js-ts-mode . combobulate-mode)
+     (html-ts-mode . combobulate-mode)
+     (css-ts-mode . combobulate-mode)
+     (yaml-ts-mode . combobulate-mode)
+     (typescript-ts-mode . combobulate-mode)
+     (json-ts-mode . combobulate-mode)
+     (tsx-ts-mode . combobulate-mode)))
   )
 
 (use-package flycheck
@@ -720,8 +732,10 @@
   :hook ((lsp-mode . lsp-completion-mode)))
 
 (use-package yasnippet
-  :bind
-  ("C-c o" . yas-expand)
+  :config
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   :init
   (yas-global-mode))
 
