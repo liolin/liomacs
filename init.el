@@ -789,6 +789,10 @@
   (rustic-mode . hs-minor-mode)
   (rustic-mode . electric-pair-mode))
 
+(use-package tuareg
+  :config
+  (add-to-list 'load-path "/home/liolin/.opam/default/share/emacs/site-lisp")
+  (require 'ocp-indent))
 
 (use-package typescript-mode
   :hook
@@ -847,7 +851,7 @@
 (use-package lsp-java
   :after lsp
   :hook
-  (java-mode . lsp-deferred)
+  (java-mode . lsp)
   :config
   (setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk")
   (setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk/bin/java"
