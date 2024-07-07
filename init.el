@@ -344,13 +344,13 @@
   (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
   :bind
   (("C-c n l" . org-roam-buffer-toggle)
-  ("C-c n f" . org-roam-node-find)
-  ("C-c n g" . org-roam-graph)
-  ("C-c n i" . org-roam-node-insert)
-  ("C-c n c" . org-roam-capture)
-  ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n u" . liomacs/update-org-id-files)
-  ("C-c n s" . liomacs/search-roam))
+   ("C-c n f" . org-roam-node-find)
+   ("C-c n g" . org-roam-graph)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n c" . org-roam-capture)
+   ("C-c n j" . org-roam-dailies-capture-today)
+   ("C-c n u" . liomacs/update-org-id-files)
+   ("C-c n s" . liomacs/search-roam))
   :config
   (require 'org-roam-export)
   (add-hook 'org-export-before-processing-hook 'liomacs/ox-html-add-extra-sections)
@@ -794,16 +794,16 @@
   :config
   (setq mu4e-contexts
 	`(,(make-mu4e-context
-	  :name "liolin"
-	  :match-func (lambda (msg)
-			(when msg
-			  (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
-	  :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
-		  (user-full-name     . "Olivier Lischer")
-		  (mu4e-drafts-folder . "/liolin/Drafts")
-		  (mu4e-sent-folder   . "/liolin/Sent")
-		  (mu4e-trash-folder  . "/liolin/Trash")
-		  (mu4e-refile-folder . "/archiv")))
+	    :name "liolin"
+	    :match-func (lambda (msg)
+			  (when msg
+			    (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
+	    :vars '((user-mail-address  . "olivier.lischer@liolin.ch")
+		    (user-full-name     . "Olivier Lischer")
+		    (mu4e-drafts-folder . "/liolin/Drafts")
+		    (mu4e-sent-folder   . "/liolin/Sent")
+		    (mu4e-trash-folder  . "/liolin/Trash")
+		    (mu4e-refile-folder . "/archiv")))
           ,(make-mu4e-context
             :name "mailinglist"
             :match-func (lambda (msg)
@@ -815,30 +815,30 @@
                     (mu4e-sent-folder   . "/mailinglist/Sent")
                     (mu4e-trash-folder  . "/mailinglist/Trash")
                     (mu4e-refile-folder . "/archiv")))
-	 ,(make-mu4e-context
-	  :name "notes"
-	  :match-func
-	  (lambda (msg)
-	    (when msg
-	      (string-prefix-p "/notes" (mu4e-message-field msg :maildir))))
-	  :vars '((user-mail-address . "notes@liolin.ch")
-		  (user-full-name    . "Olivier Lischer")
-		  (mu4e-drafts-folder . "/notes/Drafts")
-		  (mu4e-sent-folder . "/notes/Sent")
-		  (mu4e-trash-folder . "/notes/Trash")
-		  (mu4e-refile-folder . "/archiv")))
-	 ,(make-mu4e-context
-	  :name "gmail"
-	  :match-func
-	  (lambda (msg)
-	    (when msg
-	      (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-	  :vars '((user-mail-address . "olivier.lischer.blon@gmail.com")
-		  (user-full-name    . "Olivier Lischer")
-		  (mu4e-drafts-folder . "/gmail/[Gmail]/Entw&APw-rfe")
-		  (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
-		  (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
-		  (mu4e-refile-folder . "/archiv")))))
+	  ,(make-mu4e-context
+	    :name "notes"
+	    :match-func
+	    (lambda (msg)
+	      (when msg
+	        (string-prefix-p "/notes" (mu4e-message-field msg :maildir))))
+	    :vars '((user-mail-address . "notes@liolin.ch")
+		    (user-full-name    . "Olivier Lischer")
+		    (mu4e-drafts-folder . "/notes/Drafts")
+		    (mu4e-sent-folder . "/notes/Sent")
+		    (mu4e-trash-folder . "/notes/Trash")
+		    (mu4e-refile-folder . "/archiv")))
+	  ,(make-mu4e-context
+	    :name "gmail"
+	    :match-func
+	    (lambda (msg)
+	      (when msg
+	        (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+	    :vars '((user-mail-address . "olivier.lischer.blon@gmail.com")
+		    (user-full-name    . "Olivier Lischer")
+		    (mu4e-drafts-folder . "/gmail/[Gmail]/Entw&APw-rfe")
+		    (mu4e-sent-folder . "/gmail/[Gmail]/Gesendet")
+		    (mu4e-trash-folder . "/gmail/[Gmail]/Papierkorb")
+		    (mu4e-refile-folder . "/archiv")))))
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
