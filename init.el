@@ -618,7 +618,9 @@
              (sh-base-mode . bash-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
-  (liomacs/setup-install-grammars))
+  (liomacs/setup-install-grammars)
+  ;; TODO: Structural editing with Combobulate
+  )
 
 (use-package flycheck
   :init (global-flycheck-mode)
@@ -742,6 +744,17 @@
 (use-package dap-mode
   :after lsp-mode)
 
+(use-package apheleia
+  :diminish ""
+  :defines
+  apheleia-formatters
+  apheleia-mode-alist
+  :functions
+  apheleia-global-mode
+  :config
+  (setf (alist-get 'prettier-json apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath))
+  (apheleia-global-mode +1))
 
 ;; TODO: Fix missing recipe
 ;; (use-package lsp-eslint
