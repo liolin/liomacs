@@ -580,7 +580,8 @@
     "Install Tree-sitter grammars if they are absent."
     (interactive)
     (dolist (grammar
-             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+             '((rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
+               (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
                (bash "https://github.com/tree-sitter/tree-sitter-bash")
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
@@ -980,7 +981,9 @@
   :hook
   (rustic-mode . lsp)
   (rustic-mode . hs-minor-mode)
-  (rustic-mode . electric-pair-mode))
+  (rustic-mode . electric-pair-mode)
+  :config
+  (setq rust-mode-treesitter-derive t))
 
 (use-package tuareg
   :config
