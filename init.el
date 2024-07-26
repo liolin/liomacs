@@ -563,6 +563,10 @@
   (prog-mode . rainbow-mode))
 
 ;; programming
+(use-package direnv
+  :config
+  (direnv-mode))
+
 (use-package treesit
   :ensure nil
   :mode (("\\.tsx\\'" . tsx-ts-mode)
@@ -582,6 +586,7 @@
     (dolist (grammar
              '((rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
                (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+               (nix . ("https://github.com/nix-community/tree-sitter-nix"))
                (bash "https://github.com/tree-sitter/tree-sitter-bash")
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
