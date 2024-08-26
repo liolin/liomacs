@@ -568,6 +568,10 @@
   :config
   (direnv-mode))
 
+(use-package fancy-compilation
+  :config
+  (fancy-compilation-mode))
+
 (use-package treesit
   :ensure nil
   :mode (("\\.tsx\\'" . tsx-ts-mode)
