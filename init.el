@@ -204,6 +204,7 @@
   ("C-c l" . org-store-link)
   ("C-c X" . org-capture)
   ("C-c a" . org-agenda)
+  ("C-c t" . org-timestamp-inactive)
   :custom
   (org-directory "~/org/")
   (org-ellipsis " ▾")
