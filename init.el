@@ -804,7 +804,7 @@
   :custom
   (mu4e-org-link-query-in-headers-mode t)
   (mu4e-change-filename-when-moving t)
-  (mu4e-update-interval (* 5 60))
+  (mu4e-update-interval (* 1 60))
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-maildir "~/.mail")
   (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
@@ -893,18 +893,19 @@
   ("C-x w" . elfeed)
   :custom
   (elfeed-db-directory "~/ownCloud/Private/shared/elfeeddb")
-  (elfeed-search-filter "@1-day-ago +unread")
-  (elfeed-feeds '("http://www.reddit.com/r/emacs/.rss"      ;; Reddit /r/emacs
-		  "http://www.reddit.com/r/rust/.rss"       ;; Reddit /r/rust
-		  "https://events.ccc.de/feed/"             ;; CCC
-		  "https://blog.tecosaur.com/tmio/rss.xml"  ;; This Month in Org
-		  "https://xenodium.com/rss.xml"            ;; Some Tech & Emacs Blog
-                  "https://sachachua.com/blog/feed"         ;; Sasha Chua: Emacs Blog
-                  "https://os.phil-opp.com/rss.xml"         ;; Writing an OS in Rust
-                  "https://thorstenball.com/atom.xml"       ;; Thorsten Ball
-                  ;; NZZ - New
-                  "https://www.nzz.ch/recent.rss"           ;; NZZ Recent articels
-                  "https://www.nzz.ch/technologie.rss"      ;; NZZ Technologie
+  ;;(elfeed-search-filter "@6-months-ago +unread")
+  (elfeed-feeds '(("http://www.reddit.com/r/emacs/.rss" reddit emacs)  ;; Reddit /r/emacs
+		  ("http://www.reddit.com/r/rust/.rss" reddit rust)    ;; Reddit /r/rust
+		  ("https://events.ccc.de/feed/" cc)                   ;; CCC
+		  ("https://blog.tecosaur.com/tmio/rss.xml" emacs org) ;; This Month in Org
+		  ("https://xenodium.com/rss.xml" emacs)               ;; Some Tech & Emacs Blog
+                  ("https://sachachua.com/blog/feed" emacs)            ;; Sasha Chua: Emacs Blog
+                  ("https://os.phil-opp.com/rss.xml" rust os)          ;; Writing an OS in Rust
+                  "https://thorstenball.com/atom.xml"                  ;; Thorsten Ball
+                  "https://matklad.github.io/feed.xml"                 ;; matklad
+                  ;; NZZ - News
+                  ("https://www.nzz.ch/recent.rss" nzz news)           ;; NZZ Recent articels
+                  ("https://www.nzz.ch/technologie.rss" nzz news)      ;; NZZ Technologie
                   )))
 ;; shell
 (use-package eat)
