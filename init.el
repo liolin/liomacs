@@ -590,6 +590,7 @@
     (interactive)
     (dolist (grammar
              '((rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
+               (java . ("https://github.com/tree-sitter/tree-sitter-java" "v0.20.2"))
                (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
                (nix . ("https://github.com/nix-community/tree-sitter-nix"))
                (bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -625,6 +626,7 @@
              (css-mode . css-ts-mode)
              (json-mode . json-ts-mode)
              (js-json-mode . json-ts-mode)
+             (java-mode . java-ts-mode)
              (sh-mode . bash-ts-mode)
              (sh-base-mode . bash-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
