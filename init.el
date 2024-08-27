@@ -946,6 +946,10 @@
   (setq projectile-project-search-path (list liomacs/project-dir))
   (setq projectile-switch-project-action #'projectile-dired)
   :config
+  (setq
+   projectile-globally-ignored-directories
+   (mapcar (lambda (val) (concat (substring val 0 -1) "\\$"))
+           projectile-globally-ignored-directories))
   (projectile-mode)
   :bind-keymap
   ("C-c p" . projectile-command-map)
