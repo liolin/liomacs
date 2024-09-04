@@ -47,8 +47,9 @@
 
 ;; custom-file and secrets
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq secret-file (expand-file-name "secret.el" user-emacs-directory))
 (load-file custom-file)
-(require 'secrets "/home/liolin/code/liomacs/secrets.el" t)
+(require 'secrets secret-file t)
 
 ;; emacs setup
 (use-package emacs
