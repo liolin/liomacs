@@ -114,6 +114,9 @@
   :config
   (global-undo-tree-mode))
 
+(use-package gnuplot)
+(use-package gnuplot-mode)
+
 ;; org
 (setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
 (setq liomacs/org-email-file "~/org/Agenda/emails.org")
@@ -198,9 +201,8 @@
      (dot . t)
      (latex . t)
      (shell . t)
+     (gnuplot . t)
      (python . t)))
-  ;; :hook
-  ;; (org-mode . lsp-deferred)
   :bind
   ("C-c l" . org-store-link)
   ("C-c X" . org-capture)
