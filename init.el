@@ -1055,6 +1055,27 @@
         lsp-java-vmargs '("-Xmx4g"))
   )
 
+;; Python
+(use-package pylsp
+  :ensure nil
+  :after lsp
+  :hook (python-ts-mode . lsp)
+  :config
+  (lsp-register-custom-settings
+   '(("pyls.plugins.pyls_mypy.enabled" t t)
+     ("pyls.plugins.pyls_mypy.live_mode" nil t)
+     ("pyls.plugins.pyls_black.enabled" t t)
+     ("pyls.plugins.pyls_isort.enabled" t t)
+     ;; Disable these as they're duplicated by flake8
+     ("pyls.plugins.pycodestyle.enabled" nil t)
+     ("pyls.plugins.mccabe.enabled" nil t)
+     ("pyls.plugins.pyflakes.enabled" nil t)))
+  (setq lsp-pyls-plugins-flake8-enabled t))
+
+(use-package pyvenv
+  :config
+  (pyvenv-mode 1))
+
 
 ;; LaTeX
 (use-package bibtex
