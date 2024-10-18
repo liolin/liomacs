@@ -51,6 +51,8 @@
 (load-file custom-file)
 (require 'secrets secret-file t)
 
+(setq-default liomacs/font "JetBrainsMono 10")
+
 ;; emacs setup
 (use-package emacs
   :ensure nil
@@ -71,7 +73,7 @@
         display-line-numbers-type 'visual
         read-process-output-max (* 10 1024 1024) ;; 10MB
         gc-cons-threshold 200000000)
-
+  (set-frame-font liomacs/font nil t)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -212,7 +214,7 @@
   (org-directory "~/org/")
   (org-ellipsis " ▾")
   (org-startup-with-inline-images t)
-  (org-image-actual-width '(300))
+  (org-image-actual-width '(450))
   (org-todo-keywords '((sequence "TODO" "NEXT" "WORKING" "WAIT" "|" "DONE" "KILL")))
   (org-log-done 'time)
   (org-startup-folded t)
