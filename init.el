@@ -1139,6 +1139,23 @@
   ;; (flycheck-add-next-checker 'proselint)
   (setq lsp-ltex-language "en-GB"))
 
+(use-package flyspell
+  :ensure nil
+  :custom
+  (ispell-program-name "hunspell")
+  (ispell-dictionary "en_GB")
+  (flyspell-mark-duplications-flag nil) ;; Writegood mode does this
+  (org-fold-core-style 'overlays) ;; Fix Org mode bug
+  :config
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_GB")
+  :hook
+  (text-mode . flyspell-mode)
+  :bind
+  (("C-c w s s" . ispell)
+   ("C-;"       . flyspell-auto-correct-previous-word)))
+
+
 ;; ledger
 (use-package ledger-mode
   :custom
