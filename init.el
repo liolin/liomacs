@@ -785,6 +785,11 @@
   :config
   (setf (alist-get 'prettier-json apheleia-formatters)
         '("prettier" "--stdin-filepath" filepath))
+  (setf (alist-get 'latex-mode apheleia-mode-alist)
+        'tex-fmt)
+  (setf (alist-get 'LaTeX-mode apheleia-mode-alist)
+        'tex-fmt)
+  (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin" "--keep"))
   (apheleia-global-mode +1))
 
 ;; TODO: Fix missing recipe
