@@ -664,7 +664,9 @@
          (lsp-mode . lsp-enable-which-key-integration)
          ((tsx-ts-mode
            typescript-ts-mode
-           js-ts-mode) . lsp-deferred))
+           js-ts-mode
+           java-ts-mode
+           ) . lsp-deferred))
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-completion-provider :none)
@@ -1046,14 +1048,27 @@
 ;; Java
 (use-package lsp-java
   :after lsp
-  :hook
-  (java-mode . lsp)
   :config
   (setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk")
   (setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk/bin/java"
         dap-java-java-command "/usr/lib/jvm/java-17-openjdk/bin/java"
         lsp-java-vmargs '("-Xmx4g"))
   )
+
+(use-package dap-mode
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :config
+  (require 'dap-java)
+  :bind (:map lsp-mode-map
+              ("<f5>" . dap-debug)
+              ("M-<f5>" . dap-hydra))
+  :hook ((dap-mode . dap-ui-mode)
+         (dap-session-created . (lambda (&_rest) (dap-hydra)))
+         (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+(use-package dap-java :ensure nil)
 
 ;; Python
 (use-package pylsp
