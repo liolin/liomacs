@@ -47,7 +47,7 @@
 
 ;; custom-file and secrets
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(setq secret-file (expand-file-name "secret.el" user-emacs-directory))
+(setq secret-file (expand-file-name "secrets.el" user-emacs-directory))
 (load-file custom-file)
 (require 'secrets secret-file t)
 
@@ -346,6 +346,10 @@
    '(("d" "default" plain "\n- tags :: %?"
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			 "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "pattern" plain "\n- tags :: %?\n\n\nWhen to use:\n- \n\n\nBenefits:\n- \n\n\nCosts:\n- "
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			 "#+title: ${title}\n")
       :unnarrowed t)))
   (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
   :bind
@@ -421,15 +425,15 @@
   (ox-extras-activate '(ignore-headlines)))
 
 ;; TODO: Improve this config
-(use-package citar
-  :after all-the-icons
-  :custom
-  (citar-bibliography org-cite-global-bibliography)
-  :bind
-  (("C-c w c o" . citar-open)
-   (:map org-mode-map
-	 :package org
-	 ("C-c w C" . #'org-cite-insert))))
+;; (use-package citar
+;;   :after all-the-icons
+;;   :custom
+;;   (citar-bibliography org-cite-global-bibliography)
+;;   :bind
+;;   (("C-c w c o" . citar-open)
+;;    (:map org-mode-map
+;; 	 :package org
+;; 	 ("C-c w C" . #'org-cite-insert))))
 
 ;; Comment out, because of debugging and i'm not really using it
 ;; (use-package org-alert
@@ -695,6 +699,7 @@
   ;; ui
   (lsp-ui-sideline-show-hover nil)
   (lsp-ui-sideline-diagnostic-max-lines 20)
+  (lsp-inlay-hint-enable t)
   ;; completion
   (lsp-completion-enable t)
   (lsp-completion-enable-additional-text-edit t)
@@ -974,9 +979,7 @@
 
 ;; magit
 (use-package transient)
-
 (use-package magit
-  :after transient
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -990,6 +993,11 @@
   :ensure nil
   :hook
   (prog-mode . hs-minor-mode))
+;; (use-package origami-mode
+;;   :ensure nil
+;;   :hook
+;;   (prog-mode . hs-minor-mode))
+
 
 ;; languages
 (use-package rustic
@@ -1039,6 +1047,10 @@
 ;;   (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 ;;   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
+(use-package agda2-mode
+  :ensure nil
+  :load-path "/usr/share/agda/emacs-mode/")
+
 ;; Arduino
 (use-package arduino-mode
   :mode "\\.ino\\'")
@@ -1066,7 +1078,7 @@
 
 (use-package dap-mode
   :ensure t
-  :after (lsp-mode)
+  :after (lsp-mode dap-java)
   :functions dap-hydra/nil
   :config
   (require 'dap-java)
