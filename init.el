@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; elpaca Setup
-(defvar elpaca-installer-version 0.7)
+(defvar elpaca-installer-version 0.8)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -551,7 +551,10 @@
 
 
 ;; visual
-(load-theme 'base16-gruvbox-dark-hard-dark t)
+(use-package ef-themes
+  :config
+  (load-theme 'ef-dark t))
+;; (load-theme 'base16-gruvbox-dark-hard-dark t)
 ;; (load-theme 'leuven-dark)
 
 (use-package telephone-line
@@ -774,8 +777,7 @@
                 lsp-ui-doc-include-signature t
                 lsp-ui-doc-position 'at-point)) ;; change back to 'bottom?
 
-(use-package dap-mode
-  :after lsp-mode)
+(use-package lsp-treemacs)
 
 (use-package apheleia
   :diminish ""
@@ -1024,6 +1026,10 @@
   :hook
   (haskell-mode . lsp))
 
+(use-package agda2-mode
+  :ensure nil
+  :load-path "/usr/share/agda/emacs-mode/")
+
 ;; (use-package plantuml-mode
 ;;   :custom
 ;;   (plantuml-executable-path "/usr/bin/plantuml")
@@ -1055,6 +1061,9 @@
         lsp-java-vmargs '("-Xmx4g"))
   )
 
+(use-package dap-java
+  :ensure nil)
+
 (use-package dap-mode
   :ensure t
   :after (lsp-mode)
@@ -1067,8 +1076,6 @@
   :hook ((dap-mode . dap-ui-mode)
          (dap-session-created . (lambda (&_rest) (dap-hydra)))
          (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
-(use-package dap-java :ensure nil)
 
 ;; Python
 (use-package pylsp
