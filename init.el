@@ -126,7 +126,7 @@
       '("i" "Agenda"
 	((agenda ""
 		 ((org-agenda-span 'day)
-		  (org-deadline-warning-days 365)))
+		  (org-deadline-warning-days 7)))
 	 (alltodo ""
 		  ((org-agenda-overriding-header "To Refile")
 		   (org-agenda-files '("~/org/Agenda/inbox.org"))))
@@ -310,15 +310,6 @@
 	("C-c ]" . org-ref-insert-link-hydra/body))
   :config
   (setq org-latex-prefer-user-labels t))
-
-(use-package org-caldav
-  :config
-  (setq org-caldav-url liomacs/org-caldav-url
-        org-caldav-calendar-id liomacs/org-caldav-calendar-id
-        org-caldav-inbox liomacs/org-caldav-inbox
-        org-caldav-files liomacs/org-caldav-files
-        org-icalendar-timezone liomacs/org-icalendar-timezone
-        org-caldav-calendars liomacs/org-caldav-calendars))
 
 (defun liomacs/update-org-id-files ()
   "Adds all IDs from the org-roam files to the org-id-locations-file"
