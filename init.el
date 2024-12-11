@@ -1027,6 +1027,7 @@
 
 (use-package agda2-mode
   :ensure nil
+  :if (file-exists-p "/usr/share/agda/emacs-mode/")
   :load-path "/usr/share/agda/emacs-mode/")
 
 ;; (use-package plantuml-mode
@@ -1037,10 +1038,6 @@
 ;;   :config
 ;;   (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 ;;   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
-
-(use-package agda2-mode
-  :ensure nil
-  :load-path "/usr/share/agda/emacs-mode/")
 
 ;; Arduino
 (use-package arduino-mode
