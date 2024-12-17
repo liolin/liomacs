@@ -314,7 +314,7 @@
 (defun liomacs/update-org-id-files ()
   "Adds all IDs from the org-roam files to the org-id-locations-file"
   (interactive)
-  (let ((fil (org-roam--list-files org-roam-directory)))
+  (let ((fil (org-roam-list-files)))
     (org-id-update-id-locations fil)))
 
 (defun liomacs/search-roam ()
