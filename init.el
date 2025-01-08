@@ -784,6 +784,8 @@
   :config
   (direnv-mode))
 
+(use-package cmake-mode)
+
 (use-package fancy-compilation
   :config
   (fancy-compilation-mode))
@@ -1283,11 +1285,7 @@
   (setenv "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk")
   (setq lsp-java-java-path "/usr/lib/jvm/java-17-openjdk/bin/java"
         dap-java-java-command "/usr/lib/jvm/java-17-openjdk/bin/java"
-        lsp-java-vmargs '("-Xmx4g"))
-  )
-
-(use-package dap-java
-  :ensure nil)
+        lsp-java-vmargs '("-Xmx4g")))
 
 (use-package dap-mode
   :ensure t
