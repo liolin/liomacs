@@ -60,6 +60,10 @@
   ;; :hook
   ;; (minibuffer-setup . (lambda() (setq gc-cons-threshold most-positive-fixnum)))
   ;; (minibuffer-exit . (lambda() (setq gc-cons-threshold (* 8 1024 1024))))
+  :hook
+  (before-save . delete-trailing-whitespace)
+  :custom
+  (show-trailing-whitespace t)
   :config
   (setq-default indent-tabs-mode nil)
   (setq ring-bell-function #'ignore
@@ -757,7 +761,7 @@
 ;; visual
 (use-package ef-themes
   :config
-  (load-theme 'ef-dark t))
+  (load-theme 'ef-cherie t))
 ;; (load-theme 'base16-gruvbox-dark-hard-dark t)
 ;; (load-theme 'leuven-dark)
 
