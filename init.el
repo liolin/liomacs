@@ -1045,6 +1045,9 @@
      (:from . 22)
      (:subject)))
   :config
+  (with-eval-after-load "mm-decode"
+    (add-to-list 'mm-discouraged-alternatives "text/html")
+    (add-to-list 'mm-discouraged-alternatives "text/richtext"))
   (setq mu4e-contexts
 	(list
          (make-mu4e-context
