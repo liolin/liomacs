@@ -183,14 +183,6 @@
          :section-number nil)
 	("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
 
-(defun liomacs/org-agenda-process-inbox-item ()
-  "Process a single item in the org-agenda."
-  (interactive)
-  (org-with-wide-buffer
-   (org-agenda-set-tags)
-   (org-agenda-priority)
-   (org-agenda-refile nil nil t)))
-
 (use-package org
   :init
   ;; org-babel
@@ -284,6 +276,213 @@
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
   (add-to-list 'org-latex-packages-alist '("" "subcaption"))
   (add-to-list 'org-latex-classes
+               '("no-article"
+                 "\\documentclass{article}
+\\usepackage[a4paper]{geometry}
+
+% Language and encoding
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+
+% Page margins
+\\geometry{
+  a4paper,
+  top=3.3cm,
+  head=36pt,
+  foot=23pt,
+  left=2.4cm,
+  right=2.4cm,
+  bottom=2.3cm
+}
+
+% Colors
+\\usepackage{xcolor}
+
+% Compact lists
+\\usepackage{paralist}
+\\usepackage{enumitem}
+\\setlist[description]{%
+  font={\\bfseries\\rmfamily}, % set the label font
+}
+\\newcommand{\\bulletdescriptionlabel}[1]{%
+  \\hspace\\labelsep
+  \\normalfont
+  \\textbullet\\ %
+\\bfseries #1}
+\\newlist{itemdescript}{description}{2}
+\\setlist[itemdescript,1]{before=\\let\\makelabel\\bulletdescriptionlabel}
+\\setlist[itemdescript,2]{before=\\let\\makelabel\\bulletdescriptionlabel}
+\\setlist{noitemsep}
+
+% Header and footer
+\\usepackage[automark,headsepline]{scrlayer-scrpage}
+\\usepackage{scrhack} % removes warning about deprecated \"chapter\" command.
+
+\\usepackage{titling}
+\\clearpairofpagestyles
+\\lohead{\\sffamily\\textbf{\\thetitle}}
+\\rohead{\\thedate}
+\\lofoot{\\sffamily \\theauthor}
+\\cofoot{\\sffamily\\leftmark}
+\\rofoot{\\sffamily\\thepage}
+\\pagestyle{scrheadings}
+% \\renewcommand*{\\chapterpagestyle}{scrheadings}
+
+% Hyperlinks
+\\usepackage{hyperref}
+\\usepackage{soul}
+% \\usepackage[anythingbreaks]{breakurl}
+\\usepackage{etoolbox}
+
+\\urlstyle{rm}
+\\definecolor{linkcolor}{HTML}{81245D}
+\\hypersetup{
+  colorlinks,
+  linkcolor={linkcolor},
+  citecolor={linkcolor},
+  urlcolor={linkcolor}
+}
+
+% Icons
+\\usepackage{fontawesome}
+
+% Theorem, Proofs, definitions, ...
+\\usepackage{amsthm}
+\\newtheorem{theorem}{Theorem}
+\\theoremstyle{definition}
+\\newtheorem{definition}{Definition}
+
+% Boxes
+\\usepackage[most]{tcolorbox}
+\\definecolor{infobar}{HTML}{0085cd}
+\\definecolor{infobackground}{HTML}{5fbfed}
+\\newenvironment{info}[1][Info]
+{
+  \\begin{tcolorbox}[
+      arc = 2mm,
+      boxrule = 0pt,
+      breakable,
+      before skip=11pt,
+      before skip=11pt,
+      title = #1,
+      fonttitle = \\sffamily\\bfseries,
+      coltitle = white,
+      colbacktitle = infobar,
+      colback = infobackground,
+      toptitle=2mm,
+      bottomtitle=2mm,
+      top=4mm,
+      bottom=4mm
+    ]
+  }
+  {
+  \\end{tcolorbox}
+}
+
+\\definecolor{warnbar}{HTML}{c32e15}
+\\definecolor{warnbackground}{HTML}{f39a8b}
+\\newenvironment{warn}[1][Warning]
+{
+  \\begin{tcolorbox}[
+      arc = 2mm,
+      boxrule = 0pt,
+      breakable,
+      before skip=11pt,
+      before skip=11pt,
+      title = #1,
+      fonttitle = \\sffamily\\bfseries,
+      coltitle = white,
+      colbacktitle = warnbar,
+      colback = warnbackground,
+      toptitle=2mm,
+      bottomtitle=2mm,
+      top=4mm,
+      bottom=4mm
+    ]
+  }
+  {
+  \\end{tcolorbox}
+}
+
+% Code
+\\usepackage{soul}
+\\usepackage{listings}
+\\usepackage{textcomp}
+\\usepackage{dirtree}
+
+\\definecolor{strings}{HTML}{448c25}
+\\definecolor{comments}{HTML}{aaaaaa}
+\\definecolor{keywords}{HTML}{aa3d8c}
+\\definecolor{ndkeywords}{rgb}{.612,.36,.15}
+\\definecolor{background}{HTML}{f4f4f4}
+\\definecolor{numbers}{HTML}{a884e0}
+
+% Default style
+\\lstdefinestyle{default}{
+  backgroundcolor=\\color{background},
+  basicstyle=\\ttfamily\\small,
+  breakatwhitespace=true,
+  breaklines=true,
+  commentstyle=\\color{comments}\\ttfamily,
+  deletekeywords={},
+  escapeinside={}{},
+  extendedchars=true,
+  frame=lines,
+  keepspaces=true,
+  identifierstyle=\\color{black},
+  keywordstyle=\\color{keywords}\\bfseries,
+  ndkeywordstyle=\\color{ndkeywords}\\bfseries,
+  morekeywords={},
+  numbers=left,
+  numberstyle=\\ttfamily\\color{numbers},
+  rulecolor=\\color{numbers},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=1,
+  stringstyle=\\color{strings}\\ttfamily,
+  tabsize=2,
+}
+\\lstset{
+  style=default,
+  columns=fullflexible,
+  upquote=true
+}
+
+\\lstdefinelanguage{javascript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, const},
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]\"
+}
+
+\\lstdefinelanguage{yaml}{
+  ndkeywords={this},
+  sensitive=false,
+  comment=[l]{\#},
+  }
+  \\lstdefinelanguage{json}{
+  keywords={{,},:, string, number},
+  sensitive=false,
+  comment=[l]{\#},
+  morestring=[b]\"
+}
+
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*a{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list 'org-latex-classes
 	       '("ost-summary"
 		 "\\documentclass{article}"
 		 ("\\section{%s}" . "\\section*{%s}")
@@ -292,7 +491,17 @@
 	       '("ost-exam-summary"
 		 "\\documentclass{extarticle}"
 		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\"))))
+		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+  (add-to-list 'org-latex-classes
+	       '("personal-report"
+		 "\\documentclass{article}"
+		 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+  (add-to-list 'org-latex-classes
+	       '("acmart"
+		 "\\documentclass{acmart}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 (use-package evil-org
   ;; TODO: this demand required?
