@@ -970,7 +970,7 @@
 
 
 (use-package lsp-ui
-  :commands 
+  :commands
   (lsp-ui-doc-show
    lsp-ui-doc-glance)
   :bind (:map lsp-mode-map
@@ -998,7 +998,7 @@
         'tex-fmt)
   (setf (alist-get 'LaTeX-mode apheleia-mode-alist)
         'tex-fmt)
-  (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin" "--keep"))
+  (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin" "--nowrap"))
   (apheleia-global-mode +1))
 
 ;; TODO: Fix missing recipe
@@ -1375,6 +1375,10 @@
 
 (use-package lsp-ltex
   :after lsp
+  :hook
+  (text-mode . (lambda ()
+                 (require 'lsp-ltex)
+                 (lsp)))
   :init
   (setq lsp-ltex-version "15.2.0")
   :config
