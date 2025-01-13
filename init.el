@@ -790,6 +790,8 @@
   :config
   (fancy-compilation-mode))
 
+(use-package restclient)
+
 (use-package treesit
   :ensure nil
   :mode (("\\.tsx\\'" . tsx-ts-mode)
