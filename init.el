@@ -469,12 +469,12 @@
 \\lstdefinelanguage{yaml}{
   ndkeywords={this},
   sensitive=false,
-  comment=[l]{\#},
-  }
-  \\lstdefinelanguage{json}{
+  comment=[l]{\\#},
+}
+\\lstdefinelanguage{json}{
   keywords={{,},:, string, number},
   sensitive=false,
-  comment=[l]{\#},
+  comment=[l]{\\#},
   morestring=[b]\"
 }
 
