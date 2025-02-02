@@ -1417,6 +1417,7 @@
   (ledger-mode-links-in-register nil)
   (ledger-default-date-format "%Y-%m-%d")
   (ledger-binary-path "hledger")
+  (ledger-post-amount-alignment-column 65)
   :init
   (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode)))
 
