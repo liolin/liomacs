@@ -1248,6 +1248,7 @@
   (setq rust-mode-treesitter-derive t))
 
 (use-package tuareg
+  :if (file-exists-p "/home/liolin/.opam/default/share/emacs/site-lisp")
   :config
   (add-to-list 'load-path "/home/liolin/.opam/default/share/emacs/site-lisp")
   (require 'ocp-indent))
