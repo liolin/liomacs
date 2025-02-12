@@ -679,7 +679,8 @@
 
 (use-package consult
   :bind
-  ("C-s" . consult-line))
+  ("C-s" . consult-line)
+  ([remap imenu]  . consult-imenu))
 
 (use-package marginalia
   :config
