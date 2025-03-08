@@ -85,6 +85,7 @@
 
   (electric-pair-mode 1)
   (global-display-line-numbers-mode t)
+  (global-auto-revert-mode t)
   (dolist (mode '(term-mode-hook
 		  shell-mode-hook
 		  eshell-mode-hook
