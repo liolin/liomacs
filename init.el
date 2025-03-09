@@ -984,13 +984,15 @@
   (lsp-ui-doc-show
    lsp-ui-doc-glance)
   :bind (:map lsp-mode-map
-              ("C-c C-d" . 'lsp-ui-doc-glance))
+              ("C-c C-d" . 'lsp-ui-doc-glance)
+              :map lsp-ui-mode-map
+              ("<tab>" . 'lsp-ui-doc-focus-frame))
   :after (lsp-mode evil)
   :config (setq lsp-ui-doc-enable t
                 evil-lookup-func #'lsp-ui-doc-glance
                 lsp-ui-doc-show-with-cursor nil
                 lsp-ui-doc-include-signature t
-                lsp-ui-doc-position 'at-point)) ;; change back to 'bottom?
+                lsp-ui-doc-position 'bottom)) ;; change back to 'bottom?
 
 (use-package lsp-treemacs)
 
