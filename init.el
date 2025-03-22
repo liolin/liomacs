@@ -290,6 +290,7 @@
 \\usepackage{lmodern}
 
 \\usepackage{amsmath}
+\\usepackage{amssymb}
 \\usepackage{amsfonts}
 
 % Page margins
