@@ -492,27 +492,28 @@ and restart Flymake to apply the changes."
 				 ((agenda ""
 						  ((org-agenda-span 'day)
 						   (org-deadline-warning-days 7)))
-				  (alltodo ""
-						   ((org-agenda-overriding-header "To Refile")
-							(org-agenda-files '("~/org/Agenda/inbox.org"))))
-				  (alltodo ""
-						   ((org-agenda-overriding-header "Emails")
-							(org-agenda-files '("~/org/Agenda/emails.org"))))
-				  (alltodo ""
-						   ((org-agenda-overriding-header "OST")
-							(org-agenda-files '("~/org/Agenda/school.org"))))
-				  (alltodo ""
-						   ((org-agenda-overriding-header "III")
-							(org-agenda-files '("~/org/Agenda/work.org"))))
 				  (todo "WORKING"
 						((org-agenda-overriding-header "In Progress")
 						 (org-agenda-files '("~/org/Agenda/projects.org"
 											 "~/org/Agenda/work.org"
 											 "~/org/Agenda/school.org"
 											 "~/org/Agenda/GTD.org"))))
+				  (todo "NEXT"
+						((org-agenda-overriding-header "Next")
+						 (org-agenda-files '("~/org/Agenda/projects.org"
+											 "~/org/Agenda/work.org"
+											 "~/org/Agenda/school.org"
+											 "~/org/Agenda/GTD.org"))))
+				  (agenda ""
+						  ((org-agenda-span 'week)
+						   (org-deadline-warning-days 7)))
+
 				  (alltodo ""
-						   ((org-agenda-overriding-header "Projects")
-							(org-agenda-files '("~/org/Agenda/projects.org")))))))
+						   ((org-agenda-overriding-header "To Refile")
+							(org-agenda-files '("~/org/Agenda/inbox.org"))))
+				  (alltodo ""
+						   ((org-agenda-overriding-header "All TODOs"))))))
+
 
   ;; Org latex
   (require 'ox-latex)
