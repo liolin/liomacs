@@ -858,10 +858,12 @@ and restart Flymake to apply the changes."
 	'(abbrev-mode
 	  eldoc-mode
 	  flyspell-mode
+	  flymake-mode
 	  smooth-scroll-mode
 	  outline-minor-mode
 	  which-key-mode
 	  apheleia-mode
+	  hs-minor-mode
 	  evil-collection-unimpaired-mode))
 
   (defun emacs-solo/purge-minor-modes ()
