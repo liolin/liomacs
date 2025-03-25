@@ -456,18 +456,8 @@ and restart Flymake to apply the changes."
   (org-agenda-current-time-string
    "◀── now ─────────────────────────────────────────────────")
 
-  ;; Org capture
-  (org-capture-templates
-   `(("i" "inbox" entry (file liomacs/org-inbox-file)
-	  "* TODO %?")
-	 ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
-	  "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
-	 ("l" "link" entry (file liomacs/org-inbox-file)
-	  "* TODO %(org-cliplink-capture)" :immediate-finish t)
-	 ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-	  "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
-
   :config
+  (setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
   (setq
    ;; Edit settings
    org-auto-align-tags t
@@ -513,6 +503,19 @@ and restart Flymake to apply the changes."
 							(org-agenda-files '("~/org/Agenda/inbox.org"))))
 				  (alltodo ""
 						   ((org-agenda-overriding-header "All TODOs"))))))
+
+  ;; Org capture
+  (require 'org-capture)
+  (define-key global-map (kbd "C-c x") 'org-capture)
+  (setq org-capture-templates
+		`(("i" "inbox" entry (file liomacs/org-inbox-file)
+		   "* TODO %?")
+		  ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
+		   "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
+		  ("l" "link" entry (file liomacs/org-inbox-file)
+		   "* TODO %(org-cliplink-capture)" :immediate-finish t)
+		  ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
+		   "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
 
 
   ;; Org latex
