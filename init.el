@@ -237,6 +237,10 @@
   (advice-add 'completion-at-point
 			  :after #'minibuffer-hide-completions))
 
+(use-package imenu
+  :ensure nil
+  :config
+  (setq imenu-flatten t))
 
 (use-package dired
   :ensure nil
@@ -756,7 +760,10 @@ and restart Flymake to apply the changes."
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
 [EXTRA]"
-				 )))
+				 ))
+  ;; Org goto
+  (setq org-goto-interface 'outline-path-completion)
+  (setq org-outline-path-complete-in-steps nil))
 
 (use-package uniquify
   :ensure nil
