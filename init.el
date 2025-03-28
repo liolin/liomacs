@@ -1169,6 +1169,7 @@ and restart Flymake to apply the changes."
 
 (use-package mu4e
   :ensure nil
+  :if (file-directory-p "/usr/share/emacs/site-lisp/mu4e/")
   :custom
   (message-send-mail-function 'smtpmail-send-it)
   (mu4e-org-link-query-in-headers-mode t)
