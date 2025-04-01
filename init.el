@@ -390,6 +390,11 @@ and restart Flymake to apply the changes."
 			 (if flymake-show-diagnostics-at-end-of-line
 				 "Enabled" "Disabled"))))
 
+(use-package flyspell
+  :ensure nil
+  :defer t
+  :hook (message-mode . flyspell-mode))
+
 (use-package whitespace
   :ensure nil
   :defer t
