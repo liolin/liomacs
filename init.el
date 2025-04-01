@@ -1189,6 +1189,7 @@ and restart Flymake to apply the changes."
   (mu4e-headers-fields
    '((:human-date . 12)
 	 (:flags . 6)
+	 (:tags . 7)
 	 (:maildir . 22)
 	 (:mailing-list . 10)
 	 (:from . 22)
@@ -1244,6 +1245,7 @@ and restart Flymake to apply the changes."
 				  (mu4e-sent-folder      . "/gmail/[Gmail]/Gesendet")
 				  (mu4e-trash-folder     . "/gmail/[Gmail]/Papierkorb")
 				  (mu4e-refile-folder    . "/archiv")))))
+  (add-to-list 'mu4e-headers-actions '("Retag" . mu4e-action-retag-message) t)
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
