@@ -1274,5 +1274,17 @@ and restart Flymake to apply the changes."
   :init
   (load-theme 'ef-cherie t))
 
+;;; LEDGER
+(use-package ledger-mode
+  :ensure t
+  :mode "\\.journal\\'"
+  :defer t
+  :custom
+  (ledger-mode-should-check-version nil)
+  (ledger-mode-links-in-register nil)
+  (ledger-default-date-format "%Y-%m-%d")
+  (ledger-binary-path "hledger")
+  (ledger-post-amount-alignment-column 65))
+
 (provide 'init)
 ;;; init.el ends here
