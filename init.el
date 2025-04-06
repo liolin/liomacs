@@ -321,6 +321,12 @@
   :hook
   (prog-mode . hs-minor-mode))
 
+(use-package subword-mode
+  :ensure nil
+  :defer t
+  :hook
+  (prog-mode . subword-mode))
+
 (use-package eldoc
   :ensure nil
   :init
