@@ -231,7 +231,7 @@
   (setq icomplete-prospects-height 10)
   (setq icomplete-separator " . ")
   (setq icomplete-with-completion-tables t)
-  (setq icomplete-in-buffer t)
+  (setq icomplete-in-buffer nil)
   (setq icomplete-max-delay-chars 0)
   (setq icomplete-scroll t)
   (advice-add 'completion-at-point
@@ -894,6 +894,9 @@ and restart Flymake to apply the changes."
   (add-hook 'after-change-major-mode-hook 'emacs-solo/purge-minor-modes))
 
 ;;; -------------------- NON TREESITTER AREA
+;; Required for eldoc to display docs properly
+(use-package markdown-mode
+  :ensure t)
 
 ;;; -------------------- TREESITTER AREA
 ;;; TYPESCRIPT-TS-MODE
@@ -926,7 +929,15 @@ and restart Flymake to apply the changes."
   :config
   (add-to-list 'treesit-language-source-alist '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")))
 
-;;; TOML-TS-MODE
+;;; JAVA-TS-MODE
+(use-package java-ts-mode
+  :ensure java-ts-mode
+  :mode "\\.java\\'"
+  :defer 't
+  :config
+  (add-to-list 'treesit-language-source-alist '(java "https://github.com/tree-sitter/tree-sitter-java" "master" "src")))
+
+;;; toml-TS-MODE
 (use-package toml-ts-mode
   :ensure toml-ts-mode
   :mode "\\.toml\\'"
@@ -1253,6 +1264,7 @@ and restart Flymake to apply the changes."
 				  (mu4e-refile-folder    . "/archiv")))))
   (add-to-list 'mu4e-headers-actions '("Retag" . mu4e-action-retag-message) t)
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
+  (add-to-list 'mu4e-bookmarks '(:name "work" :query "(flag:flagged OR flag:unread) AND NOT flag:trashed AND maildir:/ost/inbox" :key ?w))
   (add-to-list 'mu4e-bookmarks '(:name "notes" :query "maildir:/notes/* AND NOT flag:trashed" :key ?n)))
 
 (use-package mu4e-alert
@@ -1285,6 +1297,13 @@ and restart Flymake to apply the changes."
   (ledger-default-date-format "%Y-%m-%d")
   (ledger-binary-path "hledger")
   (ledger-post-amount-alignment-column 65))
+
+;;; CORFU
+;; TODO: Remove it with icomplete
+(use-package corfu
+  :ensure t
+  :init
+  (global-corfu-mode))
 
 (provide 'init)
 ;;; init.el ends here
