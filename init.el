@@ -150,6 +150,12 @@
 					(emacs-init-time)
 					(number-to-string (length package-activated-list))))))
 
+(use-package dotfiles
+  :ensure nil
+  :load-path "~/code/liomacs/"
+  :custom
+  (dotfiles/configuration-file "~/.dotfiles/desktop.org"))
+
 (use-package auth-source
   :ensure nil
   :defer t
