@@ -1161,6 +1161,7 @@ and restart Flymake to apply the changes."
 				  (setq TeX-command-extra-options "-shell-escape")))
   (LaTeX-mode . flymake-mode)
   (LaTeX-mode . turn-on-reftex)
+  (LaTeX-mode . apheleia-mode)
   :config
   (setq-default TeX-global-PDF-mode 1
 				preview-scale-function 1.5
@@ -1280,11 +1281,19 @@ and restart Flymake to apply the changes."
   :defer t)
 
 ;; EF-THEMES
-(use-package ef-themes
+;; (use-package ef-themes
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (load-theme 'ef-cherie t))
+
+(use-package solarized-theme
   :ensure t
   :defer t
+  :custom
+  (solarized-use-variable-pitch nil)
   :init
-  (load-theme 'ef-cherie t))
+  (load-theme 'solarized-dark t))
 
 ;;; LEDGER
 (use-package ledger-mode
@@ -1299,7 +1308,6 @@ and restart Flymake to apply the changes."
   (ledger-post-amount-alignment-column 65))
 
 ;;; CORFU
-;; TODO: Remove it with icomplete
 (use-package corfu
   :ensure t
   :init
