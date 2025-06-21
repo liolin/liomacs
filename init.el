@@ -537,7 +537,40 @@ and restart Flymake to apply the changes."
 		   "* TODO %(org-cliplink-capture)" :immediate-finish t)
 		  ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
 		   "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
-
+  ;; Org publish
+  (setq org-publish-project-alist
+		'(("roam-org"
+		   :base-directory "~/roam/"
+		   :recursive t
+		   :publishing-function org-html-publish-to-html
+		   :publishing-directory "~/code/roam_html/"
+		   :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
+		   :html-preamble "<div class=\"header\"><a href=\"https://dg.liolin.ch\" title=\"liolin's digital garden\">liolin's digital garden</a></div>"
+		   :html-validation-link nil
+		   :with-toc nil
+		   :section-number nil
+		   :auto-sitemap t
+		   :sitemap-filename "index.org")
+		  ("roam-attachment"
+		   :base-directory "~/roam/static/attachment/"
+		   :base-extension "png\\|jpg\\|jpeg"
+		   :recursive t
+		   :publishing-function org-publish-attachment
+		   :publishing-directory "~/code/roam_html/static/attachment/")
+		  ("roam-css"
+		   :base-directory "~/roam/static/css/"
+		   :base-extension "css"
+		   :recursive t
+		   :publishing-function org-publish-attachment
+		   :publishing-directory "~/code/roam_html/static/css/")
+		  ("roam-pdf"
+		   :base-directory "~/roam/"
+		   :recursive t
+		   :publishing-function org-latex-publish-to-pdf
+		   :publishing-directory "~/code/roam_html/pdf"
+		   :with-toc nil
+		   :section-number nil)
+		  ("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
 
   ;; Org latex
   (require 'ox-latex)
