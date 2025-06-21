@@ -493,7 +493,7 @@ and restart Flymake to apply the changes."
    org-pretty-entities t)
 
   ;; Ellipsis styling
-  (setq org-ellipsis " ▼ ")
+  (setq org-ellipsis " ▼")
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
 
   ;; Org agenda
