@@ -16,7 +16,8 @@
    ("RET" . newline-and-indent)
    ("C-z" . nil)
    ("C-x C-z" . nil)
-   ("C-x C-k RET" . nil))
+   ("C-x C-k RET" . nil)
+   ("<f5>" . display-line-numbers-mode))
   :custom
   (ad-redefinition-action 'accept)
   (column-number-mode nil) ;; maybe enable?
@@ -99,7 +100,7 @@
   (load custom-file 'noerror 'nomessage)
 
   ;; Set line-number-mode with relative numbering
-  (setq display-line-numbers-type 'relative)
+  (setq display-line-numbers-type 'visual)
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
   ;; Add option "d" to whenever using C-x s or C-x C-c, allowing a quick preview
