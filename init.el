@@ -1041,9 +1041,6 @@ and restart Flymake to apply the changes."
 (use-package org-roam
   :ensure t
   :after org
-  :hook
-  ;; TODO: Enable again when everything is fine
-  (org-roam-mode . lsp-deferred)
   :bind
   (("C-c n l" . org-roam-buffer-toggle)
    ("C-c n f" . org-roam-node-find)
