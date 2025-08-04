@@ -1011,6 +1011,13 @@ and restart Flymake to apply the changes."
   :config
   (add-to-list 'treesit-language-source-alist '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
+(use-package nix-ts-mode
+  :ensure nix-ts-mode
+  :mode "\\nix.*\\'"
+  :defer 't
+  :config
+  (add-to-list 'treesit-language-source-alist '(nix "https://github.com/nix-community/tree-sitter-nix" "master" "src")))
+
 
 ;;; SERVER
 (use-package server
@@ -1349,6 +1356,12 @@ and restart Flymake to apply the changes."
   :ensure t
   :init
   (global-corfu-mode))
+
+;;; DIRENV
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
 
 (provide 'init)
 ;;; init.el ends here
