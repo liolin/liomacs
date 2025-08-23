@@ -1218,19 +1218,13 @@ and restart Flymake to apply the changes."
 		TeX-save-query nil
 		TeX-source-correlate-method 'synctex))
 
-;; (use-package f
-;;   :ensure t)
-;; (use-package eglot-ltex
-;;   :ensure nil
-;;   :after f
-;;   :load-path "/tmp/eglot-ltex"
-;;   :defer t
-;;   :hook (text-mode . (lambda ()
-;;					   (require 'eglot-ltex)
-;;					   (eglot-ensure)))
-;;   :init
-;;   (setq eglot-ltex-server-path "/home/liolin/.local/ltex-ls-plus-18.4.0"
-;;		eglot-ltex-communication-channel 'stdio))
+(use-package eglot-ltex-plus
+  :hook (text-mode . (lambda ()
+					   (require 'eglot-ltex-plus)
+					   (eglot-ensure)))
+  :init
+  (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus-18.5.1/" user-emacs-directory)
+		eglot-ltex-plus-communication-channel 'stdio))
 
 (use-package mu4e
   :ensure nil
