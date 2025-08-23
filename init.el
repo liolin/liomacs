@@ -412,8 +412,6 @@ and restart Flymake to apply the changes."
   :ensure nil
   :defer t
   :hook (before-save . whitespace-cleanup)
-  ;; if we wanna remove this hook at any time, eval:
-  ;; (remove-hook 'before-save-hook #'whitespace-cleanup)
   )
 
 (use-package minibuffer
@@ -423,7 +421,7 @@ and restart Flymake to apply the changes."
   (completions-format 'vertical)
   (completion-ignore-case t)
   (completion-show-help t)
-  (completion-auto-select nil) ;; only turn this on if not using icomplete
+  (completion-auto-select nil)
   (enable-recursive-minibuffers t)
   (read-file-name-completion-ignore-case t)
   (read-buffer-completion-ignore-case t)
