@@ -566,7 +566,7 @@ and restart Flymake to apply the changes."
 		   :sitemap-filename "index.org")
 		  ("roam-attachment"
 		   :base-directory "~/roam/static/attachment/"
-		   :base-extension "png\\|jpg\\|jpeg"
+		   :base-extension "png\\|jpg\\|jpeg\\|svg"
 		   :recursive t
 		   :publishing-function org-publish-attachment
 		   :publishing-directory "~/code/roam_html/static/attachment/")
