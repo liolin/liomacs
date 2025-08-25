@@ -102,6 +102,7 @@
   ;; Set line-number-mode with relative numbering
   (setq display-line-numbers-type 'visual)
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
 
   ;; Add option "d" to whenever using C-x s or C-x C-c, allowing a quick preview
   ;; of the diff of what you're asked to save.
