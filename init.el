@@ -1234,9 +1234,6 @@ and restart Flymake to apply the changes."
 		TeX-source-correlate-method 'synctex))
 
 (use-package eglot-ltex-plus
-  :hook (text-mode . (lambda ()
-					   (require 'eglot-ltex-plus)
-					   (eglot-ensure)))
   :init
   (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus-18.5.1/" user-emacs-directory)
 		eglot-ltex-plus-communication-channel 'stdio))
