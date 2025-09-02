@@ -1365,8 +1365,21 @@ and restart Flymake to apply the changes."
 ;;; CORFU
 (use-package corfu
   :ensure t
+  :custom
+  (corfu-auto t)
   :init
   (global-corfu-mode))
+
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;;; DIRENV
 (use-package direnv
