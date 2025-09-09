@@ -312,6 +312,11 @@
 	'(progn
 	   (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory))))
 
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 (use-package isearch
   :ensure nil
   :config
