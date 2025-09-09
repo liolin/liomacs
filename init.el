@@ -1032,6 +1032,17 @@ and restart Flymake to apply the changes."
   (add-to-list 'treesit-language-source-alist '(nix "https://github.com/nix-community/tree-sitter-nix" "master" "src")))
 
 
+(use-package plantuml-mode
+  :ensure t
+  :config
+  (setq org-plantuml-executable-path "/usr/bin/plantuml")
+  (setq org-plantuml-exec-mode 'plantuml)
+  (setq plantuml-executable-path "/usr/bin/plantuml")
+  (setq plantuml-default-exec-mode 'executable)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((plantuml . t))))
+
 ;;; SERVER
 (use-package server
   :ensure nil
@@ -1172,7 +1183,6 @@ and restart Flymake to apply the changes."
 
 (use-package magit
   :ensure t
-  :defer
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
