@@ -219,31 +219,7 @@
 	  (slot . 2))
 	 )))
 
-;;; ICOMPLETE
-;; (use-package icomplete
-;;   :bind (:map icomplete-minibuffer-map
-;;			  ("C-n" . icomplete-forward-completions)
-;;			  ("C-p" . icomplete-backward-completions)
-;;			  ("RET" . icomplete-force-complete-and-exit)
-;;			  ("C-j" . exit-minibuffer)) ;; So we can exit commands like `multi-file-replace-regexp-as-diff'
-;;   :hook
-;;   (after-init . (lambda ()
-;;				  (fido-mode -1)
-;;				  (icomplete-vertical-mode 1)))
-;;   :config
-;;   (setq icomplete-delay-completions-threshold 0)
-;;   (setq icomplete-compute-delay 0)
-;;   (setq icomplete-show-matches-on-no-input t)
-;;   (setq icomplete-hide-common-prefix nil)
-;;   (setq icomplete-prospects-height 10)
-;;   (setq icomplete-separator " . ")
-;;   (setq icomplete-with-completion-tables t)
-;;   (setq icomplete-in-buffer nil)
-;;   (setq icomplete-max-delay-chars 0)
-;;   (setq icomplete-scroll t)
-;;   (advice-add 'completion-at-point
-;;			  :after #'minibuffer-hide-completions))
-
+;;; Completion
 (use-package vertico
   :ensure t
   :init
@@ -258,6 +234,30 @@
   (setq read-file-name-completion-ignore-case t
 		read-buffer-completion-ignore-case t
 		completion-ignore-case t))
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;;; CORFU
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-auto t)
+  :init
+  (global-corfu-mode))
+
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 
 (use-package imenu
   :ensure nil
@@ -1361,25 +1361,6 @@ and restart Flymake to apply the changes."
   (ledger-default-date-format "%Y-%m-%d")
   (ledger-binary-path "hledger")
   (ledger-post-amount-alignment-column 65))
-
-;;; CORFU
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-auto t)
-  :init
-  (global-corfu-mode))
-
-(use-package kind-icon
-  :ensure t
-  :after corfu
-  :custom
-  (kind-icon-use-icons t)
-  (kind-icon-default-face 'corfu-default)
-  (kind-icon-blend-background nil)
-  (kind-icon-blend-frac 0.08)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;;; DIRENV
 (use-package direnv
