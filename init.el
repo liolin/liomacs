@@ -247,6 +247,12 @@
   :init
   (global-corfu-mode))
 
+(use-package cape
+  :after corfu
+  :ensure t
+  :init
+  (add-hook 'completion-at-point-functions #'cape-file))
+
 (use-package kind-icon
   :ensure t
   :after corfu
