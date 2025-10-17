@@ -387,7 +387,6 @@
 
   (with-eval-after-load 'eglot
 	(add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
-	(add-to-list 'eglot-server-programs '((rust-mode rust-ts-mode) "/usr/lib/rustup/bin/rust-analyzer"))
 	(add-to-list 'eglot-server-programs '(haskell-ts-mode . ("haskell-language-server-wrapper" "--lsp"))))
 
   :bind (:map
@@ -963,6 +962,26 @@ and restart Flymake to apply the changes."
 (use-package markdown-mode
   :ensure t)
 
+(use-package rustic
+  :ensure t
+  :custom
+  (rustic-lsp-client 'eglot)
+  (rustic-format-trigger t))
+
+(use-package flymake-clippy
+  :hook (rustic-mode . flymake-clippy-setup-backend))
+
+(defun manually-activate-flymake ()
+  (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
+  (flymake-mode 1))
+
+(use-package eglot
+  :ensure t
+  :hook ((rust-mode . eglot-ensure)
+		 (eglot-managed-mode . manually-activate-flymake))
+  :config
+  (add-to-list 'eglot-stay-out-of 'flymake))
+
 ;;; -------------------- TREESITTER AREA
 ;;; TYPESCRIPT-TS-MODE
 (use-package typescript-ts-mode
@@ -983,16 +1002,6 @@ and restart Flymake to apply the changes."
   :config
   (add-to-list 'treesit-language-source-alist '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
   (unbind-key "M-." typescript-ts-base-mode-map))
-
-;;; RUST-TS-MODE
-(use-package rust-ts-mode
-  :ensure rust-ts-mode
-  :mode "\\.rs\\'"
-  :defer 't
-  :custom
-  (rust-indent-level 2)
-  :config
-  (add-to-list 'treesit-language-source-alist '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")))
 
 ;;; JAVA-TS-MODE
 (use-package java-ts-mode
