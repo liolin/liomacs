@@ -123,6 +123,8 @@
 				(when (file-exists-p private-file)
 				  (load private-file)))))
 
+  (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
+
   ;; Add MELPA
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -513,8 +515,8 @@ and restart Flymake to apply the changes."
    org-insert-heading-respect-content t
 
    ;; Org styling, hide markup etc.
-   org-hide-emphasis-markers t
-   org-pretty-entities t)
+   org-hide-emphasis-markers nil
+   org-pretty-entities nil)
 
   ;; Ellipsis styling
   (setq org-ellipsis " ▼")
@@ -966,10 +968,13 @@ and restart Flymake to apply the changes."
   :ensure t
   :custom
   (rustic-lsp-client 'eglot)
-  (rustic-format-trigger t))
+  (rustic-format-trigger t)
+  :config
+  (setq before-save-hook '(rustic-before-save-hook)))
 
 (use-package flymake-clippy
-  :hook (rustic-mode . flymake-clippy-setup-backend))
+  :hook
+  (rustic-mode . flymake-clippy-setup-backend))
 
 (defun manually-activate-flymake ()
   (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
@@ -977,8 +982,9 @@ and restart Flymake to apply the changes."
 
 (use-package eglot
   :ensure t
-  :hook ((rust-mode . eglot-ensure)
-		 (eglot-managed-mode . manually-activate-flymake))
+  :hook
+  ((rust-mode . eglot-ensure)
+   (eglot-managed-mode . manually-activate-flymake))
   :config
   (add-to-list 'eglot-stay-out-of 'flymake))
 
