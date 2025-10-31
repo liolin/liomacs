@@ -67,6 +67,7 @@
   (split-height-threshold nil)    ; TODO: Do I want this
   (shr-use-colors nil)
   (switch-to-buffer-obey-display-actions t)
+  (indent-tabs-mode nil)
   (tab-always-indent 'complete)
   (tab-width 4)
   (tab-bar-close-button-show nil)
