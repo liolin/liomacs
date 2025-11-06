@@ -1040,9 +1040,7 @@ and restart Flymake to apply the changes."
   :ensure t
   :custom
   (rustic-lsp-client 'eglot)
-  (rustic-format-trigger t)
-  :config
-  (setq before-save-hook '(rustic-before-save-hook)))
+  (rustic-format-trigger t))
 
 ;;; -------------------- TREESITTER AREA
 ;;; TYPESCRIPT-TS-MODE
