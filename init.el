@@ -335,7 +335,7 @@
 	 ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
 	 (".*" "xdg-open" "open")))
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-al --group-directories-first")
+  (dired-listing-switches "-alh --group-directories-first")
   :init
   (defun emacs-solo/window-dired-vc-root-left (&optional directory-path)
 	"Creates *Dired-Side* like an IDE side explorer"
@@ -370,7 +370,9 @@
 
   (eval-after-load 'dired
 	'(progn
-	   (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory))))
+	   (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory)
+	   (define-key dired-mode-map (kbd "h") 'dired-up-directory)
+	   (define-key dired-mode-map (kbd "l") 'dired-find-file))))
 
 (use-package nerd-icons-dired
   :ensure t
