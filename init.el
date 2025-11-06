@@ -57,9 +57,9 @@
   (savehist-save-minibuffer-history t)    ; t is default
   (savehist-additional-variables
    '(kill-ring                            ; clipboard
-	 register-alist                       ; macros
-	 mark-ring global-mark-ring           ; marks
-	 search-ring regexp-search-ring))     ; searches
+     register-alist                       ; macros
+     mark-ring global-mark-ring           ; marks
+     search-ring regexp-search-ring))     ; searches
   (save-place-file (expand-file-name "saveplace" user-emacs-directory))
   (save-place-limit 600)
   (set-mark-command-repeat-pop t) ; So we can use C-u C-SPC C-SPC C-SPC... instead of C-u C-SPC C-u C-SPC...
@@ -128,17 +128,17 @@
       (setq-local header-line-format
                   (format " %s to insert text or %s to cancel."
                           (propertize "C-c C-c" 'face 'help-key-binding)
-			              (propertize "C-c C-k" 'face 'help-key-binding)))
+                          (propertize "C-c C-k" 'face 'help-key-binding)))
       (local-set-key (kbd "C-c C-k")
-		             (lambda () (interactive)
-		               (kill-new (buffer-string))
-		               (delete-frame)))
+                     (lambda () (interactive)
+                       (kill-new (buffer-string))
+                       (delete-frame)))
       (local-set-key (kbd "C-c C-c")
-		             (lambda () (interactive)
-		               (start-process-shell-command
-		                "wtype" nil
-		                (thanos/wtype-text (buffer-string)))
-		               (delete-frame)))))
+                     (lambda () (interactive)
+                       (start-process-shell-command
+                        "wtype" nil
+                        (thanos/wtype-text (buffer-string)))
+                       (delete-frame)))))
 
 
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
@@ -158,9 +158,9 @@
   ;; Add option "d" to whenever using C-x s or C-x C-c, allowing a quick preview
   ;; of the diff of what you're asked to save.
   (add-to-list 'save-some-buffers-action-alist
-			   (list "d"
-					 (lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
-					 "show diff between the buffer and its file"))
+               (list "d"
+                     (lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
+                     "show diff between the buffer and its file"))
 
   ;; On Terminal: changes the vertical separator to a full vertical line
   ;;              and truncation symbol to a right arrow
@@ -169,10 +169,10 @@
 
   ;; Runs 'private.el' after Emacs inits
   (add-hook 'after-init-hook
-			(lambda ()
-			  (let ((private-file (expand-file-name "private.el" user-emacs-directory)))
-				(when (file-exists-p private-file)
-				  (load private-file)))))
+            (lambda ()
+              (let ((private-file (expand-file-name "private.el" user-emacs-directory)))
+                (when (file-exists-p private-file)
+                  (load private-file)))))
 
   (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 
@@ -187,7 +187,6 @@
   (toggle-frame-maximized)
   (select-frame-set-input-focus (selected-frame))
   (global-auto-revert-mode 1)
-  (indent-tabs-mode -1)
   (recentf-mode 1)
   (repeat-mode 1)
   (savehist-mode 1)
@@ -197,32 +196,32 @@
   (file-name-shadow-mode 1) ; allows us to type a new path without having to delete the current one
 
   (with-current-buffer (get-buffer-create "*scratch*")
-	(insert (format ";;
+    (insert (format ";;
 ;; Loading time : %s
 ;; Packages     : %s
 ;;
 "
-					(emacs-init-time)
-					(number-to-string (length package-activated-list))))))
+                    (emacs-init-time)
+                    (number-to-string (length package-activated-list))))))
 
-(use-package dotfiles
-  :ensure nil
-  :load-path "~/code/liomacs/"
-  :custom
-  (dotfiles/configuration-file "~/.dotfiles/desktop.org"))
+;; (use-package dotfiles
+;;   :ensure nil
+;;   :load-path "~/code/liomacs/"
+;;   :custom
+;;   (dotfiles/configuration-file "~/.dotfiles/desktop.org"))
 
 (use-package auth-source
   :ensure nil
   :defer t
   :config
   (setq auth-sources
-		(list (expand-file-name ".authinfo.gpg" user-emacs-directory)))
+        (list (expand-file-name ".authinfo.gpg" user-emacs-directory)))
   (setq user-full-name "Olivier Lischer"
-		user-mail-address "olivier.lischer@liolin.ch")
+        user-mail-address "olivier.lischer@liolin.ch")
 
   ;; Use `pass` as an auth-source
   (when (file-exists-p "~/.password-store")
-	(auth-source-pass-enable)))
+    (auth-source-pass-enable)))
 
 (use-package conf-mode
   :ensure nil
@@ -239,38 +238,56 @@
   :config
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter))
 
+(use-package project
+  :after magit
+  :ensure nil
+  :config
+  (defun liomacs/project-magit-status (&optional include-all)
+    (interactive "P")
+    (let* ((pr   (project-current t))
+           (root (project-root pr)))
+      (magit-status root)))
+  :custom
+  (project-switch-commands
+   '((project-find-file "Find file")
+     (project-find-regexp "Find regexp")
+     (project-find-dir "Find directory")
+     (liomacs/project-magit-status "Magit" "m")
+     (project-eshell "Eshell")
+     (project-any-command "Other"))))
+
 ;; WINDOW
 (use-package window
   :ensure nil
   :custom
   (display-buffer-alist
    '(
-	 ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
-	  (display-buffer-in-side-window)
-	  (window-height . 0.25)
-	  (side . bottom)
-	  (slot . 0))
-	 ("\\*\\([Hh]elp\\)\\*"
-	  (display-buffer-in-side-window)
-	  (window-width . 75)
-	  (side . right)
-	  (slot . 0))
-	 ("\\*\\(Ibuffer\\)\\*"
-	  (display-buffer-in-side-window)
-	  (window-width . 100)
-	  (side . right)
-	  (slot . 1))
-	 ("\\*\\(Flymake diagnostics\\|xref\\|Completions\\)"
-	  (display-buffer-in-side-window)
-	  (window-height . 0.25)
-	  (side . bottom)
-	  (slot . 1))
-	 ("\\*\\(grep\\|find\\)\\*"
-	  (display-buffer-in-side-window)
-	  (window-height . 0.25)
-	  (side . bottom)
-	  (slot . 2))
-	 )))
+     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 0))
+     ("\\*\\([Hh]elp\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . 75)
+      (side . right)
+      (slot . 0))
+     ("\\*\\(Ibuffer\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . 100)
+      (side . right)
+      (slot . 1))
+     ("\\*\\(Flymake diagnostics\\|xref\\|Completions\\)"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 1))
+     ("\\*\\(grep\\|find\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 2))
+     )))
 
 ;;; Completion
 (use-package vertico
@@ -279,14 +296,14 @@
   (vertico-mode)
   :bind
   (:map vertico-map
-		("C-j" . vertico-next)
-		("C-k" . vertico-previous))
+        ("C-j" . vertico-next)
+        ("C-k" . vertico-previous))
   :custom
   (vertico-cycle t)
   :config
   (setq read-file-name-completion-ignore-case t
-		read-buffer-completion-ignore-case t
-		completion-ignore-case t))
+        read-buffer-completion-ignore-case t
+        completion-ignore-case t))
 
 (use-package marginalia
   :ensure t
@@ -332,47 +349,47 @@
   (dired-dwim-target t)
   (dired-guess-shell-alist-user
    '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
-	 ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
-	 (".*" "xdg-open" "open")))
+     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
+     (".*" "xdg-open" "open")))
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alh --group-directories-first")
   :init
   (defun emacs-solo/window-dired-vc-root-left (&optional directory-path)
-	"Creates *Dired-Side* like an IDE side explorer"
-	(interactive)
-	(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+    "Creates *Dired-Side* like an IDE side explorer"
+    (interactive)
+    (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
-	(let ((dir (if directory-path
-				   (dired-noselect directory-path)
-				 (if (eq (vc-root-dir) nil)
-					 (dired-noselect default-directory)
-				   (dired-noselect (vc-root-dir))))))
+    (let ((dir (if directory-path
+                   (dired-noselect directory-path)
+                 (if (eq (vc-root-dir) nil)
+                     (dired-noselect default-directory)
+                   (dired-noselect (vc-root-dir))))))
 
-	  (display-buffer-in-side-window
-	   dir `((side . left)
-			 (slot . 0)
-			 (window-width . 30)
-			 (window-parameters . ((no-other-window . t)
-								   (no-delete-other-windows . t)
-								   (mode-line-format . (" "
-														"%b"))))))
-	  (with-current-buffer dir
-		(let ((window (get-buffer-window dir)))
-		  (when window
-			(select-window window)
-			(rename-buffer "*Dired-Side*")
-			)))))
+      (display-buffer-in-side-window
+       dir `((side . left)
+             (slot . 0)
+             (window-width . 30)
+             (window-parameters . ((no-other-window . t)
+                                   (no-delete-other-windows . t)
+                                   (mode-line-format . (" "
+                                                        "%b"))))))
+      (with-current-buffer dir
+        (let ((window (get-buffer-window dir)))
+          (when window
+            (select-window window)
+            (rename-buffer "*Dired-Side*")
+            )))))
 
   (defun emacs-solo/window-dired-open-directory ()
-	"Open the current directory in *Dired-Side* side window."
-	(interactive)
-	(emacs-solo/window-dired-vc-root-left (dired-get-file-for-visit)))
+    "Open the current directory in *Dired-Side* side window."
+    (interactive)
+    (emacs-solo/window-dired-vc-root-left (dired-get-file-for-visit)))
 
   (eval-after-load 'dired
-	'(progn
-	   (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory)
-	   (define-key dired-mode-map (kbd "h") 'dired-up-directory)
-	   (define-key dired-mode-map (kbd "l") 'dired-find-file))))
+    '(progn
+       (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory)
+       (define-key dired-mode-map (kbd "h") 'dired-up-directory)
+       (define-key dired-mode-map (kbd "l") 'dired-find-file))))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -388,12 +405,12 @@
   (setq search-whitespace-regexp ".*?")
 
   (defun isearch-copy-selected-word ()
-	"Copy the current `isearch` selection to the kill ring."
-	(interactive)
-	(when isearch-other-end
-	  (let ((selection (buffer-substring-no-properties isearch-other-end (point))))
-		(kill-new selection)
-		(isearch-exit))))
+    "Copy the current `isearch` selection to the kill ring."
+    (interactive)
+    (when isearch-other-end
+      (let ((selection (buffer-substring-no-properties isearch-other-end (point))))
+        (kill-new selection)
+        (isearch-exit))))
 
   ;; Bind `M-w` in isearch to copy the selected word, so M-s M-. M-w
   ;; does a great job of 'copying the current word under cursor'.
@@ -434,55 +451,55 @@
   (fset #'jsonrpc--log-event #'ignore)
 
   (defun emacs-solo/eglot-setup ()
-	"Setup eglot mode with specific exclusions."
-	(unless (eq major-mode 'emacs-lisp-mode)
-	  (eglot-ensure)))
+    "Setup eglot mode with specific exclusions."
+    (unless (eq major-mode 'emacs-lisp-mode)
+      (eglot-ensure)))
 
   (add-hook 'prog-mode-hook #'emacs-solo/eglot-setup)
 
   (with-eval-after-load 'eglot
-	(add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
-	(add-to-list 'eglot-server-programs '(haskell-ts-mode . ("haskell-language-server-wrapper" "--lsp"))))
+    (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
+    (add-to-list 'eglot-server-programs '(haskell-ts-mode . ("haskell-language-server-wrapper" "--lsp"))))
 
   :bind (:map
-		 eglot-mode-map
-		 ("C-c l a" . eglot-code-actions)
-		 ("C-c l o" . eglot-code-actions-organize-imports)
-		 ("C-c l r" . eglot-rename)
-		 ("C-c l f" . eglot-format)))
+         eglot-mode-map
+         ("C-c l a" . eglot-code-actions)
+         ("C-c l o" . eglot-code-actions-organize-imports)
+         ("C-c l r" . eglot-rename)
+         ("C-c l f" . eglot-format)))
 
 (use-package flymake
   :ensure nil
   :defer t
   :hook (prog-mode . flymake-mode)
   :bind (:map flymake-mode-map
-			  ("M-8" . flymake-goto-next-error)
-			  ("M-7" . flymake-goto-prev-error)
-			  ("C-c ! n" . flymake-goto-next-error)
-			  ("C-c ! p" . flymake-goto-prev-error)
-			  ("C-c ! l" . flymake-show-buffer-diagnostics)
-			  ("C-c ! t" . toggle-flymake-diagnostics-at-eol))
+              ("M-8" . flymake-goto-next-error)
+              ("M-7" . flymake-goto-prev-error)
+              ("C-c ! n" . flymake-goto-next-error)
+              ("C-c ! p" . flymake-goto-prev-error)
+              ("C-c ! l" . flymake-show-buffer-diagnostics)
+              ("C-c ! t" . toggle-flymake-diagnostics-at-eol))
   :custom
   ;; (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-show-diagnostics-at-end-of-line 'short)
   (flymake-indicator-type 'margins)
   (flymake-margin-indicators-string
    `((error "!" compilation-error)      ;; Alternatives: », E, W, i, !, ?)
-	 (warning "?" compilation-warning)
-	 (note "i" compilation-info)))
+     (warning "?" compilation-warning)
+     (note "i" compilation-info)))
   :config
   ;; Define the toggle function
   (defun toggle-flymake-diagnostics-at-eol ()
-	"Toggle the display of Flymake diagnostics at the end of the line
+    "Toggle the display of Flymake diagnostics at the end of the line
 and restart Flymake to apply the changes."
-	(interactive)
-	(setq flymake-show-diagnostics-at-end-of-line
-		  (not flymake-show-diagnostics-at-end-of-line))
-	(flymake-mode -1) ;; Disable Flymake
-	(flymake-mode 1)  ;; Re-enable Flymake
-	(message "Flymake diagnostics at end of line: %s"
-			 (if flymake-show-diagnostics-at-end-of-line
-				 "Enabled" "Disabled"))))
+    (interactive)
+    (setq flymake-show-diagnostics-at-end-of-line
+          (not flymake-show-diagnostics-at-end-of-line))
+    (flymake-mode -1) ;; Disable Flymake
+    (flymake-mode 1)  ;; Re-enable Flymake
+    (message "Flymake diagnostics at end of line: %s"
+             (if flymake-show-diagnostics-at-end-of-line
+                 "Enabled" "Disabled"))))
 
 (use-package flyspell
   :ensure nil
@@ -509,12 +526,12 @@ and restart Flymake to apply the changes."
   :config
   ;; Keep the cursor out of the read-only portions of the.minibuffer
   (setq minibuffer-prompt-properties
-		'(read-only t intangible t cursor-intangible t face minibuffer-prompt))
+        '(read-only t intangible t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; Keep minibuffer lines unwrapped, long lines like on M-y will be truncated
   (add-hook 'minibuffer-setup-hook
-			(lambda () (setq truncate-lines t)))
+            (lambda () (setq truncate-lines t)))
 
   (minibuffer-depth-indicate-mode 1)
   (minibuffer-electric-default-mode 1))
@@ -552,8 +569,8 @@ and restart Flymake to apply the changes."
   (org-agenda-block-separator ?─)
   (org-agenda-time-grid
    '((daily today require-timed)
-	 (800 1000 1200 1400 1600 1800 2000)
-	 " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
+     (800 1000 1200 1400 1600 1800 2000)
+     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
   (org-agenda-current-time-string
    "◀── now ─────────────────────────────────────────────────")
 
@@ -579,118 +596,120 @@ and restart Flymake to apply the changes."
   (require 'org-agenda)
   (define-key global-map (kbd "C-c a") 'org-agenda)
   (add-to-list 'org-agenda-custom-commands
-			   '("i" "Agenda"
-				 ((agenda ""
-						  ((org-agenda-span 'day)
-						   (org-deadline-warning-days 7)))
-				  (todo "WORKING"
-						((org-agenda-overriding-header "In Progress")
-						 (org-agenda-files '("~/org/Agenda/projects.org"
-											 "~/org/Agenda/work.org"
-											 "~/org/Agenda/school.org"
-											 "~/org/Agenda/GTD.org"))))
-				  (todo "NEXT"
-						((org-agenda-overriding-header "Next")
-						 (org-agenda-files '("~/org/Agenda/projects.org"
-											 "~/org/Agenda/work.org"
-											 "~/org/Agenda/school.org"
-											 "~/org/Agenda/GTD.org"))))
-				  (agenda ""
-						  ((org-agenda-span 'week)
-						   (org-deadline-warning-days 7)))
+               '("i" "Agenda"
+                 ((agenda ""
+                          ((org-agenda-span 'day)
+                           (org-deadline-warning-days 7)))
+                  (todo "WORKING"
+                        ((org-agenda-overriding-header "In Progress")
+                         (org-agenda-files '("~/org/Agenda/projects.org"
+                                             "~/org/Agenda/work.org"
+                                             "~/org/Agenda/school.org"
+                                             "~/org/Agenda/GTD.org"))))
+                  (todo "NEXT"
+                        ((org-agenda-overriding-header "Next")
+                         (org-agenda-files '("~/org/Agenda/projects.org"
+                                             "~/org/Agenda/work.org"
+                                             "~/org/Agenda/school.org"
+                                             "~/org/Agenda/GTD.org"))))
+                  (agenda ""
+                          ((org-agenda-span 'week)
+                           (org-deadline-warning-days 7)))
 
-				  (alltodo ""
-						   ((org-agenda-overriding-header "To Refile")
-							(org-agenda-files '("~/org/Agenda/inbox.org"))))
-				  (alltodo ""
-						   ((org-agenda-overriding-header "All TODOs"))))))
+                  (alltodo ""
+                           ((org-agenda-overriding-header "To Refile")
+                            (org-agenda-files '("~/org/Agenda/inbox.org"))))
+                  (alltodo ""
+                           ((org-agenda-overriding-header "All TODOs"))))))
 
   ;; Org capture
   (require 'org-capture)
   (define-key global-map (kbd "C-c x") 'org-capture)
   (setq org-capture-templates
-		`(("i" "inbox" entry (file liomacs/org-inbox-file)
-		   "* TODO %?")
-		  ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
-		   "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
-		  ("l" "link" entry (file liomacs/org-inbox-file)
-		   "* TODO %(org-cliplink-capture)" :immediate-finish t)
-		  ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
-		   "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
+        `(("i" "inbox" entry (file liomacs/org-inbox-file)
+           "* TODO %?")
+          ("e" "email" entry (file+headline liomacs/org-email-file "Emails")
+           "* TODO [#A] Reply: %a @home:@school:@work" :immediate-finish t)
+          ("l" "link" entry (file liomacs/org-inbox-file)
+           "* TODO %(org-cliplink-capture)" :immediate-finish t)
+          ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
+           "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
   ;; Org publish
   (setq org-publish-project-alist
-		'(("roam-org"
-		   :base-directory "~/roam/"
-		   :recursive t
-		   :publishing-function org-html-publish-to-html
-		   :publishing-directory "~/code/roam_html/"
-		   :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
-		   :html-preamble "<div class=\"header\"><a href=\"https://dg.liolin.ch\" title=\"liolin's digital garden\">liolin's digital garden</a></div>"
-		   :html-validation-link nil
-		   :with-toc nil
-		   :section-number nil
-		   :auto-sitemap t
-		   :sitemap-filename "index.org")
-		  ("roam-attachment"
-		   :base-directory "~/roam/static/attachment/"
-		   :base-extension "png\\|jpg\\|jpeg\\|svg"
-		   :recursive t
-		   :publishing-function org-publish-attachment
-		   :publishing-directory "~/code/roam_html/static/attachment/")
-		  ("roam-css"
-		   :base-directory "~/roam/static/css/"
-		   :base-extension "css"
-		   :recursive t
-		   :publishing-function org-publish-attachment
-		   :publishing-directory "~/code/roam_html/static/css/")
-		  ("roam-pdf"
-		   :base-directory "~/roam/"
-		   :recursive t
-		   :publishing-function org-latex-publish-to-pdf
-		   :publishing-directory "~/code/roam_html/pdf"
-		   :with-toc nil
-		   :section-number nil)
-		  ("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
+        '(("roam-org"
+           :base-directory "~/roam/"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :publishing-directory "~/code/roam_html/"
+           :html-head "<link rel=\"stylesheet\" href=\"static/css/roam.css\" type=\"text/css\"/>"
+           :html-preamble "<div class=\"header\"><a href=\"https://dg.liolin.ch\" title=\"liolin's digital garden\">liolin's digital garden</a></div>"
+           :html-validation-link nil
+           :with-toc nil
+           :section-number nil
+           :auto-sitemap t
+           :sitemap-filename "index.org")
+          ("roam-attachment"
+           :base-directory "~/roam/static/attachment/"
+           :base-extension "png\\|jpg\\|jpeg\\|svg"
+           :recursive t
+           :publishing-function org-publish-attachment
+           :publishing-directory "~/code/roam_html/static/attachment/")
+          ("roam-css"
+           :base-directory "~/roam/static/css/"
+           :base-extension "css"
+           :recursive t
+           :publishing-function org-publish-attachment
+           :publishing-directory "~/code/roam_html/static/css/")
+          ("roam-pdf"
+           :base-directory "~/roam/"
+           :recursive t
+           :publishing-function org-latex-publish-to-pdf
+           :publishing-directory "~/code/roam_html/pdf"
+           :with-toc nil
+           :section-number nil)
+          ("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
 
   ;; Org latex
   (require 'ox-latex)
+
+
   (setq org-latex-title-command ""
-		org-latex-toc-command ""
-		org-latex-listings 't
-		org-latex-compiler "xelatex"
-		org-latex-prefer-user-labels t
-		org-latex-pdf-process
-		'("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f")
-		org-latex-src-block-backend 'listings
-		org-latex-listings-options '(("numbers" "left")))
+        org-latex-toc-command ""
+        org-latex-listings 't
+        org-latex-compiler "xelatex"
+        org-latex-prefer-user-labels t
+        org-latex-pdf-process
+        '("latexmk -f -pdf -%latex -shell-escape -interaction=nonstopmode -output-directory=%o -bibtex %f")
+        org-latex-src-block-backend 'listings
+        org-latex-listings-options '(("numbers" "left")))
   (add-to-list 'org-latex-listings-langs '(csharp "[Sharp]C"))
   (add-to-list 'org-latex-packages-alist '("" "listings"))
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
   (add-to-list 'org-latex-packages-alist '("" "subcaption"))
   (add-to-list 'org-latex-classes
-			   '("ost-summary"
-				 "\\documentclass{article}"
-				 ("\\section{%s}" . "\\section*{%s}")
-				 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+               '("ost-summary"
+                 "\\documentclass{article}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
   (add-to-list 'org-latex-classes
-			   '("ost-exam-summary"
-				 "\\documentclass{extarticle}"
-				 ("\\section{%s}" . "\\section*{%s}")
-				 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+               '("ost-exam-summary"
+                 "\\documentclass{extarticle}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
   (add-to-list 'org-latex-classes
-			   '("personal-report"
-				 "\\documentclass{article}"
-				 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
+               '("personal-report"
+                 "\\documentclass{article}"
+                 ("\\subparagraph{%s} \\" . "\\subparagraph*{%s} \\")))
   (add-to-list 'org-latex-classes
-			   '("acmart"
-				 "\\documentclass{acmart}"
-				 ("\\section{%s}" . "\\section*{%s}")
-				 ("\\subsection{%s}" . "\\subsection*{%s}")
-				 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+               '("acmart"
+                 "\\documentclass{acmart}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
   (add-to-list 'org-latex-classes
-			   '("no-article"
-				 "\\documentclass{article}
+               '("no-article"
+                 "\\documentclass{article}
 \\usepackage[a4paper]{geometry}
 
 % Language and encoding
@@ -775,21 +794,21 @@ and restart Flymake to apply the changes."
 \\newenvironment{info}[1][Info]
 {
   \\begin{tcolorbox}[
-	  arc = 2mm,
-	  boxrule = 0pt,
-	  breakable,
-	  before skip=11pt,
-	  before skip=11pt,
-	  title = #1,
-	  fonttitle = \\sffamily\\bfseries,
-	  coltitle = white,
-	  colbacktitle = infobar,
-	  colback = infobackground,
-	  toptitle=2mm,
-	  bottomtitle=2mm,
-	  top=4mm,
-	  bottom=4mm
-	]
+      arc = 2mm,
+      boxrule = 0pt,
+      breakable,
+      before skip=11pt,
+      before skip=11pt,
+      title = #1,
+      fonttitle = \\sffamily\\bfseries,
+      coltitle = white,
+      colbacktitle = infobar,
+      colback = infobackground,
+      toptitle=2mm,
+      bottomtitle=2mm,
+      top=4mm,
+      bottom=4mm
+    ]
   }
   {
   \\end{tcolorbox}
@@ -800,21 +819,21 @@ and restart Flymake to apply the changes."
 \\newenvironment{warn}[1][Warning]
 {
   \\begin{tcolorbox}[
-	  arc = 2mm,
-	  boxrule = 0pt,
-	  breakable,
-	  before skip=11pt,
-	  before skip=11pt,
-	  title = #1,
-	  fonttitle = \\sffamily\\bfseries,
-	  coltitle = white,
-	  colbacktitle = warnbar,
-	  colback = warnbackground,
-	  toptitle=2mm,
-	  bottomtitle=2mm,
-	  top=4mm,
-	  bottom=4mm
-	]
+      arc = 2mm,
+      boxrule = 0pt,
+      breakable,
+      before skip=11pt,
+      before skip=11pt,
+      title = #1,
+      fonttitle = \\sffamily\\bfseries,
+      coltitle = white,
+      colbacktitle = warnbar,
+      colback = warnbackground,
+      toptitle=2mm,
+      bottomtitle=2mm,
+      top=4mm,
+      bottom=4mm
+    ]
   }
   {
   \\end{tcolorbox}
@@ -890,7 +909,7 @@ and restart Flymake to apply the changes."
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
 [EXTRA]"
-				 ))
+                 ))
   ;; Org goto
   (setq org-goto-interface 'outline-path-completion)
   (setq org-outline-path-complete-in-steps nil))
@@ -925,9 +944,9 @@ and restart Flymake to apply the changes."
   :custom
   (webjump-sites
    '(("DuckDuckGo" . [simple-query "www.duckduckgo.com" "www.duckduckgo.com/?q=" ""])
-	 ("Google" . [simple-query "www.google.com" "www.google.com/search?q=" ""])
-	 ("YouTube" . [simple-query "www.youtube.com/feed/subscriptions" "www.youtube.com/rnesults?search_query=" ""])
-	 ("ChatGPT" . [simple-query "https://chatgpt.com" "https://chatgpt.com/?q=" ""]))))
+     ("Google" . [simple-query "www.google.com" "www.google.com/search?q=" ""])
+     ("YouTube" . [simple-query "www.youtube.com/feed/subscriptions" "www.youtube.com/rnesults?search_query=" ""])
+     ("ChatGPT" . [simple-query "https://chatgpt.com" "https://chatgpt.com/?q=" ""]))))
 
 (use-package emacs-solo-sudo-edit
   :ensure nil
@@ -935,15 +954,15 @@ and restart Flymake to apply the changes."
   :defer t
   :init
   (defun emacs-solo/sudo-edit (&optional arg)
-	"Edit currently visited file as root.
-				 With a prefix ARG prompt for a file to visit.
-				 Will also prompt for a file to visit if current
-				 buffer is not visiting a file."
-	(interactive "P")
-	(if (or arg (not buffer-file-name))
-		(find-file (concat "/sudo:root@localhost:"
-						   (completing-read "Find file(as root): ")))
-	  (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
+    "Edit currently visited file as root.
+                 With a prefix ARG prompt for a file to visit.
+                 Will also prompt for a file to visit if current
+                 buffer is not visiting a file."
+    (interactive "P")
+    (if (or arg (not buffer-file-name))
+        (find-file (concat "/sudo:root@localhost:"
+                           (completing-read "Find file(as root): ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
 
 ;;; EMACS-SOLO-MODE-LINE
 ;;
@@ -956,59 +975,59 @@ and restart Flymake to apply the changes."
   :init
   ;; Shorten big branches names
   (defun emacs-solo/shorten-vc-mode (vc)
-	"Shorten VC string to at most 20 characters.
+    "Shorten VC string to at most 20 characters.
  Replacing `Git-' with a branch symbol."
-	(let* ((vc (replace-regexp-in-string "^ Git[:-]" "  " vc))) ;; Options:   ᚠ ⎇
-	  (if (> (length vc) 20)
-		  (concat (substring vc 0 20) "…")
-		vc)))
+    (let* ((vc (replace-regexp-in-string "^ Git[:-]" "  " vc))) ;; Options:   ᚠ ⎇
+      (if (> (length vc) 20)
+          (concat (substring vc 0 20) "…")
+        vc)))
 
   ;; Formats Modeline
   (setq-default mode-line-format
-				'("%e" "  "
-				  ;; (:propertize " " display (raise +0.1)) ;; Top padding
-				  ;; (:propertize " " display (raise -0.1)) ;; Bottom padding
-				  (:propertize "λ  " face font-lock-keyword-face)
+                '("%e" "  "
+                  ;; (:propertize " " display (raise +0.1)) ;; Top padding
+                  ;; (:propertize " " display (raise -0.1)) ;; Bottom padding
+                  (:propertize "λ  " face font-lock-keyword-face)
 
-				  (:propertize
-				   ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
+                  (:propertize
+                   ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote))
 
-				  mode-line-frame-identification
-				  mode-line-buffer-identification
-				  "   "
-				  mode-line-position
-				  mode-line-format-right-align
-				  "  "
-				  (project-mode-line project-mode-line-format)
-				  "  "
-				  (vc-mode (:eval (emacs-solo/shorten-vc-mode vc-mode)))
-				  "  "
-				  mode-line-modes
-				  mode-line-misc-info
-				  "  ")
-				project-mode-line t
-				mode-line-buffer-identification '(" %b")
-				mode-line-position-column-line-format '(" %l:%c"))
+                  mode-line-frame-identification
+                  mode-line-buffer-identification
+                  "   "
+                  mode-line-position
+                  mode-line-format-right-align
+                  "  "
+                  (project-mode-line project-mode-line-format)
+                  "  "
+                  (vc-mode (:eval (emacs-solo/shorten-vc-mode vc-mode)))
+                  "  "
+                  mode-line-modes
+                  mode-line-misc-info
+                  "  ")
+                project-mode-line t
+                mode-line-buffer-identification '(" %b")
+                mode-line-position-column-line-format '(" %l:%c"))
 
   ;; Provides the Diminish functionality
   (defvar emacs-solo-hidden-minor-modes
-	'(abbrev-mode
-	  eldoc-mode
-	  flyspell-mode
-	  flymake-mode
-	  smooth-scroll-mode
-	  outline-minor-mode
-	  which-key-mode
-	  apheleia-mode
-	  hs-minor-mode
-	  evil-collection-unimpaired-mode))
+    '(abbrev-mode
+      eldoc-mode
+      flyspell-mode
+      flymake-mode
+      smooth-scroll-mode
+      outline-minor-mode
+      which-key-mode
+      apheleia-mode
+      hs-minor-mode
+      evil-collection-unimpaired-mode))
 
   (defun emacs-solo/purge-minor-modes ()
-	(interactive)
-	(dolist (x emacs-solo-hidden-minor-modes nil)
-	  (let ((trg (cdr (assoc x minor-mode-alist))))
-		(when trg
-		  (setcar trg "")))))
+    (interactive)
+    (dolist (x emacs-solo-hidden-minor-modes nil)
+      (let ((trg (cdr (assoc x minor-mode-alist))))
+        (when trg
+          (setcar trg "")))))
 
   (add-hook 'after-change-major-mode-hook 'emacs-solo/purge-minor-modes))
 
@@ -1024,22 +1043,6 @@ and restart Flymake to apply the changes."
   (rustic-format-trigger t)
   :config
   (setq before-save-hook '(rustic-before-save-hook)))
-
-(use-package flymake-clippy
-  :hook
-  (rustic-mode . flymake-clippy-setup-backend))
-
-(defun manually-activate-flymake ()
-  (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
-  (flymake-mode 1))
-
-(use-package eglot
-  :ensure t
-  :hook
-  ((rust-mode . eglot-ensure)
-   (eglot-managed-mode . manually-activate-flymake))
-  :config
-  (add-to-list 'eglot-stay-out-of 'flymake))
 
 ;;; -------------------- TREESITTER AREA
 ;;; TYPESCRIPT-TS-MODE
@@ -1167,72 +1170,67 @@ and restart Flymake to apply the changes."
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "\n- tags :: %?"
-	  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-						 "#+title: ${title}\n")
-	  :unnarrowed t)
-	 ("p" "pattern" plain "\n- tags :: %?\n\n\nWhen to use:\n- \n\n\nBenefits:\n- \n\n\nCosts:\n- "
-	  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-						 "#+title: ${title}\n")
-	  :unnarrowed t)))
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "pattern" plain "\n- tags :: %?\n\n\nWhen to use:\n- \n\n\nBenefits:\n- \n\n\nCosts:\n- "
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n")
+      :unnarrowed t)))
   (org-roam-node-display-template #("${title:75} ${file:*} ${tags:10}" 11 21 (face org-tag)))
   :config
   (defun liomacs/update-org-id-files ()
-	"Adds all IDs from the org-roam files to the org-id-locations-file"
-	(interactive)
-	(let ((fil (org-roam-list-files)))
-	  (org-id-update-id-locations fil)))
+    "Adds all IDs from the org-roam files to the org-id-locations-file"
+    (interactive)
+    (let ((fil (org-roam-list-files)))
+      (org-id-update-id-locations fil)))
 
   (defun liomacs/search-roam ()
-	(interactive)
-	(grep (read-from-minibuffer "Pattern:") "*.org" "~/roam")
-	(switch-to-buffer (grep-last-buffer)))
+    (interactive)
+    (grep (read-from-minibuffer "Pattern:") "*.org" "~/roam")
+    (switch-to-buffer (grep-last-buffer)))
 
   (defun liomacs/collect-backlinks-string (backend)
-	(when (org-roam-node-at-point)
-	  (goto-char (point-max))
-	  (insert "\nNotes that link to this note\n")
-	  (let* ((backlinks (org-roam-backlinks-get (org-roam-node-at-point))))
-		(dolist (backlink backlinks)
-		  (let* ((source-node (org-roam-backlink-source-node backlink))
-				 (point (org-roam-backlink-point backlink)))
-			(insert
-			 (format "- [[./%s][%s]]\n"
-					 (file-name-nondirectory (org-roam-node-file source-node))
-					 (org-roam-node-title source-node))))))))
+    (when (org-roam-node-at-point)
+      (goto-char (point-max))
+      (insert "\nNotes that link to this note\n")
+      (let* ((backlinks (org-roam-backlinks-get (org-roam-node-at-point))))
+        (dolist (backlink backlinks)
+          (let* ((source-node (org-roam-backlink-source-node backlink))
+                 (point (org-roam-backlink-point backlink)))
+            (insert
+             (format "- [[./%s][%s]]\n"
+                     (file-name-nondirectory (org-roam-node-file source-node))
+                     (org-roam-node-title source-node))))))))
 
   (defun liomacs/ox-html-add-extra-sections (backend)
-	(when (and (eq backend 'html)
-			   (org-roam-node-at-point))
-	  (save-excursion
-		(goto-char (point-max))
-		(insert "\n* Backlinks")
-		(liomacs/collect-backlinks-string backend))))
-
-  (defun liomacs/--remove-first-property-drawer ()
-	(delete-region
-	 (point-min)
-	 (car
-	  (org-element-map
-		  (org-element-parse-buffer)
-		  'property-drawer #'org-element-end))))
+    (when (and (eq backend 'html)
+               (org-roam-node-at-point))
+      (save-excursion
+        (goto-char (point-max))
+        (insert "\n* Backlinks")
+        (liomacs/collect-backlinks-string backend))))
 
   (defun liomacs/--end-location-first-property-drawer ()
-	(goto-char (point-min))
-	(car
-	 (org-element-map
-		 (org-element-parse-buffer)
-		 'property-drawer #'org-element-end)))
+    (if (buffer-narrowed-p)
+        (goto-char (point-min))
+      (progn
+        (goto-char (point-min))
+        (car
+         (org-element-map
+             (org-element-parse-buffer)
+             'property-drawer #'org-element-end)))))
 
   (defun liomacs/ox-latex-add-conf (backend)
-	(when (and (org-roam-node-at-point)
-			   (eq backend 'latex))
-	  (save-excursion
-		(goto-char (liomacs/--end-location-first-property-drawer))
-		(insert "#+INCLUDE: ./setup.conf\n"))))
+    (when (and (org-roam-node-at-point)
+               (eq backend 'latex))
+      (save-excursion
+        (goto-char (liomacs/--end-location-first-property-drawer))
+        (insert "\n#+INCLUDE: ./setup.conf\n"))))
 
   (require 'org-roam-export)
-  (add-hook 'org-export-before-processing-hook 'liomacs/ox-html-add-extra-sections)
-  (add-hook 'org-export-before-processing-hook 'liomacs/ox-latex-add-conf)
+  (add-hook 'org-export-before-processing-functions 'liomacs/ox-html-add-extra-sections)
+  (add-hook 'org-export-before-processing-functions 'liomacs/ox-latex-add-conf)
   (org-roam-db-autosync-enable)
 
   :init
@@ -1277,11 +1275,11 @@ and restart Flymake to apply the changes."
   apheleia-global-mode
   :config
   (setf (alist-get 'prettier-json apheleia-formatters)
-		'("prettier" "--stdin-filepath" filepath))
+        '("prettier" "--stdin-filepath" filepath))
   (setf (alist-get 'latex-mode apheleia-mode-alist)
-		'tex-fmt)
+        'tex-fmt)
   (setf (alist-get 'LaTeX-mode apheleia-mode-alist)
-		'tex-fmt)
+        'tex-fmt)
   (add-to-list 'apheleia-formatters '(tex-fmt "tex-fmt" "--stdin" "--nowrap")))
 
 (use-package editorconfig
@@ -1300,33 +1298,35 @@ and restart Flymake to apply the changes."
   :ensure t
   :defer t
   :mode (("\\.tex\\'" . LaTeX-mode)
-		 ("\\.tex\\.erb\\'" . LaTex-mode)
-		 ("\\.etx\\'" . LaTex-mode))
+         ("\\.tex\\.erb\\'" . LaTex-mode)
+         ("\\.etx\\'" . LaTex-mode))
   :hook
   (LaTeX-mode . (lambda ()
-				  (load "auctex.el")
-				  (setq TeX-command-extra-options "-shell-escape")))
+                  (load "auctex.el")
+                  (setq TeX-command-extra-options "-shell-escape")))
   (LaTeX-mode . flymake-mode)
   (LaTeX-mode . turn-on-reftex)
   (LaTeX-mode . apheleia-mode)
   :config
   (setq-default TeX-global-PDF-mode 1
-				preview-scale-function 1.5
-				Tex-master nil
-				Tex-output-dir "out")
+                preview-scale-function 1.5
+                Tex-master nil
+                Tex-output-dir "out")
   (setq TeX-auto-save t
-		TeX-parse-self t
-		reftex-plug-into-auctex 1
-		reftex-default-bibliography '("~/biblio/main.bib")
-		reftex-plug-into-AUCTeX t
-		default-truncate-lines t
-		TeX-save-query nil
-		TeX-source-correlate-method 'synctex))
+        TeX-parse-self t
+        reftex-plug-into-auctex 1
+        reftex-default-bibliography '("~/biblio/main.bib")
+        reftex-plug-into-AUCTeX t
+        default-truncate-lines t
+        TeX-save-query nil
+        TeX-source-correlate-method 'synctex))
 
 (use-package eglot-ltex-plus
+  ;; :load-path (expand-file-name "lisp/" user-emacs-directory)
+  :load-path "~/.emacs.d/lisp/"
   :init
-  (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus-18.5.1/" user-emacs-directory)
-		eglot-ltex-plus-communication-channel 'stdio))
+  (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus/" user-emacs-directory)
+        eglot-ltex-plus-communication-channel 'stdio))
 
 (use-package mu4e
   :ensure nil
@@ -1340,67 +1340,67 @@ and restart Flymake to apply the changes."
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-maildir "~/.mail")
   (mu4e-maildir-shortcuts '(("/liolin/Inbox" . ?i)
-							("/liolin/Sent"  . ?s)
-							("/liolin/Trash" . ?t)))
+                            ("/liolin/Sent"  . ?s)
+                            ("/liolin/Trash" . ?t)))
   (mu4e-headers-fields
    '((:human-date . 12)
-	 (:flags . 6)
-	 (:tags . 7)
-	 (:maildir . 22)
-	 (:mailing-list . 10)
-	 (:from . 22)
-	 (:subject)))
+     (:flags . 6)
+     (:tags . 7)
+     (:maildir . 22)
+     (:mailing-list . 10)
+     (:from . 22)
+     (:subject)))
   :config
   (with-eval-after-load "mm-decode"
-	(add-to-list 'mm-discouraged-alternatives "text/html")
-	(add-to-list 'mm-discouraged-alternatives "text/richtext"))
+    (add-to-list 'mm-discouraged-alternatives "text/html")
+    (add-to-list 'mm-discouraged-alternatives "text/richtext"))
   (setq mu4e-contexts
-		(list
-		 (make-mu4e-context
-		  :name "liolin"
-		  :match-func
-		  (lambda (msg)
-			(when msg
-			  (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
-		  :vars '((user-mail-address     . "olivier.lischer@liolin.ch")
-				  (user-full-name        . "Olivier Lischer")
-				  (smtpmail-smtp-server  . "asmtp.mail.hostpoint.ch")
-				  (smtpmail-smtp-service . 587)
-				  (smtpmail-stream-type  . starttls)
-				  (mu4e-drafts-folder    . "/liolin/Drafts")
-				  (mu4e-sent-folder      . "/liolin/Sent")
-				  (mu4e-trash-folder     . "/liolin/Trash")
-				  (mu4e-refile-folder    . "/archiv")))
-		 (make-mu4e-context
-		  :name "ost"
-		  :match-func
-		  (lambda (msg)
-			(when msg
-			  (string-prefix-p "/ost" (mu4e-message-field msg :maildir))))
-		  :vars '((user-mail-address     . "olivier.lischer@ost.ch")
-				  (user-full-name        . "Olivier Lischer")
-				  (smtpmail-smtp-server  . "127.0.0.1")
-				  (smtpmail-smtp-service . 1025)
-				  (smtpmail-stream-type  . plain)
-				  (mu4e-drafts-folder    . "/ost/Drafts")
-				  (mu4e-sent-folder      . "/ost/Sent")
-				  (mu4e-trash-folder     . "/ost/Trash")
-				  (mu4e-refile-folder    . "/archiv")))
-		 (make-mu4e-context
-		  :name "gmail"
-		  :match-func
-		  (lambda (msg)
-			(when msg
-			  (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-		  :vars '((user-mail-address     . "olivier.lischer.blon@gmail.com")
-				  (user-full-name        . "Olivier Lischer")
-				  (smtpmail-smtp-server  . "smtp.gmail.com")
-				  (smtpmail-smtp-service . 587)
-				  (smtpmail-stream-type  . starttls)
-				  (mu4e-drafts-folder    . "/gmail/[Gmail]/Entw&APw-rfe")
-				  (mu4e-sent-folder      . "/gmail/[Gmail]/Gesendet")
-				  (mu4e-trash-folder     . "/gmail/[Gmail]/Papierkorb")
-				  (mu4e-refile-folder    . "/archiv")))))
+        (list
+         (make-mu4e-context
+          :name "liolin"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address     . "olivier.lischer@liolin.ch")
+                  (user-full-name        . "Olivier Lischer")
+                  (smtpmail-smtp-server  . "asmtp.mail.hostpoint.ch")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-stream-type  . starttls)
+                  (mu4e-drafts-folder    . "/liolin/Drafts")
+                  (mu4e-sent-folder      . "/liolin/Sent")
+                  (mu4e-trash-folder     . "/liolin/Trash")
+                  (mu4e-refile-folder    . "/archiv")))
+         (make-mu4e-context
+          :name "ost"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/ost" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address     . "olivier.lischer@ost.ch")
+                  (user-full-name        . "Olivier Lischer")
+                  (smtpmail-smtp-server  . "127.0.0.1")
+                  (smtpmail-smtp-service . 1025)
+                  (smtpmail-stream-type  . plain)
+                  (mu4e-drafts-folder    . "/ost/Drafts")
+                  (mu4e-sent-folder      . "/ost/Sent")
+                  (mu4e-trash-folder     . "/ost/Trash")
+                  (mu4e-refile-folder    . "/archiv")))
+         (make-mu4e-context
+          :name "gmail"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address     . "olivier.lischer.blon@gmail.com")
+                  (user-full-name        . "Olivier Lischer")
+                  (smtpmail-smtp-server  . "smtp.gmail.com")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-stream-type  . starttls)
+                  (mu4e-drafts-folder    . "/gmail/[Gmail]/Entw&APw-rfe")
+                  (mu4e-sent-folder      . "/gmail/[Gmail]/Gesendet")
+                  (mu4e-trash-folder     . "/gmail/[Gmail]/Papierkorb")
+                  (mu4e-refile-folder    . "/archiv")))))
   (add-to-list 'mu4e-headers-actions '("Retag" . mu4e-action-retag-message) t)
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "work" :query "(flag:flagged OR flag:unread) AND NOT flag:trashed AND maildir:/ost/inbox" :key ?w))
