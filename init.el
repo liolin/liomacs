@@ -223,6 +223,11 @@
   (when (file-exists-p "~/.password-store")
     (auth-source-pass-enable)))
 
+(use-package pass
+  :ensure t
+  :custom
+  (pass-username-field "user"))
+
 (use-package conf-mode
   :ensure nil
   :mode ("\\.env\\..*\\'" "\\.env\\'")
