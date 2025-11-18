@@ -580,6 +580,12 @@ and restart Flymake to apply the changes."
    "◀── now ─────────────────────────────────────────────────")
 
   :config
+  (defun liomacs/ref-to-autoref (link backend info)
+    "Replace \\ref{} with \\autoref{}."
+    (when (org-export-derived-backend-p backend 'latex)
+      (replace-regexp-in-string "ref" "autoref" link)))
+  (add-to-list 'org-export-filter-link-functions 'liomacs/ref-to-autoref)
+
   (setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
   (setq
    ;; Edit settings
