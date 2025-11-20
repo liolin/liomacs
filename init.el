@@ -580,6 +580,7 @@ and restart Flymake to apply the changes."
    "◀── now ─────────────────────────────────────────────────")
 
   :config
+  (require 'ox)
   (defun liomacs/ref-to-autoref (link backend info)
     "Replace \\ref{} with \\autoref{}."
     (when (org-export-derived-backend-p backend 'latex)
