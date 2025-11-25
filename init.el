@@ -140,7 +140,6 @@
                         (thanos/wtype-text (buffer-string)))
                        (delete-frame)))))
 
-
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
   ;; won't ask for encoding (because undecided-unix) every single keystroke
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -174,7 +173,8 @@
                 (when (file-exists-p private-file)
                   (load private-file)))))
 
-  (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+  (require 'dispatcher)
 
   ;; Add MELPA
   (require 'package)
@@ -1332,8 +1332,6 @@ and restart Flymake to apply the changes."
         TeX-source-correlate-method 'synctex))
 
 (use-package eglot-ltex-plus
-  ;; :load-path (expand-file-name "lisp/" user-emacs-directory)
-  :load-path "~/.emacs.d/lisp/"
   :init
   (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus/" user-emacs-directory)
         eglot-ltex-plus-communication-channel 'stdio))
