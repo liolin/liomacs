@@ -228,6 +228,11 @@
   :custom
   (pass-username-field "user"))
 
+(use-package calendar
+  :ensure nil
+  :custom
+  (calendar-week-start-day 1))
+
 (use-package conf-mode
   :ensure nil
   :mode ("\\.env\\..*\\'" "\\.env\\'")
