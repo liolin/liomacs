@@ -557,6 +557,10 @@ and restart Flymake to apply the changes."
   :ensure nil
   :defer t
   :mode ("\\.org\\'" . org-mode)
+  :bind
+  (:map org-mode-map
+        ("C-c C-w" . liomacs/refile))
+
   :custom
   (org-directory "~/org")
   (org-startup-with-inline-images nil)
@@ -634,6 +638,15 @@ and restart Flymake to apply the changes."
                   (alltodo ""
                            ((org-agenda-overriding-header "All TODOs"))))))
 
+  (add-to-list 'org-agenda-custom-commands
+               '("r" "Agenda"
+                 ((tags "read"
+                        ((org-agenda-overriding-header "In Progress")
+                         (org-agenda-files '("~/org/Agenda/projects.org"
+                                             "~/org/Agenda/work.org"
+                                             "~/org/Agenda/school.org"
+                                             "~/org/Agenda/GTD.org")))))))
+
   ;; Org capture
   (require 'org-capture)
   (define-key global-map (kbd "C-c x") 'org-capture)
@@ -646,6 +659,17 @@ and restart Flymake to apply the changes."
            "* TODO %(org-cliplink-capture)" :immediate-finish t)
           ("c" "org-protocol-capture" entry (file liomacs/org-inbox-file)
            "* TODO [[%:link][%:description]]\n\n %i" :immediate-finish t)))
+  (require 'org-refile)
+  (setq org-refile-targets
+        '((org-agenda-files :maxlevel 3))
+        org-refile-use-outline-path t
+        org-outline-path-complete-in-steps nil)
+  (defun liomacs/refile ()
+    (interactive)
+    (org-set-tags-command)
+    (org-set-effort)
+    (org-refile))
+
   ;; Org publish
   (setq org-publish-project-alist
         '(("roam-org"
