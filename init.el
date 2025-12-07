@@ -178,6 +178,7 @@
 
   ;; Add MELPA
   (require 'package)
+  (setq package-native-compile t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   (package-initialize)
 
