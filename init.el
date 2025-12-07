@@ -993,6 +993,7 @@ and restart Flymake to apply the changes."
    '(("DuckDuckGo" . [simple-query "www.duckduckgo.com" "www.duckduckgo.com/?q=" ""])
      ("Google" . [simple-query "www.google.com" "www.google.com/search?q=" ""])
      ("YouTube" . [simple-query "www.youtube.com/feed/subscriptions" "www.youtube.com/rnesults?search_query=" ""])
+     ("Hoogle" . [simple-query "hoogle.haskell.org" "https://hoogle.haskell.org/?hoogle=" ""])
      ("ChatGPT" . [simple-query "https://chatgpt.com" "https://chatgpt.com/?q=" ""]))))
 
 (use-package emacs-solo-sudo-edit
