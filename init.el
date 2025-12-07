@@ -955,6 +955,12 @@ and restart Flymake to apply the changes."
   (setq org-goto-interface 'outline-path-completion)
   (setq org-outline-path-complete-in-steps nil))
 
+(use-package org-noter
+  :ensure t
+  :custom
+  (org-noter-always-create-frame nil)
+  (org-noter-kill-frame-at-session-end nil))
+
 (use-package uniquify
   :ensure nil
   :config
