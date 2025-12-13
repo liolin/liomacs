@@ -1294,12 +1294,13 @@ and restart Flymake to apply the changes."
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 
-;; PDF-TOOLS
-(use-package pdf-tools
-  :ensure t
-  :defer
-  :config
-  (pdf-tools-install))
+;;; EMACS-READER
+(setq package-vc-allow-build-commands t)
+(use-package reader
+  :vc (:url "https://codeberg.org/divyaranjan/emacs-reader"
+            :make "all")
+  :mode ("\\.pdf\\'" . reader-mode))
+
 
 ;; MAGIT
 (use-package transient
