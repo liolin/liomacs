@@ -596,6 +596,7 @@ and restart Flymake to apply the changes."
     (when (org-export-derived-backend-p backend 'latex)
       (replace-regexp-in-string "\\\\ref" "\\\\autoref" link)))
   (add-to-list 'org-export-filter-link-functions 'liomacs/ref-to-autoref)
+  (setq org-export-with-sub-superscripts nil)
 
   (setq liomacs/org-inbox-file "~/org/Agenda/inbox.org")
   (setq
