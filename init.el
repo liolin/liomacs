@@ -143,7 +143,7 @@
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
   ;; won't ask for encoding (because undecided-unix) every single keystroke
   (modify-coding-system-alist 'file "" 'utf-8)
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 105)
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 130)
 
   ;; Save manual customizations to other file than init.el
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
