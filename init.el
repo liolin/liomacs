@@ -959,6 +959,7 @@ and restart Flymake to apply the changes."
 
 (use-package org-noter
   :ensure t
+  :defer t
   :custom
   (org-noter-always-create-frame nil)
   (org-noter-kill-frame-at-session-end nil))
