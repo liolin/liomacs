@@ -565,7 +565,8 @@ and restart Flymake to apply the changes."
   :mode ("\\.org\\'" . org-mode)
   :bind
   (:map org-mode-map
-        ("C-c C-w" . liomacs/refile))
+        ("C-c C-w" . liomacs/refile)
+        ("C-c l" . org-store-link))
 
   :custom
   (org-directory "~/org")
