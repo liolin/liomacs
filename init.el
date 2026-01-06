@@ -1514,5 +1514,16 @@ and restart Flymake to apply the changes."
   :config
   (direnv-mode))
 
+;;; GPTEL
+(use-package gptel
+  :ensure t
+  :defer t
+  :config
+  (setq gptel-mode 'qwen3-vl:2b
+        gptel-backend (gptel-make-ollama "Ollama"
+                        :host "localhost:11434"
+                        :stream t
+                        :models '(qwen3-vl:2b))))
+
 (provide 'init)
 ;;; init.el ends here
