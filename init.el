@@ -37,7 +37,7 @@
   (history-length 300)
   (inhibit-startup-message t)
   (initial-scratch-message "")
-  (ispell-dictionary "en_GB")
+  (ispell-dictionary "en_US")
   (kill-do-not-save-duplicates t)
   (create-lockfiles nil)   ; No backup files
   (make-backup-files nil)  ; No backup files
