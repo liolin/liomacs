@@ -1480,19 +1480,20 @@ and restart Flymake to apply the changes."
 ;;   :init
 ;;   (load-theme 'ef-cherie t))
 
-;; (use-package solarized-theme
-;;   :ensure t
-;;   :defer t
-;;   :custom
-;;   (solarized-use-variable-pitch nil)
-;;   :init
-;;   (load-theme 'solarized-dark t))
-
-(use-package leuven-theme
+(use-package solarized-theme
   :ensure t
   :defer t
+  :custom
+  (solarized-use-variable-pitch nil)
+  (solarized-scale-org-headlines nil)
   :init
-  (load-theme 'leuven-dark t))
+  (load-theme 'solarized-dark t))
+
+;; (use-package leuven-theme
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (load-theme 'leuven-dark t))
 
 
 ;;; LEDGER
