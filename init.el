@@ -647,7 +647,7 @@ and restart Flymake to apply the changes."
                            ((org-agenda-overriding-header "All TODOs"))))))
 
   (add-to-list 'org-agenda-custom-commands
-               '("r" "Agenda"
+               '("r" "Reading"
                  ((tags "read"
                         ((org-agenda-overriding-header "In Progress")
                          (org-agenda-files '("~/org/Agenda/projects.org"
