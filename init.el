@@ -1525,5 +1525,12 @@ and restart Flymake to apply the changes."
                         :stream t
                         :models '(qwen3-vl:2b))))
 
+;;; ECA
+(use-package eca
+  :ensure t
+  :defer t
+  :custom
+  (eca-extra-args '("--config-file" "/home/liolin/.config/eca/config.json")))
+
 (provide 'init)
 ;;; init.el ends here
