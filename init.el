@@ -515,7 +515,9 @@ and restart Flymake to apply the changes."
 (use-package flyspell
   :ensure nil
   :defer t
-  :hook (message-mode . flyspell-mode))
+  :hook
+  (message-mode . flyspell-mode)
+  (org-mode . flyspell-mode))
 
 (use-package whitespace
   :ensure nil
