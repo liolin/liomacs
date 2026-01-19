@@ -1302,7 +1302,6 @@ and restart Flymake to apply the changes."
 ;;; PDF-TOOLS
 (use-package pdf-tools
   :ensure t
-  :defer
   :config
   (pdf-tools-install))
 
