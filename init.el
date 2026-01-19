@@ -1489,7 +1489,25 @@ and restart Flymake to apply the changes."
   (solarized-use-variable-pitch nil)
   (solarized-scale-org-headlines nil)
   :init
-  (load-theme 'solarized-dark t))
+  (load-theme 'solarized-dark t)
+  (load-theme 'solarized-light t t))
+
+(use-package emacs
+  :ensure nil
+  :bind
+  (("<f12>" . liolin/theme-toggle)))
+
+;; https://www.gnu.org/software/emacs/manual/html_node/modus-themes/DIY-Toggle-themes-without-reloading-them.html
+(defun liolin/theme-toggle ()
+  "Toggle between light and dark themes.
+Currently only toggle between `solarized-dark' and `solarized-light' supported."
+  (interactive)
+  (pcase (car custom-enabled-themes)
+    ('solarized-dark (progn (enable-theme 'solarized-light)
+                            (disable-theme 'solarized-dark)))
+    ('solarized-light (progn (enable-theme 'solarized-dark)
+                             (disable-theme 'solarized-light)))
+    (_ (error "No supported theme is loaded"))))
 
 ;; (use-package leuven-theme
 ;;   :ensure t
