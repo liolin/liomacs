@@ -1554,5 +1554,10 @@ Currently only toggle between `solarized-dark' and `solarized-light' supported."
   :custom
   (eca-extra-args '("--config-file" "/home/liolin/.config/eca/config.json")))
 
+
+(use-package restclient
+  :ensure t
+  :defer t)
+
 (provide 'init)
 ;;; init.el ends here
