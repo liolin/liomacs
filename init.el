@@ -478,10 +478,6 @@
 
   (add-hook 'prog-mode-hook #'emacs-solo/eglot-setup)
 
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
-    (add-to-list 'eglot-server-programs '(haskell-ts-mode . ("haskell-language-server-wrapper" "--lsp"))))
-
   :bind (:map
          eglot-mode-map
          ("C-c l a" . eglot-code-actions)
@@ -1106,11 +1102,17 @@ and restart Flymake to apply the changes."
   (rustic-lsp-client 'eglot)
   (rustic-format-trigger t))
 
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :ensure t
+  :defer t)
+
+
 ;;; -------------------- TREESITTER AREA
 ;;; TYPESCRIPT-TS-MODE
 (use-package typescript-ts-mode
   :mode "\\.ts\\'"
-  :defer 't
+  :defer t
   :custom
   (typescript-indent-level 2)
   :config
@@ -1193,8 +1195,6 @@ and restart Flymake to apply the changes."
   :ensure nil
   :config
   (unless (server-running-p) (server-start)))
-
-;;; FOREIGN PACKAGES
 
 ;; EVIL
 (use-package evil
@@ -1354,13 +1354,6 @@ and restart Flymake to apply the changes."
   :ensure t
   :init
   (editorconfig-mode 1))
-
-(use-package haskell-ts-mode
-  :ensure t
-  :mode "\\.hs\\'"
-  :defer t
-  :config
-  (add-to-list 'treesit-language-source-alist '(haskell "https://github.com/tree-sitter/tree-sitter-haskell" "master" "src")))
 
 (use-package auctex
   :ensure t
