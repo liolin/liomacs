@@ -1219,7 +1219,7 @@ and restart Flymake to apply the changes."
   :custom
   (org-roam-directory "~/roam")
   (org-roam-dailies-directory "daily/")
-  (org-roam-completion-everywhere t)
+  (org-roam-completion-everywhere nil)
   (org-roam-capture-templates
    '(("d" "default" plain "\n- tags :: %?"
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
