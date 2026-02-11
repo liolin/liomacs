@@ -211,6 +211,16 @@
 ;;   :custom
 ;;   (dotfiles/configuration-file "~/.dotfiles/desktop.org"))
 
+(use-package undo-tree
+  :after evil
+  :ensure t
+  :custom
+  (undo-tree-history-directory-alist (list (cons "." (expand-file-name "undo-tree/" user-emacs-directory))))
+  (undo-tree-auto-save-history t)
+  :config
+  (evil-set-undo-system 'undo-tree)
+  (global-undo-tree-mode))
+
 (use-package auth-source
   :ensure nil
   :defer t
