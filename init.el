@@ -587,7 +587,7 @@ and restart Flymake to apply the changes."
 
   ;; Org agenda settings
   (org-agenda-files
-   (append (directory-files "~/org/Agenda" t ".org")))
+   (append (directory-files "~/org/Agenda" t ".org") '("~/code/school/pa2/documentation/report/pa2.org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-tags-column 120)
   (org-agenda-block-separator ?─)
