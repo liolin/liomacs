@@ -180,6 +180,7 @@
   (require 'package)
   (setq package-native-compile t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu") t)
   (package-initialize)
 
   :init
@@ -1357,6 +1358,7 @@ and restart Flymake to apply the changes."
   :init
   (editorconfig-mode 1))
 
+;;; LaTeX
 (use-package auctex
   :ensure t
   :defer t
@@ -1388,6 +1390,14 @@ and restart Flymake to apply the changes."
   :init
   (setq eglot-ltex-plus-server-path (expand-file-name "ltex-ls-plus/" user-emacs-directory)
         eglot-ltex-plus-communication-channel 'stdio))
+
+;;; Typst
+(use-package typst-ts-mode
+  :ensure t
+  :defer t
+  :config
+  (add-to-list 'treesit-language-source-alist '(typst "https://github.com/uben0/tree-sitter-typst" "master" "src")))
+
 
 (use-package mu4e
   :ensure nil
