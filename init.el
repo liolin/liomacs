@@ -1372,6 +1372,8 @@ and restart Flymake to apply the changes."
   (LaTeX-mode . flymake-mode)
   (LaTeX-mode . turn-on-reftex)
   (LaTeX-mode . apheleia-mode)
+  :custom
+  (reftex-ref-style-default-list '("Hyperref"))
   :config
   (setq-default TeX-global-PDF-mode 1
                 preview-scale-function 1.5
