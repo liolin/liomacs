@@ -1491,21 +1491,18 @@ and restart Flymake to apply the changes."
   :ensure t
   :defer t)
 
-(use-package solarized-theme
-  :ensure t
-  :defer t
-  :custom
-  (solarized-use-variable-pitch nil)
-  (solarized-scale-org-headlines nil)
-  :init
-  (load-theme 'solarized-dark t t)
-  (load-theme 'solarized-light t t))
+;; (use-package solarized-theme
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (load-theme 'solarized-dark t t)
+;;   (load-theme 'solarized-light t t))
 
-(use-package zenburn-theme
-  :ensure t
-  :defer t
-  :init
-  (load-theme 'zenburn t t))
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (load-theme 'zenburn t t))
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
