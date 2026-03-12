@@ -1491,13 +1491,6 @@ and restart Flymake to apply the changes."
   :ensure t
   :defer t)
 
-;; EF-THEMES
-;; (use-package ef-themes
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (load-theme 'ef-cherie t))
-
 (use-package solarized-theme
   :ensure t
   :defer t
@@ -1505,8 +1498,21 @@ and restart Flymake to apply the changes."
   (solarized-use-variable-pitch nil)
   (solarized-scale-org-headlines nil)
   :init
-  (load-theme 'solarized-dark t)
+  (load-theme 'solarized-dark t t)
   (load-theme 'solarized-light t t))
+
+(use-package zenburn-theme
+  :ensure t
+  :defer t
+  :init
+  (load-theme 'zenburn t t))
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :defer t
+  :init
+  (load-theme 'sanityinc-tomorrow-day t)
+  (load-theme 'sanityinc-tomorrow-night t t))
 
 (use-package emacs
   :ensure nil
@@ -1515,21 +1521,18 @@ and restart Flymake to apply the changes."
 
 ;; https://www.gnu.org/software/emacs/manual/html_node/modus-themes/DIY-Toggle-themes-without-reloading-them.html
 (defun liolin/theme-toggle ()
-  "Toggle between light and dark themes.
-Currently only toggle between `solarized-dark' and `solarized-light' supported."
+  "Toggle between light and dark themes."
   (interactive)
   (pcase (car custom-enabled-themes)
     ('solarized-dark (progn (enable-theme 'solarized-light)
                             (disable-theme 'solarized-dark)))
     ('solarized-light (progn (enable-theme 'solarized-dark)
                              (disable-theme 'solarized-light)))
+    ('sanityinc-tomorrow-night (progn (enable-theme 'sanityinc-tomorrow-day)
+                                      (disable-theme 'sanityinc-tomorrow-night)))
+    ('sanityinc-tomorrow-day (progn (enable-theme 'sanityinc-tomorrow-night)
+                                    (disable-theme 'sanityinc-tomorrow-day)))
     (_ (error "No supported theme is loaded"))))
-
-;; (use-package leuven-theme
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (load-theme 'leuven-dark t))
 
 
 ;;; LEDGER
