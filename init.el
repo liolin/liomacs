@@ -728,7 +728,7 @@ and restart Flymake to apply the changes."
 
   (setq org-latex-title-command ""
         org-latex-toc-command ""
-        org-latex-listings 't
+        org-latex-listings t
         org-latex-compiler "xelatex"
         org-latex-prefer-user-labels t
         org-latex-pdf-process
@@ -1123,7 +1123,7 @@ and restart Flymake to apply the changes."
 ;;; TSX-TS-MODE
 (use-package tsx-ts-mode
   :mode "\\.tsx\\'"
-  :defer 't
+  :defer t
   :custom
   (typescript-indent-level 2)
   :config
@@ -1134,7 +1134,7 @@ and restart Flymake to apply the changes."
 (use-package java-ts-mode
   :ensure java-ts-mode
   :mode "\\.java\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(java "https://github.com/tree-sitter/tree-sitter-java" "master" "src")))
 
@@ -1142,7 +1142,7 @@ and restart Flymake to apply the changes."
 (use-package toml-ts-mode
   :ensure toml-ts-mode
   :mode "\\.toml\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")))
 
@@ -1150,7 +1150,7 @@ and restart Flymake to apply the changes."
 (use-package markdown-ts-mode
   :ensure t
   :mode "\\.md\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'major-mode-remap-alist '(markdown-mode . markdown-ts-mode))
   (add-to-list 'treesit-language-source-alist '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
@@ -1160,7 +1160,7 @@ and restart Flymake to apply the changes."
 (use-package yaml-ts-mode
   :ensure yaml-ts-mode
   :mode "\\.yml\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src")))
 
@@ -1168,14 +1168,14 @@ and restart Flymake to apply the changes."
 (use-package dockerfile-ts-mode
   :ensure dockerfile-ts-mode
   :mode "\\Dockerfile.*\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
 (use-package nix-ts-mode
   :ensure nix-ts-mode
   :mode "\\*.nix\\'"
-  :defer 't
+  :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(nix "https://github.com/nix-community/tree-sitter-nix" "master" "src")))
 
