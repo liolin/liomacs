@@ -284,7 +284,7 @@
   :custom
   (display-buffer-alist
    '(
-     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
+     ("\\*\\(Backtrace\\|Warnings\\|compilation\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
       (display-buffer-in-side-window)
       (window-height . 0.25)
       (side . bottom)
