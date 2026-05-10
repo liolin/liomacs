@@ -217,7 +217,7 @@
   :ensure t
   :custom
   (undo-tree-history-directory-alist (list (cons "." (expand-file-name "undo-tree/" user-emacs-directory))))
-  (undo-tree-auto-save-history t)
+  (undo-tree-auto-save-history nil)
   :config
   (evil-set-undo-system 'undo-tree)
   (global-undo-tree-mode))
