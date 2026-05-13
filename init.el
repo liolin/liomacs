@@ -1175,10 +1175,14 @@ and restart Flymake to apply the changes."
 
 (use-package nix-ts-mode
   :ensure nix-ts-mode
-  :mode "\\*.nix\\'"
+  :mode "\\.nix\\'"
   :defer t
   :config
   (add-to-list 'treesit-language-source-alist '(nix "https://github.com/nix-community/tree-sitter-nix" "master" "src")))
+
+(use-package nix-mode
+  :ensure t
+  :defer t)
 
 
 (use-package plantuml-mode
