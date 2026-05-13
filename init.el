@@ -1226,8 +1226,8 @@ and restart Flymake to apply the changes."
    ("C-c n i" . org-roam-node-insert)
    ("C-c n c" . org-roam-capture)
    ("C-c n j" . org-roam-dailies-capture-today)
-   ("C-c n t" . org-roam-dailies-find-today)
-   ("C-c n d" . org-roam-dailies-find-date)
+   ("C-c n t" . org-roam-dailies-goto-today)
+   ("C-c n d" . org-roam-dailies-goto-date)
    ("C-c n u" . liomacs/update-org-id-files)
    ("C-c n s" . liomacs/search-roam))
   :custom
