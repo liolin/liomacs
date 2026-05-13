@@ -365,8 +365,6 @@
 
 (use-package dired
   :ensure nil
-  :bind
-  (("M-i" . emacs-solo/window-dired-vc-root-left))
   :custom
   (dired-dwim-target t)
   (dired-guess-shell-alist-user
@@ -376,40 +374,8 @@
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alh --group-directories-first")
   :init
-  (defun emacs-solo/window-dired-vc-root-left (&optional directory-path)
-    "Creates *Dired-Side* like an IDE side explorer"
-    (interactive)
-    (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-
-    (let ((dir (if directory-path
-                   (dired-noselect directory-path)
-                 (if (eq (vc-root-dir) nil)
-                     (dired-noselect default-directory)
-                   (dired-noselect (vc-root-dir))))))
-
-      (display-buffer-in-side-window
-       dir `((side . left)
-             (slot . 0)
-             (window-width . 30)
-             (window-parameters . ((no-other-window . t)
-                                   (no-delete-other-windows . t)
-                                   (mode-line-format . (" "
-                                                        "%b"))))))
-      (with-current-buffer dir
-        (let ((window (get-buffer-window dir)))
-          (when window
-            (select-window window)
-            (rename-buffer "*Dired-Side*")
-            )))))
-
-  (defun emacs-solo/window-dired-open-directory ()
-    "Open the current directory in *Dired-Side* side window."
-    (interactive)
-    (emacs-solo/window-dired-vc-root-left (dired-get-file-for-visit)))
-
   (eval-after-load 'dired
     '(progn
-       (define-key dired-mode-map (kbd "G") 'emacs-solo/window-dired-open-directory)
        (define-key dired-mode-map (kbd "h") 'dired-up-directory)
        (define-key dired-mode-map (kbd "l") 'dired-find-file))))
 
