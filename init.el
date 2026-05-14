@@ -740,6 +740,7 @@ and restart Flymake to apply the changes."
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
   (add-to-list 'org-latex-packages-alist '("" "subcaption"))
+  (add-to-list 'org-latex-packages-alist '("" "bussproofs"))
   (add-to-list 'org-latex-classes
                '("ost-summary"
                  "\\documentclass{article}"
