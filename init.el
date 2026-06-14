@@ -688,10 +688,11 @@ and restart Flymake to apply the changes."
            :section-number nil)
           ("roam" :components ("roam-org" "roam-attachment" "roam-css" "roam-pdf"))))
 
+  ;; Org cite
+  (require 'oc)
+  (setq org-cite-global-bibliography '("~/ownCloud/Private/bibliography/bibliography.bib"))
   ;; Org latex
   (require 'ox-latex)
-
-
   (setq org-latex-title-command ""
         org-latex-toc-command ""
         org-latex-listings t
