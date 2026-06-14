@@ -1353,7 +1353,7 @@ and restart Flymake to apply the changes."
   (setq TeX-auto-save t
         TeX-parse-self t
         reftex-plug-into-auctex 1
-        reftex-default-bibliography '("~/biblio/main.bib")
+        reftex-default-bibliography '("~/ownCloud/Private/bibliography/bibliography.bib")
         reftex-plug-into-AUCTeX t
         default-truncate-lines t
         TeX-save-query nil
