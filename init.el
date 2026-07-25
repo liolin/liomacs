@@ -488,7 +488,15 @@ and restart Flymake to apply the changes."
 (use-package flyspell
   :ensure nil
   :defer t
+  :custom
+  (flyspell-prog-text-faces '(font-lock-string-face
+                              font-lock-comment-face
+                              font-lock-doc-face
+                              font-lock-function-name-face
+                              font-lock-variable-name-face
+                              font-lock-type-face))
   :hook
+  (prog-mode . flyspell-prog-mode)
   (message-mode . flyspell-mode)
   (org-mode . flyspell-mode))
 
