@@ -1412,6 +1412,8 @@ and restart Flymake to apply the changes."
   (add-to-list 'treesit-language-source-alist '(typst "https://github.com/uben0/tree-sitter-typst" "master" "src")))
 
 
+;;; mu4e
+;; Check out https://github.com/danielfleischer/mu4easy/blob/master/mu4easy.el for some useful options.
 (use-package mu4e
   :ensure nil
   :if (file-directory-p "/usr/share/emacs/site-lisp/mu4e/")
@@ -1485,6 +1487,9 @@ and restart Flymake to apply the changes."
                   (mu4e-sent-folder      . "/gmail/[Gmail]/Gesendet")
                   (mu4e-trash-folder     . "/gmail/[Gmail]/Papierkorb")
                   (mu4e-refile-folder    . "/archiv")))))
+  (require 'mu4e-icalendar)
+  (mu4e-icalendar-setup)
+
   (add-to-list 'mu4e-headers-actions '("Retag" . mu4e-action-retag-message) t)
   (add-to-list 'mu4e-bookmarks '(:name "overview" :query "flag:flagged OR flag:unread AND NOT flag:trashed" :key ?o))
   (add-to-list 'mu4e-bookmarks '(:name "work" :query "(flag:flagged OR flag:unread) AND NOT flag:trashed AND maildir:/ost/inbox" :key ?w))
