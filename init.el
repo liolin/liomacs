@@ -1295,15 +1295,10 @@ and restart Flymake to apply the changes."
 ;;; PDF-TOOLS
 (use-package pdf-tools
   :ensure t
+  :hook
+  (pdf-view-mode . (lambda () (blink-cursor-mode -1)))
   :config
   (pdf-tools-install))
-
-;;; EMACS-READER
-;; (setq package-vc-allow-build-commands t)
-;; (use-package reader
-;;   :vc (:url "https://codeberg.org/divyaranjan/emacs-reader"
-;;             :make "all")
-;;   :mode ("\\.pdf\\'" . reader-mode))
 
 ;; MAGIT
 (use-package transient
