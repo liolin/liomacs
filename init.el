@@ -599,6 +599,12 @@ and restart Flymake to apply the changes."
   (setq org-ellipsis " ▼")
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
 
+  ;; Org Babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell  . t)))
+
   ;; Org agenda
   (require 'org-agenda)
   (define-key global-map (kbd "C-c a") 'org-agenda)
@@ -716,6 +722,7 @@ and restart Flymake to apply the changes."
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
   (add-to-list 'org-latex-packages-alist '("" "subcaption"))
   (add-to-list 'org-latex-packages-alist '("" "bussproofs"))
+  (add-to-list 'org-latex-packages-alist '("" "amsmath"))
   (add-to-list 'org-latex-classes
                '("ost-summary"
                  "\\documentclass{article}"
