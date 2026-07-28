@@ -1064,7 +1064,8 @@ and restart Flymake to apply the changes."
       which-key-mode
       apheleia-mode
       hs-minor-mode
-      evil-collection-unimpaired-mode))
+      evil-collection-unimpaired-mode
+      undo-tree-mode))
 
   (defun emacs-solo/purge-minor-modes ()
     (interactive)
