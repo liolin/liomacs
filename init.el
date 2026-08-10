@@ -1572,11 +1572,12 @@ and restart Flymake to apply the changes."
   :ensure t
   :defer t
   :config
-  (setq gptel-mode 'qwen3-vl:2b
-        gptel-backend (gptel-make-ollama "Ollama"
-                        :host "localhost:11434"
+  (setq gptel-mode 'qwen3.6-27B
+        gptel-backend (gptel-make-openai "LLMHub"
+                        :host "api.llmhub.infs.ai"
                         :stream t
-                        :models '(qwen3-vl:2b))))
+                        :key ""
+                        :models '("qwen3.6-27B"))))
 
 ;;; ECA
 (use-package eca
