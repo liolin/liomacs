@@ -1083,9 +1083,14 @@ and restart Flymake to apply the changes."
 
 (use-package rustic
   :ensure t
+  :after eglot
   :custom
   (rustic-lsp-client 'eglot)
-  (rustic-format-trigger t))
+  (rustic-format-trigger t)
+  :config
+  (setq-default eglot-workspace-configuration
+                '((:rust-analyzer
+                   (:inlayHints (:chainingHints (:enable t)))))))
 
 (use-package haskell-mode
   :mode "\\.hs\\'"
