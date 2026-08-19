@@ -1231,6 +1231,10 @@ and restart Flymake to apply the changes."
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n")
       :unnarrowed t)
+     ("r" "reference" plain ""
+      :target (file+head "references/${slug}.org"
+                         "#+title: ${title}\n")
+      :unnarrowed t)
      ("p" "pattern" plain "\n- tags :: %?\n\n\nWhen to use:\n- \n\n\nBenefits:\n- \n\n\nCosts:\n- "
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n")
