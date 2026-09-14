@@ -140,6 +140,12 @@
                         (thanos/wtype-text (buffer-string)))
                        (delete-frame)))))
 
+  (require 'ansi-color)
+  (defun liomacs/display-ansi-colors ()
+    "Renders ANSI escape color codes in current buffer."
+    (interactive)
+    (ansi-color-apply-on-region (point-min) (point-max)))
+
   ;; Makes everything accept utf-8 as default, so buffers with tsx and so
   ;; won't ask for encoding (because undecided-unix) every single keystroke
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -414,6 +420,10 @@
   :defer t
   :hook
   (prog-mode . hs-minor-mode))
+
+(use-package outline-indent
+  :ensure t
+  :defer t)
 
 (use-package subword-mode
   :ensure nil
