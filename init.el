@@ -646,6 +646,25 @@ and restart Flymake to apply the changes."
                            ((org-agenda-overriding-header "All TODOs"))))))
 
   (add-to-list 'org-agenda-custom-commands
+               '("w" "Agenda"
+                 ((agenda ""
+                          ((org-agenda-span 'day)
+                           (org-deadline-warning-days 7)))
+                  (todo "WORKING"
+                        ((org-agenda-overriding-header "In Progress")
+                         (org-agenda-files '("~/org/Agenda/work.org"))))
+                  (todo "NEXT"
+                        ((org-agenda-overriding-header "Next")
+                         (org-agenda-files '("~/org/Agenda/work.org"))))
+                  (agenda ""
+                          ((org-agenda-span 'week)
+                           (org-deadline-warning-days 7)))
+                  (alltodo ""
+                           ((org-agenda-overriding-header "All TODOs")
+                            (org-agenda-files '("~/org/Agenda/work.org")))))))
+
+
+  (add-to-list 'org-agenda-custom-commands
                '("r" "Reading"
                  ((tags "read"
                         ((org-agenda-overriding-header "In Progress")
