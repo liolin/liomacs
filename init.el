@@ -1586,6 +1586,18 @@ and restart Flymake to apply the changes."
                                     (disable-theme 'sanityinc-tomorrow-day)))
     (_ (error "No supported theme is loaded"))))
 
+(use-package beacon
+  :ensure t
+  :custom
+  (beacon-blink-when-focused t)
+  (beacon-blink-when-buffer-changes t)
+  (beacon-blink-when-window-changes t)
+  ;; (beacon-blink-when-window-scrolls t)
+  (beacon-blink-when-point-moves-vertically 10)
+  (beacon-blink-when-point-moves-horizontally 10)
+  :config
+  (beacon-mode 1))
+
 
 ;;; LEDGER
 (use-package ledger-mode
