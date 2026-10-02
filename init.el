@@ -979,6 +979,11 @@ and restart Flymake to apply the changes."
   (setq org-goto-interface 'outline-path-completion)
   (setq org-outline-path-complete-in-steps nil))
 
+;; https://github.com/jmpunkt/ox-typst/
+(use-package ox-typst
+  :ensure t
+  :after org)
+
 (use-package org-noter
   :ensure t
   :defer t
