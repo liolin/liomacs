@@ -454,7 +454,9 @@
       (eglot-ensure)))
 
   (add-hook 'prog-mode-hook #'emacs-solo/eglot-setup)
-
+  :config
+  (add-to-list 'eglot-server-programs
+               '((LaTeX-mode latex-mode) . ("badness" "lsp")))
   :bind (:map
          eglot-mode-map
          ("C-c l a" . eglot-code-actions)
