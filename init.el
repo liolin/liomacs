@@ -212,11 +212,10 @@
                     (emacs-init-time)
                     (number-to-string (length package-activated-list))))))
 
-;; (use-package dotfiles
-;;   :ensure nil
-;;   :load-path "~/code/liomacs/"
-;;   :custom
-;;   (dotfiles/configuration-file "~/.dotfiles/desktop.org"))
+(use-package trust-manager
+  :ensure t
+  :config
+  (trust-manager-mode))
 
 (use-package undo-tree
   :after evil
