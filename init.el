@@ -1417,6 +1417,9 @@ and restart Flymake to apply the changes."
 (use-package xenops
   :ensure t
   :defer t
+  :bind
+  (:map org-mode-map
+        ("C-c p" . xenops-dwim))
   :config
   (setq xenops-math-latex-process-alist
         '((dvipng :programs ("latex" "dvipng") :description "dvi > png"
