@@ -619,7 +619,7 @@ and restart Flymake to apply the changes."
   (require 'org-agenda)
   (define-key global-map (kbd "C-c a") 'org-agenda)
   (add-to-list 'org-agenda-custom-commands
-               '("i" "Agenda"
+               '("i" "Info"
                  ((agenda ""
                           ((org-agenda-span 'day)
                            (org-deadline-warning-days 7)))
@@ -646,7 +646,7 @@ and restart Flymake to apply the changes."
                            ((org-agenda-overriding-header "All TODOs"))))))
 
   (add-to-list 'org-agenda-custom-commands
-               '("w" "Agenda"
+               '("w" "Work"
                  ((agenda ""
                           ((org-agenda-span 'day)
                            (org-deadline-warning-days 7)))
