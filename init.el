@@ -3,6 +3,8 @@
 
 ;;; Code:
 
+(defvar liomacs/bibliography-file "~/Nextcloud/Private/bibliography/bibliography.bib")
+
 ;;; -------------------- GENERAL EMACS CONFIG
 (use-package emacs
   :ensure nil
@@ -572,7 +574,7 @@ and restart Flymake to apply the changes."
 
   ;; Org agenda settings
   (org-agenda-files
-   (append (directory-files "~/org/Agenda" t ".org")))
+   (append '("~/code/school/ma/documentation/documentation.org") (directory-files "~/org/Agenda" t ".org")))
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-tags-column 120)
   (org-agenda-block-separator ?─)
@@ -733,7 +735,7 @@ and restart Flymake to apply the changes."
 
   ;; Org cite
   (require 'oc)
-  (setq org-cite-global-bibliography '("~/ownCloud/Private/bibliography/bibliography.bib"))
+  (setopt org-cite-global-bibliography (list liomacs/bibliography-file))
   ;; Org latex
   (require 'ox-latex)
   (setq org-latex-title-command ""
@@ -981,6 +983,7 @@ and restart Flymake to apply the changes."
 
 ;; https://github.com/jmpunkt/ox-typst/
 (use-package ox-typst
+  :vc (:url "https://github.com/liolin/ox-typst.git" :rev "valid-directory-as-longest-prefix")
   :ensure t
   :after org)
 
@@ -1210,9 +1213,9 @@ and restart Flymake to apply the changes."
 (use-package plantuml-mode
   :ensure t
   :config
-  (setq org-plantuml-executable-path "/usr/bin/plantuml")
+  (setq org-plantuml-executable-path "plantuml")
   (setq org-plantuml-exec-mode 'plantuml)
-  (setq plantuml-executable-path "/usr/bin/plantuml")
+  (setq plantuml-executable-path "plantuml")
   (setq plantuml-default-exec-mode 'executable)
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1405,14 +1408,14 @@ and restart Flymake to apply the changes."
                 preview-scale-function 1.5
                 Tex-master nil
                 Tex-output-dir "out")
-  (setq TeX-auto-save t
-        TeX-parse-self t
-        reftex-plug-into-auctex 1
-        reftex-default-bibliography '("~/ownCloud/Private/bibliography/bibliography.bib")
-        reftex-plug-into-AUCTeX t
-        default-truncate-lines t
-        TeX-save-query nil
-        TeX-source-correlate-method 'synctex))
+  (setopt TeX-auto-save t
+          TeX-parse-self t
+          reftex-plug-into-auctex 1
+          reftex-default-bibliography (list liomacs/bibliography-file)
+          reftex-plug-into-AUCTeX t
+          default-truncate-lines t
+          TeX-save-query nil
+          TeX-source-correlate-method 'synctex))
 
 (use-package xenops
   :ensure t
