@@ -1633,12 +1633,18 @@ and restart Flymake to apply the changes."
   :ensure t
   :defer t
   :config
-  (setq gptel-mode 'qwen3.6-27B
-        gptel-backend (gptel-make-openai "LLMHub"
-                        :host "api.llmhub.infs.ai"
-                        :stream t
-                        :key ""
-                        :models '("qwen3.6-27B"))))
+  (require 'auth-source-pass)
+  (auth-source-pass-enable)
+  (defun liomacs/get-llmhub-key ()
+    "Return the LLMHub API key stored in pass."
+    (let ((secret (auth-source-pass-get 'secret "Work/IFS/llmhub.infs.ai/token")))
+      (string-trim (substring-no-properties (or secret "")))))
+  (setopt gptel-model 'best-code
+          gptel-backend (gptel-make-openai "LLMHub"
+                          :host "api.llmhub.infs.ai"
+                          :stream t
+                          :key #'liomacs/get-llmhub-key
+                          :models '("best-code"))))
 
 ;;; ECA
 (use-package eca
