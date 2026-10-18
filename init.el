@@ -1493,13 +1493,28 @@ and restart Flymake to apply the changes."
   (setq mu4e-contexts
         (list
          (make-mu4e-context
+          :name "olivier.lischer"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/olivier.lischer" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address     . "olivier.lischer@liolin.ch")
+                  (user-full-name        . "Olivier Lischer")
+                  (smtpmail-smtp-server  . "asmtp.mail.hostpoint.ch")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-stream-type  . starttls)
+                  (mu4e-drafts-folder    . "/olivier.lischer/Drafts")
+                  (mu4e-sent-folder      . "/olivier.lischer/Sent")
+                  (mu4e-trash-folder     . "/olivier.lischer/Trash")
+                  (mu4e-refile-folder    . "/archiv")))
+         (make-mu4e-context
           :name "liolin"
           :match-func
           (lambda (msg)
             (when msg
               (string-prefix-p "/liolin" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address     . "olivier.lischer@liolin.ch")
-                  (user-full-name        . "Olivier Lischer")
+          :vars '((user-mail-address     . "liolin@liolin.ch")
+                  (user-full-name        . "Olivier Burger")
                   (smtpmail-smtp-server  . "asmtp.mail.hostpoint.ch")
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type  . starttls)
