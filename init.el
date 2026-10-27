@@ -48,7 +48,7 @@
   (pixel-scroll-precision-use-momentum nil)
   (ring-bell-function 'ignore)
   (read-answer-short t)
-  (recentf-max-saved-items 300) ; default is 20
+  (recentf-max-saved-items 300)
   (recentf-max-menu-items 15)
   (recentf-auto-cleanup (if (daemonp) 300 'never))
   (recentf-exclude (list "^/\\(?:ssh\\|su\\|sudo\\)?:"))
@@ -56,7 +56,7 @@
   (remote-file-name-inhibit-auto-save t)
   (resize-mini-windows 'grow-only)
   (ring-bell-function #'ignore)
-  (savehist-save-minibuffer-history t)    ; t is default
+  (savehist-save-minibuffer-history t)
   (savehist-additional-variables
    '(kill-ring                            ; clipboard
      register-alist                       ; macros
@@ -156,7 +156,6 @@
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
 
-  ;; Set line-number-mode with relative numbering
   (setq display-line-numbers-type 'visual)
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
@@ -1594,6 +1593,8 @@ and restart Flymake to apply the changes."
 
 (use-package emacs
   :ensure nil
+  :config
+  (set-face-foreground 'font-lock-comment-face "#ff00ff")
   :bind
   (("<f12>" . liolin/theme-toggle)))
 
