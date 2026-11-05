@@ -496,6 +496,18 @@ and restart Flymake to apply the changes."
              (if flymake-show-diagnostics-at-end-of-line
                  "Enabled" "Disabled"))))
 
+(use-package flymake-languagetool
+  :ensure t
+  :hook ((text-mode       . flymake-languagetool-load)
+         (latex-mode      . flymake-languagetool-load)
+         (org-mode        . flymake-languagetool-load)
+         (markdown-mode   . flymake-languagetool-load))
+  :custom
+  (flymake-languagetool-check-spelling t)
+  :init
+  (setopt flymake-languagetool-server-jar nil)
+  (setopt flymake-languagetool-url "http://localhost:8081"))
+
 (use-package flyspell
   :ensure nil
   :defer t
