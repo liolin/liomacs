@@ -1601,12 +1601,19 @@ and restart Flymake to apply the changes."
 ;;   :init
 ;;   (load-theme 'zenburn t t))
 
-(use-package color-theme-sanityinc-tomorrow
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (load-theme 'sanityinc-tomorrow-day t)
+;;   (load-theme 'sanityinc-tomorrow-night t t))
+
+(use-package ef-themes
   :ensure t
-  :defer t
   :init
-  (load-theme 'sanityinc-tomorrow-day t)
-  (load-theme 'sanityinc-tomorrow-night t t))
+  (load-theme 'ef-arbutus t)
+  (load-theme 'ef-cherie t t))
+
 
 (use-package emacs
   :ensure nil
@@ -1628,6 +1635,10 @@ and restart Flymake to apply the changes."
                                       (disable-theme 'sanityinc-tomorrow-night)))
     ('sanityinc-tomorrow-day (progn (enable-theme 'sanityinc-tomorrow-night)
                                     (disable-theme 'sanityinc-tomorrow-day)))
+    ('ef-cherie (progn (enable-theme 'ef-arbutus)
+                       (disable-theme 'ef-cherie)))
+    ('ef-arbutus (progn (enable-theme 'ef-cherie)
+                        (disable-theme 'ef-arbutus)))
     (_ (error "No supported theme is loaded"))))
 
 (use-package beacon
