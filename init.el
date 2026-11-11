@@ -265,6 +265,11 @@
   :config
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter))
 
+(use-package ediff
+  :ensure nil
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain))
+
 (use-package project
   :after magit
   :ensure nil
