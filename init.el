@@ -1688,7 +1688,7 @@ and restart Flymake to apply the changes."
                           :host "api.llmhub.infs.ai"
                           :stream t
                           :key #'liomacs/get-llmhub-key
-                          :models '("best-code"))))
+                          :models '("best-code" "best-chat"))))
 
 ;;; ECA
 (use-package eca
