@@ -1611,8 +1611,10 @@ and restart Flymake to apply the changes."
 (use-package ef-themes
   :ensure t
   :init
-  (load-theme 'ef-arbutus t)
-  (load-theme 'ef-cherie t t))
+  (load-theme 'ef-cherie t t)
+  :bind
+  (("C-<f12>" . ef-themes-load-random-dark))
+  (("C-<f11>" . ef-themes-load-random-light)))
 
 
 (use-package emacs
