@@ -1619,8 +1619,9 @@ and restart Flymake to apply the changes."
 
 (use-package emacs
   :ensure nil
-  :config
-  (set-face-foreground 'font-lock-comment-face "#ff00ff")
+  :hook
+  (enable-theme-functions . (lambda (_)
+                              (set-face-foreground 'font-lock-comment-face "#ff00ff")))
   :bind
   (("<f12>" . liolin/theme-toggle)))
 
